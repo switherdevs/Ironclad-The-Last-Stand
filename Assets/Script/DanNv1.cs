@@ -28,6 +28,7 @@ public class DanNV1 : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!daKichHoat) return;
         if (cauHinhDan == null) return;
 
         // Đạn bay thẳng theo tốc độ trong khodanan

@@ -8,13 +8,17 @@ public class SpawnLinh : MonoBehaviour
     public Transform spawnPoint;
 
     [Header("--- DANH SÁCH PREFABS LÍNH ---")]
-
+    public GameObject SevitorPrefab;
     public GameObject khograkGuardPrefab;
     public GameObject ironStormMarinePrefab;
     public GameObject stormTerminatorPrefab;
     public GameObject ironDreadWalkerPrefab;
     public GameObject dominiconTitanPrefab;
     private float KhoangNghi;
+    public void Sevitor()
+    {
+        SpawnUnit(SevitorPrefab);
+    }
 
     public void SpawnKhograkGuard()
     {
