@@ -48,7 +48,7 @@ GameObject:
   - component: {fileID: 7869301533117469329}
   m_Layer: 0
   m_Name: Attack
-  m_TagString: SathuongQ
+  m_TagString: SatthuongQ
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -580,6 +580,7 @@ GameObject:
   - component: {fileID: 400372444325808534}
   - component: {fileID: 9149134562416833382}
   - component: {fileID: 8409673435960971909}
+  - component: {fileID: 550513925875545954}
   m_Layer: 0
   m_Name: Chaos Zealot
   m_TagString: Enemy
@@ -741,3 +742,17 @@ MonoBehaviour:
   attackRate: 1
   attackHitboxObject: {fileID: 673809401910098430}
   hitboxActiveDuration: 0.2
+--- !u!114 &550513925875545954
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9080246762472147899}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 663006a77a609c14290fa11de93ce105, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ThanhMau: {fileID: 264463652127475975}
+  maxHP: 20

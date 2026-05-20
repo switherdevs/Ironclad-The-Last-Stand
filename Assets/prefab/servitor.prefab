@@ -12,9 +12,10 @@ GameObject:
   - component: {fileID: 3466527294030960798}
   - component: {fileID: 6220128792169359253}
   - component: {fileID: 2754418266746272032}
+  - component: {fileID: -6236342043057399885}
   m_Layer: 0
   m_Name: servitor
-  m_TagString: Untagged
+  m_TagString: Phechinh
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -119,7 +120,7 @@ CapsuleCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
@@ -152,4 +153,22 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
+--- !u!114 &-6236342043057399885
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4302893310042436796}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8bd3cc38714a0684e8eb999a175e906e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  trangThaiHienTai: 0
+  DiemBaiVang: {fileID: 8182526867054258276, guid: 988ca65c3c5130e40a1a25ce434cc1ca, type: 3}
+  DiemNhaChinh: {fileID: 4433333938362103560, guid: 77e38137f71460547a74aea953cc9856, type: 3}
+  tocDoDiChuyen: 4
+  thoiGianDaoVang: 5
+  luongVangMangTheo: 50

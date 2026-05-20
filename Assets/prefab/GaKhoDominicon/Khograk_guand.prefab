@@ -226,6 +226,7 @@ GameObject:
   - component: {fileID: 7840196736941939603}
   - component: {fileID: 4293931656192942061}
   - component: {fileID: 8896317657656720232}
+  - component: {fileID: 2200722803228314259}
   m_Layer: 0
   m_Name: Khograk_guand
   m_TagString: Phechinh
@@ -293,7 +294,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 10
+  m_SortingOrder: 20
   m_Sprite: {fileID: 4606157284126940538, guid: 88f60ca50eec76443bc16f9f713393d3, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -335,7 +336,7 @@ CapsuleCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
@@ -387,6 +388,20 @@ MonoBehaviour:
   DiemBan: {fileID: 2132414748134783315}
   tocDoDiChuyenY: 5
   DolechHangY: 0.3
+--- !u!114 &2200722803228314259
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5270594437415101878}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95ca8f3ee71f602418274fad6bd96551, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ThanhMau: {fileID: 8552269627395097835}
+  maxHP: 20
 --- !u!1 &5919082785405393847
 GameObject:
   m_ObjectHideFlags: 0
