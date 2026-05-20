@@ -1,5 +1,5 @@
 using UnityEngine;
-using TMPro; // BẮT BUỘC PHẢI CÓ: Để điều khiển các ô chữ TextMeshPro hiển thị UI
+using TMPro; 
 
 public class ResourceManager : MonoBehaviour
 {
@@ -11,11 +11,12 @@ public class ResourceManager : MonoBehaviour
     public TextMeshProUGUI textHienThiLinh;  // Ô kéo chữ hiển thị Lính (Ví dụ: "Lính: 10/100")
 
     [Header("--- CẤU HÌNH TÀI NGUYÊN GAME ---")]
-    private int soTienHienTai = 0;           // Số tiền người chơi đang sở hữu, ban đầu vào game bằng 0
-    private int soTienToiDa = 9999;          // Giới hạn tiền tối đa theo yêu cầu là 9999
+    public int soTienHienTai = 0;          
+    public int soTienToiDa = 9999;        
 
-    private int soLinhHienTai = 0;           // Số lượng lính hiện có trên map, ban đầu bằng 0
-    private int soLinhToiDa = 100;           // Giới hạn quân số tối đa theo yêu cầu là 100
+    public int soLinhHienTai = 0;         
+                                              
+    public int soLinhToiDa = 100;           
 
     void Awake()
     {
@@ -46,8 +47,6 @@ public class ResourceManager : MonoBehaviour
         CapNhatGiaoDienUI(); // Vẽ lại con số mới lên màn hình
     }
 
-    // HÀM MỚI: DÀNH RIÊNG CHO SỰ KIỆN NÚT BẤM (BUTTON CLICK) TRÊN GIAO DIỆN TEST GAME
-    // BẮT BUỘC có chữ "public" thì ô thiết lập sự kiện của nút bấm Unity mới nhìn thấy hàm này
     public void NutBamCongTienTestGame()
     {
         Debug.Log("Nút Test Game được nhấn! Thực hiện cộng 500 vàng.");
