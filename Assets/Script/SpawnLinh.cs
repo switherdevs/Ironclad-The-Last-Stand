@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.UI;
-
 public class SpawnLinh : MonoBehaviour
 {
     [Header("--- VỊ TRÍ XUẤT HIỆN ---")]
@@ -15,6 +14,7 @@ public class SpawnLinh : MonoBehaviour
     public GameObject ironDreadWalkerPrefab;
     public GameObject dominiconTitanPrefab;
     private float KhoangNghi;
+    public bool speedup = false;
     public void Sevitor()
     {
         SpawnUnit(SevitorPrefab);
@@ -44,16 +44,26 @@ public class SpawnLinh : MonoBehaviour
     {
         SpawnUnit(dominiconTitanPrefab);
     }
+    public void Timeskip()
+    {
+        speedup = !speedup;
+
+        if(speedup == true)
+        {
+            Time.timeScale = 2;
+        }
+        else
+        {
+            Time.timeScale = 1;
+        }
+
+    }
 
     private void SpawnUnit(GameObject unitPrefab)
     {
         if (unitPrefab != null && spawnPoint != null)
         {
             Instantiate(unitPrefab, spawnPoint.position, unitPrefab.transform.rotation);
-        }
-        else
-        {
-            Debug.LogError("Thiếu Prefab lính hoặc chưa kéo Spawn Point vào Script!");
         }
     }
 }

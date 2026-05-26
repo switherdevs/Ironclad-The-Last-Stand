@@ -568,7 +568,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 50
-  m_Sprite: {fileID: 90089345089991699, guid: 77060d4cafb76e6498d1690c2734a7d8, type: 3}
+  m_Sprite: {fileID: 9169661417730481863, guid: d2746e574cc8e854b8d10f77f6ba68d1, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -592,7 +592,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_ShadowGroup: 0
-  m_Priority: 10
+  m_Priority: 50
   m_ComponentVersion: 5
   m_HasRenderer: 1
   m_UseRendererSilhouette: 1
@@ -609,13 +609,13 @@ MonoBehaviour:
   m_InstanceId: 0
   m_ShadowShape2DComponent: {fileID: 4378523023613845811}
   m_ShadowShape2DProvider:
-    rid: 757612263064731723
+    rid: 757612422382747649
   m_ShadowCastingSource: 2
   m_ShadowMesh:
     m_Mesh: {fileID: 0}
     m_LocalBounds:
-      m_Center: {x: -0.023803711, y: -0.29499817, z: 0}
-      m_Extent: {x: 4.5111847, y: 3.269989, z: 0}
+      m_Center: {x: 0, y: 0, z: 0}
+      m_Extent: {x: 4.6249847, y: 3.5649872, z: 0}
     m_EdgeProcessing: 1
     m_TrimEdge: 0.6
     m_FlipX: 0
@@ -625,11 +625,11 @@ MonoBehaviour:
   m_PreviousTrimEdge: 0.6
   m_PreviousEdgeProcessing: 1
   m_PreviousShadowCastingSource: 2
-  m_PreviousShadowShape2DSource: {fileID: 4378523023613845811}
+  m_PreviousShadowShape2DSource: {fileID: 343675940913593138}
   references:
     version: 2
     RefIds:
-    - rid: 757612263064731723
+    - rid: 757612422382747649
       type: {class: ShadowShape2DProvider_SpriteRenderer, ns: UnityEngine.Rendering.Universal, asm: Unity.RenderPipelines.Universal.2D.Runtime}
       data: 
 --- !u!61 &343675940913593138
@@ -670,7 +670,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 10.45, y: 8.33}
+    oldSize: {x: 5.05, y: 4.03}
     newSize: {x: 10.45, y: 8.33}
     adaptiveTilingThreshold: 0.5
     drawMode: 0

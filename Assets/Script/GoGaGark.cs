@@ -3,74 +3,127 @@ using static UnityEngine.GraphicsBuffer;
 
 public class NhanVat1Controller : MonoBehaviour
 {
+    [Header("Chỉ số chiến đấu")]
     public float TamBan = 9f;
     public float soDanBan = 1f;
     public int satThuong = 10;
     public Transform DiemBan;
+    public GameObject prefabDanNho;
 
+    [Header("Chỉ số di chuyển bám làn")]
     public float tocDoDiChuyenY = 5f;
+    public float DolechHangY = 0.3f;
 
+    [Header("Vùng Box Phòng Thủ")]
+    public BoxCollider2D vungBoxPhongThu;
+    public float tocDoHanhQuan = 3f;
+
+    private Vector3 viTriCoDinh;
+    private bool daDenViTriThu = false;
     private Transform ThayDich;
     private float HoiChieu = 0f;
 
-    public float DolechHangY = 0.3f;
-
     void Start()
     {
-
+        if (vungBoxPhongThu != null)
+        {
+            viTriCoDinh = LayViTriNgauNhienTrongBox(vungBoxPhongThu);
+        }
+        else
+        {
+            viTriCoDinh = transform.position;
+            daDenViTriThu = true;
+        }
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if (ThayDich == null || !ThayDich.gameObject.activeInHierarchy)
-        {
-            TimKiemKeDich();
-        }
+        // LUÔN LUÔN quét tìm kiếm kẻ địch liên tục trên bản đồ
+        TimKiemKeDich();
+
+
+        // XỬ LÝ CHIẾN ĐẤU VÀ TỰ CĂN LÀN Y KHI THẤY ĐỊCH
 
         if (ThayDich != null)
         {
-            Xoaymat();
-
-            // Kiểm tra khoảng cách thực tế
-
             float doLechYThucTe = Mathf.Abs(transform.position.y - ThayDich.position.y);
-            if (doLechYThucTe > DolechHangY)
-            {
-                DiChuyenTrungHangY();
-            }
-            // 3. LOGIC TẤN CÔNG: Nếu đã trùng hàng Y mới xét khoảng cách X để bắn
-            else
-            {
-                float khoangCachX = Mathf.Abs(transform.position.x - ThayDich.position.x);
+            float khoangCachX = Mathf.Abs(transform.position.x - ThayDich.position.x);
 
-                if (khoangCachX <= TamBan && Time.time >= HoiChieu)
+            // Nếu kẻ địch lọt vào phạm vi kích hoạt (Tầm bắn + 2 ô)
+            if (khoangCachX <= (TamBan + 2f))
+            {
+                // NẾU BỊ LỆCH LÀN Y: Tự động trượt Y bám theo địch luôn (kể cả khi đang hành quân)
+                if (doLechYThucTe > DolechHangY)
                 {
-                    TanCong();
-                    HoiChieu = Time.time + 1f / soDanBan;
+                    DiChuyenTrungHangY();
+                    return; // Ngăn không cho chạy hàm hành quân phía dưới, tập trung bám làn đón đầu
+                }
+
+                // NẾU ĐÃ THẲNG LÀN Y & LỌT TẦM BẮN X: Đứng im tấn công!
+                if (khoangCachX <= TamBan)
+                {
+                    Xoaymat(ThayDich.position.x);
+
+                    if (Time.time >= HoiChieu)
+                    {
+                        TanCong();
+                        HoiChieu = Time.time + 1f / soDanBan;
+                    }
+
+                    return; // Chặn đứng mọi di chuyển, đứng im xả đạn
                 }
             }
         }
+
+        // NẾU KHÔNG CÓ ĐỊCH (HOẶC ĐỊCH Ở QUÁ XA) -> TIẾP TỤC RA BOX THỦ
+        if (!daDenViTriThu)
+        {
+            HanhQuanVaoViTri();
+        }
     }
+
+    void HanhQuanVaoViTri()
+    {
+        Xoaymat(viTriCoDinh.x);
+        transform.position = Vector3.MoveTowards(transform.position, viTriCoDinh, tocDoHanhQuan * Time.deltaTime);
+
+        if (Vector3.Distance(transform.position, viTriCoDinh) < 0.05f)
+        {
+            transform.position = viTriCoDinh;
+            daDenViTriThu = true;
+        }
+    }
+
+    // Đã chuyển thành public để đảm bảo Update gọi xuống dễ dàng và không trùng phạm vi
+    public void DiChuyenTrungHangY()
+    {
+        if (ThayDich == null) return;
+
+        Vector3 viTriMucTieu = new Vector3(transform.position.x, ThayDich.position.y, transform.position.z);
+        transform.position = Vector3.MoveTowards(transform.position, viTriMucTieu, tocDoDiChuyenY * Time.deltaTime);
+    }
+    Vector3 LayViTriNgauNhienTrongBox(BoxCollider2D box)
+    {
+        Bounds bounds = box.bounds;
+        float xNgauNhien = Random.Range(bounds.min.x, bounds.max.x);
+        float yNgauNhien = Random.Range(bounds.min.y, bounds.max.y);
+        return new Vector3(xNgauNhien, yNgauNhien, transform.position.z);
+    }
+
     void TimKiemKeDich()
     {
         GameObject[] mangDich = GameObject.FindGameObjectsWithTag("Enemy");
         float khoangCachNganNhat = Mathf.Infinity;
         GameObject dichGanNhat = null;
 
-        // QUAN TRỌNG: Trước khi tìm, phải reset biến này về null 
-        // để tránh việc nhân vật nhớ mục tiêu cũ ở hàng khác!
-        dichGanNhat = null;
-
         foreach (GameObject dich in mangDich)
         {
             if (dich.activeInHierarchy)
             {
-                // Tính khoảng cách Vector2 tổng thể để tìm mục tiêu gần nhất
                 float khoangCach = Vector2.Distance(transform.position, dich.transform.position);
                 if (khoangCach < khoangCachNganNhat)
                 {
-                    khoangCachNganNhat = khoangCach;
+                    khoangCachNganNhat = khoangCach ;
                     dichGanNhat = dich;
                 }
             }
@@ -79,61 +132,39 @@ public class NhanVat1Controller : MonoBehaviour
         if (dichGanNhat != null) ThayDich = dichGanNhat.transform;
         else ThayDich = null;
     }
-    void DiChuyenTrungHangY()
-    {
-        // Giữ nguyên vị trí X và Z của lính, chỉ thay đổi đích đến Y bằng Y của quái
-        Vector3 viTriMucTieu = new Vector3(transform.position.x, ThayDich.position.y, transform.position.z);
 
-        // Di chuyển tịnh tiến cực mượt (Bất chấp Rigidbody2D đang ở chế độ Kinematic)
-        transform.position = Vector3.MoveTowards(transform.position, viTriMucTieu, tocDoDiChuyenY * Time.deltaTime);
-    }
-    void Xoaymat()
+    void Xoaymat(float xMucTieu)
     {
-        // Đã bọc bảo vệ: Hàm này chỉ chạy khi ThayDich chắc chắn không bị Null
-        if (ThayDich.position.x < transform.position.x)
-        {
-            transform.localScale = new Vector3(-1, 1, 1); // Quay trái
-        }
-        else
-        {
-            transform.localScale = new Vector3(1, 1, 1);  // Quay phải
-        }
+        if (xMucTieu < transform.position.x) transform.localScale = new Vector3(-1, 1, 1);
+        else transform.localScale = new Vector3(1, 1, 1);
     }
+
     void TanCong()
     {
-        if (ThayDich == null || DiemBan == null || QuanLyDan.Instance == null) return;
+        if (ThayDich == null || DiemBan == null || QuanLyDan.Instance == null || prefabDanNho == null) return;
+
         float huongBanX = (ThayDich.position.x < transform.position.x) ? 180f : 0f;
         Quaternion rotation = Quaternion.Euler(0, 0, huongBanX);
 
-        GameObject vienDan = QuanLyDan.Instance.LayDanTuKho();
+        GameObject vienDan = QuanLyDan.Instance.LayDanTuKho(prefabDanNho);
         if (vienDan != null)
         {
             vienDan.transform.position = DiemBan.position;
             vienDan.transform.rotation = rotation;
-            vienDan.SetActive(true); // Kích hoạt đạn
+            vienDan.SetActive(true);
 
             DanNV1 scriptDan = vienDan.GetComponent<DanNV1>();
             if (scriptDan != null)
             {
-                // Đồng bộ chính xác với biến trong script DanNV1 hiện tại của bạn
                 scriptDan.satThuong = satThuong;
                 scriptDan.KichHoatVienDan();
             }
-            vienDan.SetActive(true);
         }
     }
+
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.green;
-        // Vẽ tầm xa
         Gizmos.DrawWireSphere(transform.position, TamBan);
-
-        // Vẽ 2 đường biên giới hạn hàng Z cho bạn dễ nhìn trực quan
-        Gizmos.color = Color.blue;
-        Vector3 lineLeft = transform.position + Vector3.left * TamBan;
-        Vector3 lineRight = transform.position + Vector3.right * TamBan;
-
-        Gizmos.DrawLine(lineLeft + Vector3.forward * DolechHangY, lineRight + Vector3.forward * DolechHangY);
-        Gizmos.DrawLine(lineLeft + Vector3.back * DolechHangY, lineRight + Vector3.back * DolechHangY);
     }
 }

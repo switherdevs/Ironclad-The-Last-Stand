@@ -1,0 +1,564 @@
+fileFormatVersion: 2
+guid: 544e6696c5be1564a86e548371c65c4e
+ScriptedImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 2
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+  script: {fileID: 11500000, guid: b2a9591990af98743ba3ff7cf1000886, type: 3}
+  textureImporterSettings:
+    alphaSource: 1
+    mipMapMode: 0
+    enableMipMap: 1
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+    convertToNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+    swizzle: 50462976
+    isReadable: 0
+    streamingMipmaps: 0
+    streamingMipmapsPriority: 0
+    vTOnly: 0
+    ignoreMipmapLimit: 0
+    nPOTScale: 1
+    sRGBTexture: 1
+    spriteMode: 2
+    spriteExtrude: 1
+    spriteMeshType: 1
+    alignment: 0
+    spritePivot: {x: 0.5, y: 0.5}
+    spritePixelsToUnits: 100
+    spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+    spriteGenerateFallbackPhysicsShape: 0
+    generateCubemap: 6
+    cubemapConvolution: 0
+    seamlessCubemap: 0
+    alphaIsTransparency: 1
+    spriteTessellationDetail: -1
+    textureType: 8
+    textureShape: 1
+    singleChannelComponent: 0
+    flipbookRows: 0
+    flipbookColumns: 0
+    ignorePngGamma: 0
+    cookieMode: 0
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 0
+    wrapV: 0
+    wrapW: 0
+    normalMap: 0
+    textureFormat: 0
+    maxTextureSize: 0
+    lightmap: 0
+    compressionQuality: 0
+    linearTexture: 0
+    grayScaleToAlpha: 0
+    rGBM: 0
+    cubemapConvolutionSteps: 0
+    cubemapConvolutionExponent: 0
+    maxTextureSizeSet: 0
+    compressionQualitySet: 0
+    textureFormatSet: 0
+    applyGammaDecoding: 0
+  singleSpriteImportData:
+  - name: 
+    originalName: 
+    pivot: {x: 0, y: 0}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    spriteID: 977c3a75c9561524ab2d90330c3bc6fe
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+    spritePosition: {x: 0, y: 0}
+  multiSpriteImportData: []
+  layeredSpriteImportData:
+  - name: sung trai
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 141
+      y: 4
+      width: 39
+      height: 66
+    spriteID: 9037052372d69dc4281a8c3c183a87ef
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 40, y: -41}
+    spritePosition: {x: 101, y: 45}
+  - name: tay trai
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 54
+      y: 202
+      width: 26
+      height: 38
+    spriteID: 294a821c90c17b748926b90fec8b0abb
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: -41, y: 115}
+    spritePosition: {x: 95, y: 87}
+  - name: Canh tay trai
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 92
+      y: 124
+      width: 33
+      height: 55
+    spriteID: f7944b12cb81f8f47ada84d94b3016b1
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 6, y: 0}
+    spritePosition: {x: 86, y: 124}
+  - name: kiem phai
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 188
+      y: 4
+      width: 27
+      height: 92
+    spriteID: 598632695b35c914b8acf946ec937ac3
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 171, y: -1}
+    spritePosition: {x: 17, y: 5}
+  - name: tay phai
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 124
+      width: 42
+      height: 121
+    spriteID: 4fc9a77bd7677ff4795ab0f99ddf3b0a
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: -13, y: 119}
+    spritePosition: {x: 17, y: 5}
+  - name: Canh tay phai
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 54
+      y: 124
+      width: 30
+      height: 70
+    spriteID: d4bb1164b36e46641b1b04cae0db9d85
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 20, y: 5}
+    spritePosition: {x: 34, y: 119}
+  - name: chan trai
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 176
+      y: 124
+      width: 34
+      height: 51
+    spriteID: b25f925a9af2ac747a8364c90f0134ac
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 91, y: 122}
+    spritePosition: {x: 85, y: 2}
+  - name: Dui trai
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 218
+      y: 124
+      width: 33
+      height: 27
+    spriteID: 33034317d1fcd324aa9d9d1b9ddca62e
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 140, y: 78}
+    spritePosition: {x: 78, y: 46}
+  - name: Chan phai
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 133
+      y: 124
+      width: 35
+      height: 51
+    spriteID: 8fef9cba5b62edc419a893a306ef5f52
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 102, y: 121}
+    spritePosition: {x: 31, y: 3}
+  - name: Dui phai
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 141
+      y: 78
+      width: 29
+      height: 34
+    spriteID: 6c00cc4ff10676043a337e8772947038
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 98, y: 31}
+    spritePosition: {x: 43, y: 47}
+  - name: thanDuoi
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 4
+      width: 68
+      height: 112
+    spriteID: 2c8974ef76ef72748898225ddc4af049
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: -39, y: -59}
+    spritePosition: {x: 43, y: 63}
+  - name: Than
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 80
+      y: 4
+      width: 53
+      height: 59
+    spriteID: bce1002e22beaa94dbd03f7cf239ed85
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 32, y: -112}
+    spritePosition: {x: 48, y: 116}
+  - name: Dau
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 80
+      y: 71
+      width: 35
+      height: 42
+    spriteID: b2b591efeb7442449948bbdb3a0cc127
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 23, y: -92}
+    spritePosition: {x: 57, y: 163}
+  spriteImportData: []
+  rigSpriteImportData: []
+  sharedRigSpriteImportData: []
+  mosaicSpriteImportData: []
+  sharedRigCharacterData:
+    bones: []
+    parts: []
+    dimension: {x: 0, y: 0}
+    characterGroups: []
+    pivot: {x: 0, y: 0}
+    boneReadOnly: 0
+  characterData:
+    bones: []
+    parts: []
+    dimension: {x: 0, y: 0}
+    characterGroups: []
+    pivot: {x: 0, y: 0}
+    boneReadOnly: 0
+  platformSettings: []
+  mosaicLayers: 1
+  characterMode: 1
+  documentPivot: {x: 0, y: 0}
+  documentAlignment: 7
+  importHiddenLayers: 0
+  layerMappingOption: 2
+  generatePhysicsShape: 0
+  paperDollMode: 0
+  keepDupilcateSpriteName: 1
+  padding: 4
+  spriteSizeExpand: 0
+  skeletonAssetReferenceID: 
+  pipeline: {instanceID: 0}
+  pipelineVersion: 
+  spriteCategoryList:
+    categories: []
+  spritePackingTag: 
+  resliceFromLayer: 0
+  pSDLayerImportSetting: []
+  psdLayers:
+  - name: sung trai
+    spriteName: sung trai
+    isGroup: 0
+    parentIndex: -1
+    spriteID: 9037052372d69dc4281a8c3c183a87ef
+    layerID: 2
+    mosaicPosition: {x: 141, y: 4}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: tay trai
+    spriteName: tay trai
+    isGroup: 0
+    parentIndex: -1
+    spriteID: 294a821c90c17b748926b90fec8b0abb
+    layerID: 3
+    mosaicPosition: {x: 54, y: 202}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: Canh tay trai
+    spriteName: Canh tay trai
+    isGroup: 0
+    parentIndex: -1
+    spriteID: f7944b12cb81f8f47ada84d94b3016b1
+    layerID: 4
+    mosaicPosition: {x: 92, y: 124}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: kiem phai
+    spriteName: kiem phai
+    isGroup: 0
+    parentIndex: -1
+    spriteID: 598632695b35c914b8acf946ec937ac3
+    layerID: 5
+    mosaicPosition: {x: 188, y: 4}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: tay phai
+    spriteName: tay phai
+    isGroup: 0
+    parentIndex: -1
+    spriteID: 4fc9a77bd7677ff4795ab0f99ddf3b0a
+    layerID: 6
+    mosaicPosition: {x: 4, y: 124}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: Canh tay phai
+    spriteName: Canh tay phai
+    isGroup: 0
+    parentIndex: -1
+    spriteID: d4bb1164b36e46641b1b04cae0db9d85
+    layerID: 7
+    mosaicPosition: {x: 54, y: 124}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: chan trai
+    spriteName: chan trai
+    isGroup: 0
+    parentIndex: -1
+    spriteID: b25f925a9af2ac747a8364c90f0134ac
+    layerID: 8
+    mosaicPosition: {x: 176, y: 124}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: Dui trai
+    spriteName: Dui trai
+    isGroup: 0
+    parentIndex: -1
+    spriteID: 33034317d1fcd324aa9d9d1b9ddca62e
+    layerID: 9
+    mosaicPosition: {x: 218, y: 124}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: Chan phai
+    spriteName: Chan phai
+    isGroup: 0
+    parentIndex: -1
+    spriteID: 8fef9cba5b62edc419a893a306ef5f52
+    layerID: 10
+    mosaicPosition: {x: 133, y: 124}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: Dui phai
+    spriteName: Dui phai
+    isGroup: 0
+    parentIndex: -1
+    spriteID: 6c00cc4ff10676043a337e8772947038
+    layerID: 11
+    mosaicPosition: {x: 141, y: 78}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: thanDuoi
+    spriteName: thanDuoi
+    isGroup: 0
+    parentIndex: -1
+    spriteID: 2c8974ef76ef72748898225ddc4af049
+    layerID: 12
+    mosaicPosition: {x: 4, y: 4}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: Than
+    spriteName: Than
+    isGroup: 0
+    parentIndex: -1
+    spriteID: bce1002e22beaa94dbd03f7cf239ed85
+    layerID: 13
+    mosaicPosition: {x: 80, y: 4}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: Dau
+    spriteName: Dau
+    isGroup: 0
+    parentIndex: -1
+    spriteID: b2b591efeb7442449948bbdb3a0cc127
+    layerID: 14
+    mosaicPosition: {x: 80, y: 71}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  mosaicPSDLayers: []
+  rigPSDLayers: []
+  sharedRigPSDLayers: []
+  importFileNodeState: 1
+  platformSettingsDirtyTick: 0
+  spriteSizeExpandChanged: 0
+  generateGOHierarchy: 0
+  textureAssetName: 
+  prefabAssetName: 
+  spriteLibAssetName: 
+  skeletonAssetName: 
+  secondarySpriteTextures: []

@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: khoDan
   m_EditorClassIdentifier: 
   DanPrefab: {fileID: 5603226188732681372, guid: df6f67a729046c64eafe9fd29744a575, type: 3}
-  SoLuongDanBanDau: 20
-  tocDobay: 40
-  Duytri: 10
+  SoLuongDanBanDau: 40
+  tocDobay: 50
+  Duytri: 3
