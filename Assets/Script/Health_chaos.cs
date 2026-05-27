@@ -7,12 +7,14 @@ public class Health_chaos : MonoBehaviour
     public Slider ThanhMau;
 
     [Header("--- CHỈ SỐ MÁU ---")]
+    [SerializeField]
     private int maxHP = 20;
     private int currentHp;
 
     void Start()
     {
         currentHp = maxHP;
+
         ThanhMau.gameObject.SetActive(false);
         if (ThanhMau != null)
         {
@@ -21,6 +23,7 @@ public class Health_chaos : MonoBehaviour
             ThanhMau.value = currentHp;
         }
     }
+
 
     public void TakeDamage(int damage)
     {
@@ -48,12 +51,12 @@ public class Health_chaos : MonoBehaviour
          if(collision.CompareTag("SatthuongI"))
         {
             TakeDamage(5);
+            ThanhMau.gameObject.SetActive(true);
+
         }
-         ThanhMau.gameObject.SetActive(true);
     }
     private void OnEnable()
     {
-        ThanhMau.gameObject.SetActive(true);
         currentHp = maxHP;
     }
     private void OnDisable()

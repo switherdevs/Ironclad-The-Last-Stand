@@ -1,4 +1,4 @@
-using System.Collections; // THÊM MỚI: Thư viện bắt buộc để dùng IEnumerator
+using System.Collections;
 using UnityEngine;
 
 public class Terminator : MonoBehaviour
@@ -23,9 +23,11 @@ public class Terminator : MonoBehaviour
     private Transform ThayDich;
     private float HoiChieu = 0f;
 
-    // --- ĐOẠN SỬA ĐỔI: THÊM BIẾN MỚI QUẢN LÝ TRẠNG THÁI NGỪNG BẮN ---
-    private bool dangTrongThoiGianNghi = false; // Biến kiểm tra xem nhân vật có đang trong 3 giây dừng bắn hay không
-    // -------------------------------------------------------------
+    // --- ĐOẠN SỬA ĐỔI: THÊM BIẾN MỚI ĐỂ QUẢN LÝ BĂNG ĐẠN VÀ TỐC ĐỘ XẢ ĐẠN ---
+    public int soLuongDanTrongLoat = 5; // Số lượng viên đạn xả ra trong một loạt bắn trước khi nghỉ 3 giây
+    public float thoiGianCachNhauGiuaCacVien = 0.2f; // Tốc độ bắn giữa các viên đạn trong cùng một loạt (tính bằng giây)
+    private bool dangTrongThoiGianNghi = false;
+    // ---------------------------------------------------------------------
 
     void Start()
     {
@@ -61,19 +63,14 @@ public class Terminator : MonoBehaviour
                 {
                     Xoaymat(ThayDich.position.x);
 
-                    // --- ĐOẠN SỬA ĐỔI: LOGIC BẮN LIÊN TỤC VÀ GỌI COROUTINE NGỪNG BẮN ---
-                    if (!dangTrongThoiGianNghi)
+                    // --- ĐOẠN SỬA ĐỔI: KÍCH HOẠT CHU KỲ XẢ ĐẠN THEO LOẠT LIÊN TỤC RỒI MỚI NGHỈ ---
+                    if (!dangTrongThoiGianNghi && Time.time >= HoiChieu)
                     {
-                        if (Time.time >= HoiChieu)
-                        {
-                            TanCong();
-                            HoiChieu = Time.time + 1f / soDanBan;
-
-                            // Sau khi bắn xong một viên, kích hoạt chu kỳ kiểm tra ngừng bắn 3 giây
-                            StartCoroutine(ChuKyNguongBan());
-                        }
+                        StartCoroutine(ChuKyXaDanVaNguongBan());
+                        // Tính toán hồi chiêu tổng dựa trên biến tốc độ bắn gốc soDanBan
+                        HoiChieu = Time.time + 1f / soDanBan;
                     }
-                    // -----------------------------------------------------------------
+                    // -------------------------------------------------------------------------
 
                     return;
                 }
@@ -86,14 +83,24 @@ public class Terminator : MonoBehaviour
         }
     }
 
-    // --- ĐOẠN SỬA ĐỔI: THÊM HÀM IEMUNERATOR XỬ LÝ NGỪNG BẮN 3 GIÂY ---
-    IEnumerator ChuKyNguongBan()
+    // --- ĐOẠN SỬA ĐỔI: IEMUNERATOR XỬ LÝ XẢ LIÊN TỤC THEO TỐC ĐỘ RỒI MỚI NGỪNG 3 GIÂY ---
+    IEnumerator ChuKyXaDanVaNguongBan()
     {
-        dangTrongThoiGianNghi = true; // Khóa không cho bắn tiếp
-        yield return new WaitForSeconds(3f); // Đợi đúng 3 giây
-        dangTrongThoiGianNghi = false; // Mở khóa để tiếp tục loạt bắn mới
+        dangTrongThoiGianNghi = true; // Khóa trạng thái để không bị gọi trùng lặp nhiều lần
+
+        // Vòng lặp bắn liên tục hết số lượng đạn quy định trong loạt
+        for (int i = 0; i < soLuongDanTrongLoat; i++)
+        {
+            TanCong(); // Bắn 1 viên
+            yield return new WaitForSeconds(thoiGianCachNhauGiuaCacVien); // Chờ một khoảng thời gian ngắn theo tốc độ bắn quy định
+        }
+
+        // Sau khi xả xong toàn bộ băng đạn, bắt đầu đếm ngược thời gian ngừng bắn
+        yield return new WaitForSeconds(3f);
+
+        dangTrongThoiGianNghi = false; // Mở khóa để chuẩn bị cho loạt xả đạn tiếp theo
     }
-    // -----------------------------------------------------------------
+    // ---------------------------------------------------------------------------------
 
     void HanhQuanVaoViTri()
     {

@@ -55,7 +55,7 @@ MonoBehaviour:
   satThuong: 3
   DiemBan: {fileID: 2004108194799325827}
   prefabDanNho: {fileID: 5603226188732681372, guid: df6f67a729046c64eafe9fd29744a575, type: 3}
-  tocDoDiChuyenY: 7
+  tocDoDiChuyenY: 10
   DolechHangY: 0.3
   vungBoxPhongThu: {fileID: 7942286887352987862, guid: 43e938c73a2cad44e9d19025d21e3afb, type: 3}
   tocDoHanhQuan: 10
@@ -172,6 +172,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ThanhMau: {fileID: 912487205477603797}
+  maxHP: 20
 --- !u!1 &1579733531303239221
 GameObject:
   m_ObjectHideFlags: 0

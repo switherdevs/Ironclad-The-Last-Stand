@@ -1,177 +1,72 @@
 using UnityEngine;
 using System.Collections;
 
-public class Enemy : MonoBehaviour
+public class EnemyMelee : BaseEnemy
 {
-    [Header("Movement (2.5D)")]
-    public float moveSpeed = 5f;
+    [Header("--- MELEE SPECIFIC (CẬN CHIẾN) ---")]
+    [SerializeField] private GameObject attackHitboxObject;
+    [SerializeField] private float hitboxActiveDuration = 0.2f;
 
-    [Header("Attack Settings")]
-    public float detectionRange = 10f;
-    public float attackRange = 1.5f;
-    public float attackRate = 1f;
-    private float lastAttackTime;
-
-    [Header("Melee Hitbox (Inspector)")]
-    // Kéo chính xác GameObject con (Hitbox) vào đây để bật/tắt ô tích trong Inspector
-    public GameObject attackHitboxObject;
-    public float hitboxActiveDuration = 0.2f;
-
-    private Transform currentTarget;
-    private Rigidbody2D rb;
-    private SpriteRenderer spriteRenderer;
-
-    void Start()
+    protected override void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
-        spriteRenderer = GetComponent<SpriteRenderer>();
+        base.Start(); // Gọi Start của lớp Base để cài đặt máu và vật lý
 
-        if (rb == null) return;
-
-        // Cấu hình chuẩn vật lý 2.5D
-        rb.bodyType = RigidbodyType2D.Dynamic;
-        rb.gravityScale = 0f;
-        rb.freezeRotation = true;
-        rb.sleepMode = RigidbodySleepMode2D.NeverSleep;
-        rb.WakeUp();
-
-        // Đầu game tắt hẳn ô tích của GameObject Hitbox ngoài Inspector
+        // Ẩn hitbox lúc đầu game
         if (attackHitboxObject != null)
         {
             attackHitboxObject.SetActive(false);
         }
+
+        // Ép khoảng cách giữ chân của quái cận chiến về sát Player
+        keepDistance = 1.2f;
     }
 
-    void FixedUpdate()
+    protected override void HandleMovement()
     {
-        if (rb == null) return;
-        if (rb.IsSleeping()) rb.WakeUp();
+        // Chạy logic di chuyển tiếp cận mục tiêu của lớp Base
+        base.HandleMovement();
 
-        FindNearestTarget();
-
-        if (currentTarget == null)
-        {
-            MoveLeft25D();
-        }
-        else
-        {
-            HandleCombat25D();
-        }
+        // Xoay hướng của Hitbox cận chiến luôn ở phía trước mặt quái dựa theo Sprite đang lật hướng nào
+        RotateHitbox(GetLookDirection());
     }
 
-    // ===== DI CHUYỂN SANG TRÁI MẶC ĐỊNH =====
-    void MoveLeft25D()
-    {
-        rb.linearVelocity = new Vector2(-moveSpeed, 0f);
-
-        if (spriteRenderer != null)
-        {
-            spriteRenderer.flipX = false; // Tùy thuộc vào Sprite gốc của bạn, mặc định hướng trái là false hoặc true
-        }
-
-        // Xoay hướng của Hitbox sang bên trái (X âm)
-        RotateHitbox(-1f);
-    }
-
-    // ===== XỬ LÝ CHIẾN ĐẤU =====
-    void HandleCombat25D()
-    {
-        float distToTarget = Vector2.Distance(transform.position, currentTarget.position);
-
-        if (distToTarget > attackRange)
-        {
-            MoveToTarget25D();
-        }
-        else
-        {
-            rb.linearVelocity = Vector2.zero;
-
-            if (Time.time >= lastAttackTime + attackRate)
-            {
-                Attack();
-                lastAttackTime = Time.time;
-            }
-        }
-    }
-
-    // ===== ĐUỔI ĐỊCH =====
-    void MoveToTarget25D()
-    {
-        Vector2 direction = ((Vector2)currentTarget.position - (Vector2)transform.position).normalized;
-        rb.linearVelocity = direction * moveSpeed;
-
-        float directionX = currentTarget.position.x - transform.position.x;
-        float moveDir = directionX > 0 ? 1f : -1f;
-
-        // Lật hình ảnh dựa theo hướng di chuyển
-        if (spriteRenderer != null)
-        {
-            // Nếu đi bên phải (moveDir > 0) thì flipX = true (hoặc ngược lại tùy Sprite gốc)
-            spriteRenderer.flipX = (moveDir > 0);
-        }
-
-        // Xoay hướng của Hitbox theo hướng mục tiêu
-        RotateHitbox(moveDir);
-    }
-
-    // ===== ÉP HITBOX LUÔN Ở PHÍA TRƯỚC MẶT =====
-    void RotateHitbox(float moveDir)
+    private void RotateHitbox(float lookDir)
     {
         if (attackHitboxObject == null) return;
 
-        // Lấy vị trí X hiện tại (luôn lấy số dương để tính khoảng cách trước mặt)
         float currentPosX = Mathf.Abs(attackHitboxObject.transform.localPosition.x);
+        float newPosX = currentPosX * lookDir;
 
-        // Nếu đi sang trái (moveDir = -1), vị trí X của hitbox phải là số ÂM. Đi sang phải là số DƯƠNG.
-        float newPosX = currentPosX * moveDir;
-
-        attackHitboxObject.transform.localPosition = new Vector3(newPosX, attackHitboxObject.transform.localPosition.y, attackHitboxObject.transform.localPosition.z);
+        attackHitboxObject.transform.localPosition = new Vector3(
+            newPosX,
+            attackHitboxObject.transform.localPosition.y,
+            attackHitboxObject.transform.localPosition.z
+        );
     }
 
-    // ===== TÌM MỤC TIÊU TAG "Phechinh" GẦN NHẤT =====
-    void FindNearestTarget()
+    protected override void ExecuteAttackPattern()
     {
-        GameObject[] targets = GameObject.FindGameObjectsWithTag("Phechinh");
-
-        if (targets == null || targets.Length == 0)
-        {
-            currentTarget = null;
-            return;
-        }
-
-        GameObject nearestTarget = null;
-        float minDistance = Mathf.Infinity;
-        Vector2 currentPosition = transform.position;
-
-        foreach (GameObject t in targets)
-        {
-            float dist = Vector2.Distance(t.transform.position, currentPosition);
-            if (dist < minDistance && dist <= detectionRange)
-            {
-                minDistance = dist;
-                nearestTarget = t;
-            }
-        }
-
-        if (nearestTarget != null) currentTarget = nearestTarget.transform;
-        else currentTarget = null;
-    }
-
-    // ===== VUNG ĐÒN (BẬT TẮT GAME OBJECT) =====
-    void Attack()
-    {
-        if (attackHitboxObject == null) return;
+        // Chuyển trạng thái để đứng im vung kiếm
+        currentState = EnemyState.Attacking;
         StartCoroutine(TriggerHitboxRoutine());
     }
 
-    IEnumerator TriggerHitboxRoutine()
+    private IEnumerator TriggerHitboxRoutine()
     {
-        // Bật ô tích xanh ngoài Inspector (Hiện Object lên)
-        attackHitboxObject.SetActive(true);
+        if (attackHitboxObject != null)
+        {
+            attackHitboxObject.SetActive(true);
+        }
 
         yield return new WaitForSeconds(hitboxActiveDuration);
 
-        // Tắt ô tích xanh ngoài Inspector (Ẩn Object đi)
-        attackHitboxObject.SetActive(false);
+        if (attackHitboxObject != null)
+        {
+            attackHitboxObject.SetActive(false);
+        }
+
+        // Kết thúc vung kiếm, đưa vào cooldown và hồi phục di chuyển
+        nextAttackTime = Time.time + attackCooldown;
+        currentState = EnemyState.Chasing;
     }
 }

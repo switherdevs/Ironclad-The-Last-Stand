@@ -50,7 +50,7 @@ public class SpawnLinh : MonoBehaviour
 
         if(speedup == true)
         {
-            Time.timeScale = 2;
+            Time.timeScale = 6;
         }
         else
         {

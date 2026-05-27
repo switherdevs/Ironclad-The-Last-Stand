@@ -1,5 +1,5 @@
 using UnityEngine;
-using TMPro; 
+using TMPro;
 
 public class ResourceManager : MonoBehaviour
 {
@@ -11,12 +11,12 @@ public class ResourceManager : MonoBehaviour
     public TextMeshProUGUI textHienThiLinh;  // Ô kéo chữ hiển thị Lính (Ví dụ: "Lính: 10/100")
 
     [Header("--- CẤU HÌNH TÀI NGUYÊN GAME ---")]
-    public int soTienHienTai = 0;          
-    public int soTienToiDa = 9999;        
+    public int soTienHienTai = 0;
+    public int soTienToiDa = 9999;
 
-    public int soLinhHienTai = 0;         
-                                              
-    public int soLinhToiDa = 100;           
+    public int soLinhHienTai = 0;
+
+    public int soLinhToiDa = 100;
 
     void Awake()
     {
@@ -30,8 +30,6 @@ public class ResourceManager : MonoBehaviour
         // Vừa vào game, lập tức vẽ số tiền và số lính ban đầu lên màn hình
         CapNhatGiaoDienUI();
     }
-
-    // ĐÃ XÓA: Hàm Update() chứa sự kiện lắng nghe Input chuột trái cũ đã bị gạt bỏ hoàn toàn
 
     // HÀM XỬ LÝ TĂNG TIỀN (Có kiểm tra chốt chặn tối đa 9999)
     public void TangTien(int soTienCongThem)
@@ -53,19 +51,23 @@ public class ResourceManager : MonoBehaviour
         TangTien(500); // Gọi hàm gốc ở trên và truyền tham số 500 vào
     }
 
-    // HÀM XỬ LÝ THÊM LÍNH (Có kiểm tra chốt chặn tối đa 100 con)
-    public bool KiemTraVaThemLinh()
+    // --- ĐOẠN SỬA ĐỔI: CẬP NHẬT LOGIC CHIẾM SLOT LÍNH LINH HOẠT ---
+    // Hàm nhận vào 'soSlotChiem' để kiểm tra xem quỹ quân số còn đủ chỗ chứa hay không
+    public bool KiemTraVaThemLinh(int soSlotChiem)
     {
-        if (soLinhHienTai >= soLinhToiDa)
+        // Kiểm tra xem số lượng lính hiện tại cộng thêm số slot dự kiến có vượt quá giới hạn tối đa không
+        if (soLinhHienTai + soSlotChiem > soLinhToiDa)
         {
-            Debug.LogWarning("QUÂN SỐ ĐÃ ĐẠT GIỚI HẠN TỐI ĐA (100/100)! Không thể sinh thêm lính.");
-            return false;
+            Debug.LogWarning($"KHÔNG ĐỦ SLOT TRỐNG! Cần thêm {soSlotChiem} slot nhưng hiện tại chỉ còn trống {soLinhToiDa - soLinhHienTai} slot.");
+            return false; // Trả về false để Script sinh lính biết mà hủy lệnh sinh
         }
 
-        soLinhHienTai++;
-        CapNhatGiaoDienUI();
-        return true;
+        // Nếu đủ chỗ trống, tiến hành cộng số slot chiếm dụng vào tổng số lính hiện tại
+        soLinhHienTai += soSlotChiem;
+        CapNhatGiaoDienUI(); // Cập nhật lại UI hiển thị số lính mới
+        return true; // Trả về true báo hiệu chiếm slot thành công, cho phép sinh lính
     }
+    // -------------------------------------------------------------
 
     // HÀM VẼ CHỮ LÊN MÀN HÌNH UI
     void CapNhatGiaoDienUI()
@@ -80,6 +82,4 @@ public class ResourceManager : MonoBehaviour
             textHienThiLinh.text = "LÍNH: " + soLinhHienTai + " / " + soLinhToiDa;
         }
     }
-
-    // ĐÃ XÓA: Toàn bộ hàm KiemTraClickVaoMoVang() cũ bắn tia ray phức tạp đã bị gỡ bỏ sạch sẽ
 }
