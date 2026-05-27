@@ -30,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 192116931154184763}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.4560385, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -55,8 +55,8 @@ MonoBehaviour:
   satThuong: 3
   DiemBan: {fileID: 2004108194799325827}
   prefabDanNho: {fileID: 5603226188732681372, guid: df6f67a729046c64eafe9fd29744a575, type: 3}
-  tocDoDiChuyenY: 5
-  DolechHangY: 0
+  tocDoDiChuyenY: 7
+  DolechHangY: 0.3
   vungBoxPhongThu: {fileID: 7942286887352987862, guid: 43e938c73a2cad44e9d19025d21e3afb, type: 3}
   tocDoHanhQuan: 10
 --- !u!70 &2055981072999916834
@@ -172,7 +172,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ThanhMau: {fileID: 912487205477603797}
-  maxHP: 20
 --- !u!1 &1579733531303239221
 GameObject:
   m_ObjectHideFlags: 0
@@ -799,7 +798,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8065550675819560793, guid: 5762fe66509a7644695fe62b1e25eea4, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.3597388
+      value: 0.68987656
+      objectReference: {fileID: 0}
+    - target: {fileID: -8065550675819560793, guid: 5762fe66509a7644695fe62b1e25eea4, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.0933901
       objectReference: {fileID: 0}
     - target: {fileID: -8065550675819560793, guid: 5762fe66509a7644695fe62b1e25eea4, type: 3}
       propertyPath: m_LocalRotation.w
@@ -883,11 +886,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -3948493897685443527, guid: 5762fe66509a7644695fe62b1e25eea4, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.273746
+      value: -1.0206488
+      objectReference: {fileID: 0}
+    - target: {fileID: -3948493897685443527, guid: 5762fe66509a7644695fe62b1e25eea4, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.1011703
       objectReference: {fileID: 0}
     - target: {fileID: -3948493897685443527, guid: 5762fe66509a7644695fe62b1e25eea4, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.4728876
+      value: 0.4662281
       objectReference: {fileID: 0}
     - target: {fileID: -3948493897685443527, guid: 5762fe66509a7644695fe62b1e25eea4, type: 3}
       propertyPath: m_LocalRotation.x
@@ -899,11 +906,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -3948493897685443527, guid: 5762fe66509a7644695fe62b1e25eea4, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.88112277
+      value: -0.88466454
       objectReference: {fileID: 0}
     - target: {fileID: -3948493897685443527, guid: 5762fe66509a7644695fe62b1e25eea4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: -123.556
+      value: -124.421
       objectReference: {fileID: 0}
     - target: {fileID: -3468665860881875456, guid: 5762fe66509a7644695fe62b1e25eea4, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1095,7 +1102,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9089696665922693603, guid: 5762fe66509a7644695fe62b1e25eea4, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.734292
+      value: -0.38379157
+      objectReference: {fileID: 0}
+    - target: {fileID: 9089696665922693603, guid: 5762fe66509a7644695fe62b1e25eea4, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1.6604064
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

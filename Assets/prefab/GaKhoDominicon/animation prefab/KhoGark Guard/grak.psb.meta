@@ -112,8 +112,8 @@ ScriptedImporter:
     - name: tay trai
       guid: 322c8d0e05f56cd4888259e201874492
       position: {x: 114.63114, y: 0.000017312612, z: 0}
-      rotation: {x: 0, y: 0, z: 0.06728213, w: 0.997734}
-      length: 86.73926
+      rotation: {x: 0, y: 0, z: 0.06728167, w: 0.997734}
+      length: 86.73922
       parentId: 1
       color:
         serializedVersion: 2
@@ -122,7 +122,7 @@ ScriptedImporter:
       guid: cdc6888ed7599d647979b5247d138eae
       position: {x: 31.473877, y: 147.51807, z: 0}
       rotation: {x: 0, y: 0, z: -0.6436121, w: 0.7653519}
-      length: 114.631134
+      length: 114.631165
       parentId: -1
       color:
         serializedVersion: 2
@@ -679,9 +679,9 @@ ScriptedImporter:
     spriteBone:
     - name: ban tay trai
       guid: fb4d05f3eaa456844bdc054fad750f04
-      position: {x: 86.73911, y: -0.000015970534, z: 0}
-      rotation: {x: 0, y: 0, z: -0.049754184, w: 0.99876153}
-      length: 58.734234
+      position: {x: 86.73923, y: -0.000005416936, z: 0}
+      rotation: {x: 0, y: 0, z: -0.0497537, w: 0.99876153}
+      length: 58.734226
       parentId: 1
       color:
         serializedVersion: 2
@@ -689,8 +689,8 @@ ScriptedImporter:
     - name: tay trai
       guid: 322c8d0e05f56cd4888259e201874492
       position: {x: 28.13623, y: 164.58582, z: 0}
-      rotation: {x: 0, y: 0, z: -0.59065914, w: 0.8069212}
-      length: 86.739265
+      rotation: {x: 0, y: 0, z: -0.59065956, w: 0.80692095}
+      length: 86.73921
       parentId: -1
       color:
         serializedVersion: 2
@@ -1824,8 +1824,8 @@ ScriptedImporter:
     - name: ban tay phai
       guid: 9f744d65024629c46bfea1af4863340a
       position: {x: 104.92509, y: 0.000007892165, z: 0}
-      rotation: {x: 0, y: 0, z: 0.12802576, w: 0.9917709}
-      length: 61.52019
+      rotation: {x: 0, y: 0, z: 0.1280257, w: 0.99177086}
+      length: 61.520195
       parentId: 1
       color:
         serializedVersion: 2
@@ -4738,9 +4738,9 @@ ScriptedImporter:
     spriteBone:
     - name: chan phai
       guid: 37c0782e9de9e3a41b7da9450dfc219e
-      position: {x: 92.573685, y: 0.000017299535, z: 0}
-      rotation: {x: 0, y: 0, z: 0.14189969, w: 0.98988104}
-      length: 161.57808
+      position: {x: 92.573685, y: 0.000059038954, z: 0}
+      rotation: {x: 0, y: 0, z: 0.14189981, w: 0.98988104}
+      length: 161.57806
       parentId: 1
       color:
         serializedVersion: 2
@@ -4748,8 +4748,8 @@ ScriptedImporter:
     - name: dui phai
       guid: 6347d4896af01d446ad187c0b50ffba7
       position: {x: 139.0708, y: 251.22913, z: 0}
-      rotation: {x: 0, y: 0, z: -0.87880754, w: 0.47717637}
-      length: 92.573746
+      rotation: {x: 0, y: 0, z: -0.8788076, w: 0.47717625}
+      length: 92.573715
       parentId: -1
       color:
         serializedVersion: 2
@@ -5214,9 +5214,9 @@ ScriptedImporter:
     spriteBone:
     - name: chan phai
       guid: 37c0782e9de9e3a41b7da9450dfc219e
-      position: {x: 92.573715, y: -0.00001130449, z: 0}
-      rotation: {x: 0, y: 0, z: 0.14189969, w: 0.98988104}
-      length: 161.57808
+      position: {x: 92.57375, y: 0.000037781625, z: 0}
+      rotation: {x: 0, y: 0, z: 0.14189981, w: 0.98988104}
+      length: 161.57806
       parentId: 1
       color:
         serializedVersion: 2
@@ -5224,8 +5224,8 @@ ScriptedImporter:
     - name: dui phai
       guid: 6347d4896af01d446ad187c0b50ffba7
       position: {x: 139.0708, y: 251.22916, z: 0}
-      rotation: {x: 0, y: 0, z: -0.87880754, w: 0.47717637}
-      length: 92.573746
+      rotation: {x: 0, y: 0, z: -0.8788076, w: 0.47717625}
+      length: 92.573715
       parentId: -1
       color:
         serializedVersion: 2
@@ -5718,7 +5718,7 @@ ScriptedImporter:
     - name: Dau
       guid: fce65fea9678e694c9eac2b71c71552f
       position: {x: 271.74316, y: -0.000024136534, z: 0}
-      rotation: {x: 0, y: 0, z: 0.027272591, w: 0.99962807}
+      rotation: {x: 0, y: 0, z: 0.027272593, w: 0.99962807}
       length: 147.93942
       parentId: 0
       color:
@@ -5728,24 +5728,24 @@ ScriptedImporter:
       guid: cdc6888ed7599d647979b5247d138eae
       position: {x: 634.4739, y: 550.51807, z: 0}
       rotation: {x: 0, y: 0, z: -0.6436121, w: 0.7653519}
-      length: 114.63113
+      length: 114.63116
       parentId: -1
       color:
         serializedVersion: 2
         rgba: 4278255360
     - name: tay trai
       guid: 322c8d0e05f56cd4888259e201874492
-      position: {x: 114.63114, y: 0.000015454247, z: 0}
-      rotation: {x: 0, y: 0, z: 0.067282125, w: 0.997734}
-      length: 86.73926
+      position: {x: 114.63117, y: 0.000010219659, z: 0}
+      rotation: {x: 0, y: 0, z: 0.06728168, w: 0.997734}
+      length: 86.73923
       parentId: 2
       color:
         serializedVersion: 2
         rgba: 4294967040
     - name: ban tay trai
       guid: fb4d05f3eaa456844bdc054fad750f04
-      position: {x: 86.73923, y: -0.000048153586, z: 0}
-      rotation: {x: 0, y: 0, z: -0.04975417, w: 0.99876153}
+      position: {x: 86.73924, y: 0.000024612273, z: 0}
+      rotation: {x: 0, y: 0, z: -0.049753726, w: 0.9987616}
       length: 58.73423
       parentId: 3
       color:
@@ -5772,7 +5772,7 @@ ScriptedImporter:
     - name: ban tay phai
       guid: 9f744d65024629c46bfea1af4863340a
       position: {x: 104.92499, y: -0.00000037640712, z: 0}
-      rotation: {x: 0, y: 0, z: 0.12802571, w: 0.9917709}
+      rotation: {x: 0, y: 0, z: 0.12802568, w: 0.9917709}
       length: 61.520195
       parentId: 6
       color:
@@ -5781,16 +5781,16 @@ ScriptedImporter:
     - name: dui phai
       guid: 6347d4896af01d446ad187c0b50ffba7
       position: {x: 525.0708, y: 273.22916, z: 0}
-      rotation: {x: 0, y: 0, z: -0.87880754, w: 0.47717637}
-      length: 92.573746
+      rotation: {x: 0, y: 0, z: -0.8788076, w: 0.47717625}
+      length: 92.57372
       parentId: -1
       color:
         serializedVersion: 2
         rgba: 4286643968
     - name: chan phai
       guid: 37c0782e9de9e3a41b7da9450dfc219e
-      position: {x: 92.57374, y: -0.0000236983, z: 0}
-      rotation: {x: 0, y: 0, z: 0.14189969, w: 0.98988104}
+      position: {x: 92.57376, y: 0.000031248375, z: 0}
+      rotation: {x: 0, y: 0, z: 0.14189981, w: 0.98988104}
       length: 161.57808
       parentId: 8
       color:
@@ -5916,7 +5916,7 @@ ScriptedImporter:
       order: 0
     dimension: {x: 0, y: 0}
     characterGroups: []
-    pivot: {x: 0.5, y: 0}
+    pivot: {x: 0.47, y: 0.5}
     boneReadOnly: 0
   platformSettings:
   - name: DefaultTexturePlatform
@@ -5945,8 +5945,8 @@ ScriptedImporter:
     androidETC2FallbackOverride: 0
   mosaicLayers: 1
   characterMode: 1
-  documentPivot: {x: 0.5, y: 0}
-  documentAlignment: 7
+  documentPivot: {x: 0.47, y: 0.5}
+  documentAlignment: 9
   importHiddenLayers: 0
   layerMappingOption: 2
   generatePhysicsShape: 0

@@ -7,7 +7,7 @@ public class Health_phechinh : MonoBehaviour
     public Slider ThanhMau;
 
     [Header("--- CHỈ SỐ MÁU ---")]
-    public int maxHP = 20;
+    private int maxHP = 20;
     private int currentHp;
 
     void Start()

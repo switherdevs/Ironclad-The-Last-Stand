@@ -668,8 +668,8 @@ ScriptedImporter:
     spriteBone:
     - name: Tay trai
       guid: 4d570b02885a82b4a841ea87534bd0f0
-      position: {x: 274.0128, y: 0.00030054682, z: 0}
-      rotation: {x: 0, y: 0, z: -0.07431721, w: 0.99723464}
+      position: {x: 274.01285, y: 0.00029029476, z: 0}
+      rotation: {x: 0, y: 0, z: -0.07431721, w: 0.9972347}
       length: 226.40234
       parentId: 1
       color:
@@ -679,7 +679,7 @@ ScriptedImporter:
       guid: 62397cd2d11200b4484a2381c0689a13
       position: {x: 58.676514, y: 534.4379, z: 0}
       rotation: {x: 0, y: 0, z: -0.64499235, w: 0.7641891}
-      length: 274.01276
+      length: 274.01285
       parentId: -1
       color:
         serializedVersion: 2
@@ -1266,7 +1266,7 @@ ScriptedImporter:
       guid: 62397cd2d11200b4484a2381c0689a13
       position: {x: 88.676575, y: 275.438, z: 0}
       rotation: {x: 0, y: 0, z: -0.64499235, w: 0.7641891}
-      length: 274.01276
+      length: 274.01285
       parentId: -1
       color:
         serializedVersion: 2
@@ -1916,8 +1916,8 @@ ScriptedImporter:
     - name: Giap vai phai
       guid: 5f23f80a3b484294b8d7d0cdfaebb52b
       position: {x: 172.28027, y: 281.438, z: 0}
-      rotation: {x: 0, y: 0, z: 0.78406787, w: -0.6206751}
-      length: 259.6986
+      rotation: {x: 0, y: 0, z: 0.7840679, w: -0.62067515}
+      length: 259.69867
       parentId: -1
       color:
         serializedVersion: 2
@@ -2492,8 +2492,8 @@ ScriptedImporter:
     spriteBone:
     - name: Tay Phai
       guid: cfca108e032579942b70bcf0c72ffdab
-      position: {x: 259.69867, y: 0.00011413634, z: 0}
-      rotation: {x: 0, y: 0, z: 0.15807828, w: 0.98742664}
+      position: {x: 259.6988, y: -0.00001586312, z: 0}
+      rotation: {x: 0, y: 0, z: 0.15807833, w: 0.98742664}
       length: 272.6337
       parentId: 1
       color:
@@ -2502,8 +2502,8 @@ ScriptedImporter:
     - name: Giap vai phai
       guid: 5f23f80a3b484294b8d7d0cdfaebb52b
       position: {x: 171.28027, y: 552.438, z: 0}
-      rotation: {x: 0, y: 0, z: 0.78406787, w: -0.6206751}
-      length: 259.6986
+      rotation: {x: 0, y: 0, z: 0.7840679, w: -0.62067515}
+      length: 259.69867
       parentId: -1
       color:
         serializedVersion: 2
@@ -6987,16 +6987,16 @@ ScriptedImporter:
     - name: Giap vai phai
       guid: 5f23f80a3b484294b8d7d0cdfaebb52b
       position: {x: 345.96857, y: 267.44815, z: 0}
-      rotation: {x: 0, y: -0, z: 0.9930706, w: 0.11751917}
-      length: 259.69864
+      rotation: {x: 0, y: -0, z: 0.99307066, w: 0.11751917}
+      length: 259.69867
       parentId: 0
       color:
         serializedVersion: 2
         rgba: 4278255360
     - name: Tay Phai
       guid: cfca108e032579942b70bcf0c72ffdab
-      position: {x: 259.69873, y: -0.0000015677797, z: 0}
-      rotation: {x: 0, y: 0, z: 0.1580783, w: 0.98742664}
+      position: {x: 259.69864, y: -0.00001643788, z: 0}
+      rotation: {x: 0, y: 0, z: 0.15807828, w: 0.9874266}
       length: 272.63373
       parentId: 2
       color:
@@ -7006,15 +7006,15 @@ ScriptedImporter:
       guid: 62397cd2d11200b4484a2381c0689a13
       position: {x: 344.2059, y: -173.94464, z: 0}
       rotation: {x: 0, y: -0, z: -0.9966081, w: 0.08229518}
-      length: 274.01273
+      length: 274.0128
       parentId: 0
       color:
         serializedVersion: 2
         rgba: 4294901760
     - name: Tay trai
       guid: 4d570b02885a82b4a841ea87534bd0f0
-      position: {x: 274.01276, y: 0.00012049659, z: 0}
-      rotation: {x: 0, y: 0, z: -0.074317224, w: 0.99723464}
+      position: {x: 274.01282, y: 0.00011024452, z: 0}
+      rotation: {x: 0, y: 0, z: -0.074317224, w: 0.9972347}
       length: 226.4023
       parentId: 4
       color:
@@ -7185,7 +7185,7 @@ ScriptedImporter:
       order: 0
     dimension: {x: 0, y: 0}
     characterGroups: []
-    pivot: {x: 0.5, y: 0}
+    pivot: {x: 0.575, y: 0.6}
     boneReadOnly: 0
   platformSettings:
   - name: DefaultTexturePlatform
@@ -7214,8 +7214,8 @@ ScriptedImporter:
     androidETC2FallbackOverride: 0
   mosaicLayers: 1
   characterMode: 1
-  documentPivot: {x: 0.5, y: 0}
-  documentAlignment: 7
+  documentPivot: {x: 0.575, y: 0.6}
+  documentAlignment: 9
   importHiddenLayers: 0
   layerMappingOption: 2
   generatePhysicsShape: 0

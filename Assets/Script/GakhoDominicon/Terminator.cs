@@ -1,7 +1,7 @@
+using System.Collections; // THÊM MỚI: Thư viện bắt buộc để dùng IEnumerator
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 
-public class NhanVat1Controller : MonoBehaviour
+public class Terminator : MonoBehaviour
 {
     [Header("Chỉ số chiến đấu")]
     public float TamBan = 9f;
@@ -23,6 +23,10 @@ public class NhanVat1Controller : MonoBehaviour
     private Transform ThayDich;
     private float HoiChieu = 0f;
 
+    // --- ĐOẠN SỬA ĐỔI: THÊM BIẾN MỚI QUẢN LÝ TRẠNG THÁI NGỪNG BẮN ---
+    private bool dangTrongThoiGianNghi = false; // Biến kiểm tra xem nhân vật có đang trong 3 giây dừng bắn hay không
+    // -------------------------------------------------------------
+
     void Start()
     {
         if (vungBoxPhongThu != null)
@@ -38,49 +42,58 @@ public class NhanVat1Controller : MonoBehaviour
 
     void Update()
     {
-        // LUÔN LUÔN quét tìm kiếm kẻ địch liên tục trên bản đồ
         TimKiemKeDich();
-
-
-        // XỬ LÝ CHIẾN ĐẤU VÀ TỰ CĂN LÀN Y KHI THẤY ĐỊCH
 
         if (ThayDich != null)
         {
             float doLechYThucTe = Mathf.Abs(transform.position.y - ThayDich.position.y);
             float khoangCachX = Mathf.Abs(transform.position.x - ThayDich.position.x);
 
-            // Nếu kẻ địch lọt vào phạm vi kích hoạt (Tầm bắn + 2 ô)
             if (khoangCachX <= (TamBan + 2f))
             {
-                // NẾU BỊ LỆCH LÀN Y: Tự động trượt Y bám theo địch luôn (kể cả khi đang hành quân)
                 if (doLechYThucTe > DolechHangY)
                 {
                     DiChuyenTrungHangY();
-                    return; // Ngăn không cho chạy hàm hành quân phía dưới, tập trung bám làn đón đầu
+                    return;
                 }
 
-                // NẾU ĐÃ THẲNG LÀN Y & LỌT TẦM BẮN X: Đứng im tấn công!
                 if (khoangCachX <= TamBan)
                 {
                     Xoaymat(ThayDich.position.x);
 
-                    if (Time.time >= HoiChieu)
+                    // --- ĐOẠN SỬA ĐỔI: LOGIC BẮN LIÊN TỤC VÀ GỌI COROUTINE NGỪNG BẮN ---
+                    if (!dangTrongThoiGianNghi)
                     {
-                        TanCong();
-                        HoiChieu = Time.time + 1f / soDanBan;
-                    }
+                        if (Time.time >= HoiChieu)
+                        {
+                            TanCong();
+                            HoiChieu = Time.time + 1f / soDanBan;
 
-                    return; // Chặn đứng mọi di chuyển, đứng im xả đạn
+                            // Sau khi bắn xong một viên, kích hoạt chu kỳ kiểm tra ngừng bắn 3 giây
+                            StartCoroutine(ChuKyNguongBan());
+                        }
+                    }
+                    // -----------------------------------------------------------------
+
+                    return;
                 }
             }
         }
 
-        // NẾU KHÔNG CÓ ĐỊCH (HOẶC ĐỊCH Ở QUÁ XA) -> TIẾP TỤC RA BOX THỦ
         if (!daDenViTriThu)
         {
             HanhQuanVaoViTri();
         }
     }
+
+    // --- ĐOẠN SỬA ĐỔI: THÊM HÀM IEMUNERATOR XỬ LÝ NGỪNG BẮN 3 GIÂY ---
+    IEnumerator ChuKyNguongBan()
+    {
+        dangTrongThoiGianNghi = true; // Khóa không cho bắn tiếp
+        yield return new WaitForSeconds(3f); // Đợi đúng 3 giây
+        dangTrongThoiGianNghi = false; // Mở khóa để tiếp tục loạt bắn mới
+    }
+    // -----------------------------------------------------------------
 
     void HanhQuanVaoViTri()
     {
@@ -94,7 +107,6 @@ public class NhanVat1Controller : MonoBehaviour
         }
     }
 
-    // Đã chuyển thành public để đảm bảo Update gọi xuống dễ dàng và không trùng phạm vi
     public void DiChuyenTrungHangY()
     {
         if (ThayDich == null) return;
@@ -102,6 +114,7 @@ public class NhanVat1Controller : MonoBehaviour
         Vector3 viTriMucTieu = new Vector3(transform.position.x, ThayDich.position.y, transform.position.z);
         transform.position = Vector3.MoveTowards(transform.position, viTriMucTieu, tocDoDiChuyenY * Time.deltaTime);
     }
+
     Vector3 LayViTriNgauNhienTrongBox(BoxCollider2D box)
     {
         Bounds bounds = box.bounds;
@@ -123,7 +136,7 @@ public class NhanVat1Controller : MonoBehaviour
                 float khoangCach = Vector2.Distance(transform.position, dich.transform.position);
                 if (khoangCach < khoangCachNganNhat)
                 {
-                    khoangCachNganNhat = khoangCach ;
+                    khoangCachNganNhat = khoangCach;
                     dichGanNhat = dich;
                 }
             }

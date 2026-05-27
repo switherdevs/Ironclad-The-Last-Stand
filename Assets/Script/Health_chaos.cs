@@ -7,13 +7,13 @@ public class Health_chaos : MonoBehaviour
     public Slider ThanhMau;
 
     [Header("--- CHỈ SỐ MÁU ---")]
-    public int maxHP = 20;
+    private int maxHP = 20;
     private int currentHp;
 
     void Start()
     {
         currentHp = maxHP;
-
+        ThanhMau.gameObject.SetActive(false);
         if (ThanhMau != null)
         {
             ThanhMau.minValue = 0f;
@@ -49,5 +49,15 @@ public class Health_chaos : MonoBehaviour
         {
             TakeDamage(5);
         }
+         ThanhMau.gameObject.SetActive(true);
+    }
+    private void OnEnable()
+    {
+        ThanhMau.gameObject.SetActive(true);
+        currentHp = maxHP;
+    }
+    private void OnDisable()
+    {
+           ThanhMau.gameObject.SetActive(false);
     }
 }
