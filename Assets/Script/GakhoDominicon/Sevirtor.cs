@@ -29,6 +29,8 @@ public class Sevirtor : MonoBehaviour
 
     void Update()
     {
+        if (Tayperer.skibidi != null && Tayperer.skibidi.GameOver) return;
+
         switch (trangThaiHienTai)
         {
             case MinerState.DiToiBaiVang:

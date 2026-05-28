@@ -1,2 +1,17 @@
 fileFormatVersion: 2
 guid: 9fcf9c63a7e1f90468e34f6934ef5839
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - BanThuaGame: {instanceID: 0}
+  - Wingame: {instanceID: 0}
+  - scene1: {instanceID: 0}
+  - scene2: {instanceID: 0}
+  - Menu: {fileID: 102900000, guid: 180af2664c86620478b5cecfc7186c2f, type: 3}
+  - UpdateBase: {fileID: 102900000, guid: 0c5b9054125c1cf4681eb49e6839610a, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

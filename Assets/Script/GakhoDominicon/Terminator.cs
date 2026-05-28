@@ -44,6 +44,8 @@ public class Terminator : MonoBehaviour
 
     void Update()
     {
+        if (Tayperer.skibidi != null && Tayperer.skibidi.GameOver) return;
+
         TimKiemKeDich();
 
         if (ThayDich != null)

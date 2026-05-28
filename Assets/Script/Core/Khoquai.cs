@@ -17,6 +17,9 @@ public class SimpleObjectPool : MonoBehaviour
     // Hàm xuất hàng sang cho bên ChaosDirector gọi
     public GameObject LayQuaiRa(GameObject khuonQuai, Vector3 viTriGiaoHang)
     {
+        // BẢO HIỂM: Nếu bên ChaosDirector quên chưa kéo thả Prefab vào ô Inspector, dừng lại ngay để không lỗi game
+        if (khuonQuai == null) return null;
+
         string tenQuai = khuonQuai.name;
 
         // Nếu ngăn chứa loại quái này chưa tồn tại, tạo ngăn mới
@@ -28,7 +31,8 @@ public class SimpleObjectPool : MonoBehaviour
         // TÌM HÀNG CŨ: Kiểm tra xem có con quái nào đang ngủ đông không
         foreach (GameObject quai in khoChua[tenQuai])
         {
-            if (!quai.activeInHierarchy)
+            // Kiểm tra an toàn phòng trường hợp Object bị xóa ngoài ý muốn
+            if (quai != null && !quai.activeInHierarchy)
             {
                 quai.transform.position = viTriGiaoHang; // Đưa đến vị trí xuất hiện
                 quai.SetActive(true);                   // Đánh thức quái dậy
@@ -38,6 +42,10 @@ public class SimpleObjectPool : MonoBehaviour
 
         // ĐÚC HÀNG MỚI: Nếu người chơi diệt quái quá chậm làm kho hết sạch, tự đúc thêm
         GameObject quaiMoi = Instantiate(khuonQuai, viTriGiaoHang, Quaternion.identity);
+
+        // FIX LỖI CHÍ MẠNG: Ép tên quái mới đúc ra phải trùng khớp hoàn toàn với tên khuôn, xóa bỏ chữ "(Clone)"
+        quaiMoi.name = tenQuai;
+
         khoChua[tenQuai].Add(quaiMoi); // Cất vào kho để lần sau dùng tiếp
         return quaiMoi;
     }

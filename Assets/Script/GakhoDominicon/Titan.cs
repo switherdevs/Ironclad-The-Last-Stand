@@ -39,6 +39,8 @@ public class TitanPhe9 : MonoBehaviour
 
     void Update()
     {
+        if (Tayperer.skibidi != null && Tayperer.skibidi.GameOver) return;
+
         // 1. LUÔN LUÔN quét tìm quái liên tục trên bản đồ
         TimQuaiGanNhat();
 

@@ -37,6 +37,7 @@ public class NhanVat4 : MonoBehaviour
 
     void Update()
     {
+        if (Tayperer.skibidi != null && Tayperer.skibidi.GameOver) return;
         TimQuaiGanNhat();
 
         bool dangDungBan = false;

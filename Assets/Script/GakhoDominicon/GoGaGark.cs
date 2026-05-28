@@ -37,6 +37,8 @@ public class NhanVat1Controller : MonoBehaviour
 
     void Update()
     {
+        if (Tayperer.skibidi != null && Tayperer.skibidi.GameOver) return;
+
         // LUÔN LUÔN quét tìm kiếm kẻ địch liên tục trên bản đồ
         TimKiemKeDich();
 

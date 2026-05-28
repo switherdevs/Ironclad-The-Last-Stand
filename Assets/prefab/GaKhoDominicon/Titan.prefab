@@ -220,8 +220,8 @@ CircleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: -2.63}
-  m_Radius: 1.4257379
+  m_Offset: {x: 0, y: -2.3552978}
+  m_Radius: 1.7004402
 --- !u!50 &3154744150741562713
 Rigidbody2D:
   serializedVersion: 5
@@ -234,7 +234,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 50
   m_LinearDamping: 0
   m_AngularDamping: 0.05
   m_GravityScale: 0
@@ -261,7 +261,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b47c6bcf5d9b56840a6fdc7a89d98557, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TamBan: 200
+  TamBan: 150
   thoiGianHoiChieu: 3
   satThuong: 150
   DiemBan: {fileID: 6952550864982342412}
@@ -707,7 +707,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -7880768541145892991, guid: 2e91fbdbf922bcb4d84279518f8fad7f, type: 3}
       propertyPath: m_SortingOrder
-      value: 30
+      value: 55
       objectReference: {fileID: 0}
     - target: {fileID: -7552582706839291426, guid: 2e91fbdbf922bcb4d84279518f8fad7f, type: 3}
       propertyPath: m_LocalPosition.x
@@ -751,7 +751,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -6620500905086637709, guid: 2e91fbdbf922bcb4d84279518f8fad7f, type: 3}
       propertyPath: m_SortingOrder
-      value: 30
+      value: 55
       objectReference: {fileID: 0}
     - target: {fileID: -2438024877741028132, guid: 2e91fbdbf922bcb4d84279518f8fad7f, type: 3}
       propertyPath: m_LocalRotation.w
@@ -775,19 +775,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -245222285600756826, guid: 2e91fbdbf922bcb4d84279518f8fad7f, type: 3}
       propertyPath: m_SortingOrder
-      value: 30
+      value: 55
       objectReference: {fileID: 0}
     - target: {fileID: 766656807320949307, guid: 2e91fbdbf922bcb4d84279518f8fad7f, type: 3}
       propertyPath: m_SortingOrder
-      value: 30
+      value: 55
       objectReference: {fileID: 0}
     - target: {fileID: 1138275919657579070, guid: 2e91fbdbf922bcb4d84279518f8fad7f, type: 3}
       propertyPath: m_SortingOrder
-      value: 30
+      value: 55
       objectReference: {fileID: 0}
     - target: {fileID: 6100894345243170053, guid: 2e91fbdbf922bcb4d84279518f8fad7f, type: 3}
       propertyPath: m_SortingOrder
-      value: 30
+      value: 55
       objectReference: {fileID: 0}
     - target: {fileID: 7153602785122935239, guid: 2e91fbdbf922bcb4d84279518f8fad7f, type: 3}
       propertyPath: m_LocalRotation.w
@@ -811,7 +811,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8567469889307049261, guid: 2e91fbdbf922bcb4d84279518f8fad7f, type: 3}
       propertyPath: m_SortingOrder
-      value: 30
+      value: 55
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

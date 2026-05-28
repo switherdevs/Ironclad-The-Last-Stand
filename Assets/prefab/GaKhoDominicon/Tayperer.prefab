@@ -86,7 +86,7 @@ GameObject:
   - component: {fileID: 3865974651163827626}
   - component: {fileID: 8511642701959316636}
   m_Layer: 0
-  m_Name: Slider
+  m_Name: ThanhMau
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -499,8 +499,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4411513904514417362}
   - component: {fileID: 4378523023613845811}
-  - component: {fileID: 3231464319536587062}
   - component: {fileID: 343675940913593138}
+  - component: {fileID: 4617217117900085222}
   m_Layer: 0
   m_Name: Tayperer
   m_TagString: Phechinh
@@ -567,7 +567,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 50
+  m_SortingOrder: 150
   m_Sprite: {fileID: 9169661417730481863, guid: d2746e574cc8e854b8d10f77f6ba68d1, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -579,59 +579,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &3231464319536587062
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9039909186378433268}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7db70e0ea77f5ac47a8f4565a9406397, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_ShadowGroup: 0
-  m_Priority: 50
-  m_ComponentVersion: 5
-  m_HasRenderer: 1
-  m_UseRendererSilhouette: 1
-  m_CastsShadows: 1
-  m_SelfShadows: 0
-  m_AlphaCutoff: 0.1
-  m_ApplyToSortingLayers: 00000000
-  m_ShapePath:
-  - {x: -5.2250023, y: -4.165, z: 0}
-  - {x: -5.2250023, y: 4.165, z: 0}
-  - {x: 5.2250023, y: 4.165, z: 0}
-  - {x: 5.2250023, y: -4.165, z: 0}
-  m_ShapePathHash: 0
-  m_InstanceId: 0
-  m_ShadowShape2DComponent: {fileID: 4378523023613845811}
-  m_ShadowShape2DProvider:
-    rid: 757612422382747649
-  m_ShadowCastingSource: 2
-  m_ShadowMesh:
-    m_Mesh: {fileID: 0}
-    m_LocalBounds:
-      m_Center: {x: 0, y: 0, z: 0}
-      m_Extent: {x: 4.6249847, y: 3.5649872, z: 0}
-    m_EdgeProcessing: 1
-    m_TrimEdge: 0.6
-    m_FlipX: 0
-    m_FlipY: 0
-    m_InitialTrim: 0
-  m_CastingOption: 1
-  m_PreviousTrimEdge: 0.6
-  m_PreviousEdgeProcessing: 1
-  m_PreviousShadowCastingSource: 2
-  m_PreviousShadowShape2DSource: {fileID: 343675940913593138}
-  references:
-    version: 2
-    RefIds:
-    - rid: 757612422382747649
-      type: {class: ShadowShape2DProvider_SpriteRenderer, ns: UnityEngine.Rendering.Universal, asm: Unity.RenderPipelines.Universal.2D.Runtime}
-      data: 
 --- !u!61 &343675940913593138
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -670,7 +617,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 5.05, y: 4.03}
+    oldSize: {x: 10.520833, y: 8.395833}
     newSize: {x: 10.45, y: 8.33}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -678,3 +625,18 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 10.45, y: 8.33}
   m_EdgeRadius: 0
+--- !u!114 &4617217117900085222
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9039909186378433268}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c3060c1c8d34cc44a5c19c76bebbe05, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ThanhMau: {fileID: 0}
+  maxHP: 500
+  GameOver: 0

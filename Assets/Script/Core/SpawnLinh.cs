@@ -1,3 +1,4 @@
+using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.UI;
 public class SpawnLinh : MonoBehaviour
@@ -9,10 +10,19 @@ public class SpawnLinh : MonoBehaviour
     [Header("--- DANH SÁCH PREFABS LÍNH ---")]
     public GameObject SevitorPrefab;
     public GameObject khograkGuardPrefab;
+    public int KhoGrakGuand = 1;
     public GameObject ironStormMarinePrefab;
+    public int ironStormMarine = 2;
+
     public GameObject stormTerminatorPrefab;
+    public int stormTerminator = 5;
+
     public GameObject ironDreadWalkerPrefab;
+    public int ironDreadWalker = 10;
+
     public GameObject dominiconTitanPrefab;
+    public int dominiconTitan = 20;
+
     private float KhoangNghi;
     public bool speedup = false;
     public void Sevitor()
@@ -22,27 +32,42 @@ public class SpawnLinh : MonoBehaviour
 
     public void SpawnKhograkGuard()
     {
-        SpawnUnit(khograkGuardPrefab);
+        if (ResourceManager.Instance.KiemTraVaThemLinh(1))
+        {
+            SpawnUnit(khograkGuardPrefab);
+        }
     }
 
     public void SpawnIronStormMarine()
     {
-        SpawnUnit(ironStormMarinePrefab);
+        if (ResourceManager.Instance.KiemTraVaThemLinh(2))
+        {
+            SpawnUnit(ironStormMarinePrefab);
+        }
     }
 
     public void SpawnStormTerminator()
     {
-        SpawnUnit(stormTerminatorPrefab);
+        if (ResourceManager.Instance.KiemTraVaThemLinh(5))
+        {
+            SpawnUnit(stormTerminatorPrefab);
+        }
     }
 
     public void SpawnIronDreadWalker()
     {
-        SpawnUnit(ironDreadWalkerPrefab);
+        if (ResourceManager.Instance.KiemTraVaThemLinh(10))
+        {
+            SpawnUnit(ironDreadWalkerPrefab);
+        }
     }
 
     public void SpawnDominiconTitan()
     {
-        SpawnUnit(dominiconTitanPrefab);
+        if (ResourceManager.Instance.KiemTraVaThemLinh(20))
+        {
+            SpawnUnit(dominiconTitanPrefab);
+        }
     }
     public void Timeskip()
     {

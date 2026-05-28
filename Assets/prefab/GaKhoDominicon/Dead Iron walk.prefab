@@ -559,7 +559,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89dfff067c0f4e44aa578c0f9717c261, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TamBan: 200
+  TamBan: 100
   satThuong: 100
   tocDoBan: 0.4
   DiemBan: {fileID: 5341903135309534571}
@@ -567,7 +567,7 @@ MonoBehaviour:
   tocDoDiChuyenY: 5
   doLechHangY: 0.3
   vungBoxPhongThu: {fileID: 7942286887352987862, guid: 43e938c73a2cad44e9d19025d21e3afb, type: 3}
-  tocDoHanhQuan: 5
+  tocDoHanhQuan: 10
 --- !u!114 &15355587893971238
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -703,7 +703,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8923431087333719870, guid: f4b69430b401ffa4d855dd16e3749f24, type: 3}
       propertyPath: m_SortingOrder
-      value: 25
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: -8653719598885068355, guid: f4b69430b401ffa4d855dd16e3749f24, type: 3}
       propertyPath: m_Name
@@ -711,7 +711,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -7880768541145892991, guid: f4b69430b401ffa4d855dd16e3749f24, type: 3}
       propertyPath: m_SortingOrder
-      value: 25
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: -7552582706839291426, guid: f4b69430b401ffa4d855dd16e3749f24, type: 3}
       propertyPath: m_LocalPosition.x
@@ -755,27 +755,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -6620500905086637709, guid: f4b69430b401ffa4d855dd16e3749f24, type: 3}
       propertyPath: m_SortingOrder
-      value: 25
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: -4435077447666358097, guid: f4b69430b401ffa4d855dd16e3749f24, type: 3}
       propertyPath: m_SortingOrder
-      value: 25
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: -525814877089707364, guid: f4b69430b401ffa4d855dd16e3749f24, type: 3}
       propertyPath: m_SortingOrder
-      value: 25
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: -245222285600756826, guid: f4b69430b401ffa4d855dd16e3749f24, type: 3}
       propertyPath: m_SortingOrder
-      value: 25
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 2285546339139895257, guid: f4b69430b401ffa4d855dd16e3749f24, type: 3}
       propertyPath: m_SortingOrder
-      value: 25
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 8567469889307049261, guid: f4b69430b401ffa4d855dd16e3749f24, type: 3}
       propertyPath: m_SortingOrder
-      value: 21
+      value: 60
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

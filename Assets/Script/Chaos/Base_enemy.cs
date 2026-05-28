@@ -52,6 +52,8 @@ public abstract class BaseEnemy : MonoBehaviour
 
     protected virtual void FixedUpdate()
     {
+        if (Tayperer.skibidi != null && Tayperer.skibidi.GameOver) return;
+
         if (rb == null) return;
         if (rb.IsSleeping()) rb.WakeUp();
 

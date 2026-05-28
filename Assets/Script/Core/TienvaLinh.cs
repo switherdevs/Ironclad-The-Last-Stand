@@ -51,8 +51,7 @@ public class ResourceManager : MonoBehaviour
         TangTien(500); // Gọi hàm gốc ở trên và truyền tham số 500 vào
     }
 
-    // --- ĐOẠN SỬA ĐỔI: CẬP NHẬT LOGIC CHIẾM SLOT LÍNH LINH HOẠT ---
-    // Hàm nhận vào 'soSlotChiem' để kiểm tra xem quỹ quân số còn đủ chỗ chứa hay không
+    // HÀM XỬ LÝ THÊM LÍNH (Có kiểm tra chốt chặn tối đa 100 con)
     public bool KiemTraVaThemLinh(int soSlotChiem)
     {
         // Kiểm tra xem số lượng lính hiện tại cộng thêm số slot dự kiến có vượt quá giới hạn tối đa không
@@ -67,7 +66,23 @@ public class ResourceManager : MonoBehaviour
         CapNhatGiaoDienUI(); // Cập nhật lại UI hiển thị số lính mới
         return true; // Trả về true báo hiệu chiếm slot thành công, cho phép sinh lính
     }
-    // -------------------------------------------------------------
+
+    // --- ĐOẠN SỬA ĐỔI: THÊM HÀM TRỪ SLOT LÍNH KHI BỊ CHẾT HOẶC BỊ HỦY ---
+    public void TruLinh(int soSlotGiaiPhong)
+    {
+        // Thực hiện trừ số slot của con lính vừa chết khỏi tổng số quân đang có
+        soLinhHienTai -= soSlotGiaiPhong;
+
+        // CHỐT CHẶN AN TOÀN: Đảm bảo số lính không bao giờ bị âm dưới 0 do lỗi logic hệ thống
+        if (soLinhHienTai < 0)
+        {
+            soLinhHienTai = 0;
+        }
+
+        // Vẽ lại con số lính mới (đã giảm) lên màn hình giao diện công khai
+        CapNhatGiaoDienUI();
+    }
+    // -----------------------------------------------------------------
 
     // HÀM VẼ CHỮ LÊN MÀN HÌNH UI
     void CapNhatGiaoDienUI()
