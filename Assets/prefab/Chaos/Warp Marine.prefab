@@ -313,7 +313,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2085984874699181383}
   - component: {fileID: 96768019338506328}
-  - component: {fileID: 3563161222827582812}
   - component: {fileID: 5417115757761681369}
   - component: {fileID: 502423405432053162}
   - component: {fileID: 1791983155422518380}
@@ -378,42 +377,6 @@ CapsuleCollider2D:
   m_Offset: {x: 0.47094107, y: -0.9003267}
   m_Size: {x: 4.3805323, y: 10.288202}
   m_Direction: 0
---- !u!58 &3563161222827582812
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7092217994205969470}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_CompositeOperation: 0
-  m_CompositeOrder: 0
-  m_Offset: {x: 0.35850334, y: -4.157134}
-  m_Radius: 2.0222273
 --- !u!50 &5417115757761681369
 Rigidbody2D:
   serializedVersion: 5
@@ -453,10 +416,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6be72b3dac8d7614ea9bedd0a012bec4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 10
-  keepDistance: 110
+  moveSpeed: 12
+  keepDistance: 80
   leftMoveBias: 0.6
-  detectionRange: 120
+  detectionRange: 140
   normalHP: 20
   attackCooldown: 3
   projectileSpeed: 30
