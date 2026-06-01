@@ -47,7 +47,6 @@ public class DanNV1 : MonoBehaviour
         if (collision.CompareTag("Enemy"))
         {
             // Xử lý trừ máu quái tại đây (nếu có script máu)
-            Debug.Log("Trúng quái!");
             // Lập tức ẩn đạn đi để trả về kho Pooling
             daKichHoat = false;
             gameObject.SetActive(false);

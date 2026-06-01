@@ -419,10 +419,10 @@ MonoBehaviour:
   moveSpeed: 12
   keepDistance: 80
   leftMoveBias: 0.6
-  detectionRange: 140
+  detectionRange: 70
   normalHP: 20
   attackCooldown: 3
-  projectileSpeed: 30
+  projectileSpeed: 60
   projectilePrefab: {fileID: 710202931114451720, guid: fb46f870ab232224191e1512b0eef5d8, type: 3}
   holdingObjectPrefab: {fileID: 3653568467420814684, guid: b2874e43e3e08414291e7843f0695596, type: 3}
   holdingDuration: 5
@@ -442,6 +442,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 663006a77a609c14290fa11de93ce105, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bangSatThuongChung: {fileID: 11400000, guid: a60a65e6a8b057b4ea1e9fc841c3d9bc, type: 2}
   ThanhMau: {fileID: 1909337572577105867}
   maxHP: 200
 --- !u!1 &7138155975003915824

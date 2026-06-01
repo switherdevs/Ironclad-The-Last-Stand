@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4310921927303486817}
   - component: {fileID: 7540208863090039019}
+  - component: {fileID: 5536638549704057976}
   m_Layer: 0
   m_Name: Atack
   m_TagString: SatthuongQ
@@ -69,6 +70,19 @@ CapsuleCollider2D:
   m_Offset: {x: 0.008485535, y: 1.3619374}
   m_Size: {x: 0.7031908, y: 3.7238662}
   m_Direction: 0
+--- !u!114 &5536638549704057976
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 324100953337365044}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 658f3af7cdeca5e4b980a27a7a957238, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tenChungLinhBan: Chaos zelos
 --- !u!1 &1090770781468689765
 GameObject:
   m_ObjectHideFlags: 0
@@ -596,10 +610,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a9e119a6e3b2a743bb883771eb9b8b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 30
-  keepDistance: 50
+  moveSpeed: 20
+  keepDistance: 80
   leftMoveBias: 0.6
-  detectionRange: 20
+  detectionRange: 30
   normalHP: 20
   attackCooldown: 1
   projectileSpeed: 10
@@ -618,6 +632,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 663006a77a609c14290fa11de93ce105, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bangSatThuongChung: {fileID: 11400000, guid: a60a65e6a8b057b4ea1e9fc841c3d9bc, type: 2}
   ThanhMau: {fileID: 2047682210373452778}
   maxHP: 20
 --- !u!1 &7764528672058418167

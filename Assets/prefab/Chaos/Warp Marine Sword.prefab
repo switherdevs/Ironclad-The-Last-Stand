@@ -187,6 +187,7 @@ GameObject:
   m_Component:
   - component: {fileID: 81702635925440208}
   - component: {fileID: 1449722843749442327}
+  - component: {fileID: 96346261905997419}
   m_Layer: 0
   m_Name: Atack
   m_TagString: SatthuongQ
@@ -246,6 +247,19 @@ CapsuleCollider2D:
   m_Offset: {x: 0.06444422, y: -0.029575208}
   m_Size: {x: 0.28535903, y: 1.281921}
   m_Direction: 0
+--- !u!114 &96346261905997419
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6893478604481139868}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 658f3af7cdeca5e4b980a27a7a957238, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tenChungLinhBan: Warp Marine Sword
 --- !u!1 &7050541644956764282
 GameObject:
   m_ObjectHideFlags: 0
@@ -636,13 +650,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 25
-  keepDistance: 50
+  keepDistance: 80
   leftMoveBias: 0.6
-  detectionRange: 30
+  detectionRange: 50
   normalHP: 20
   attackCooldown: 2
   projectileSpeed: 10
-  projectilePrefab: {fileID: 710202931114451720, guid: fb46f870ab232224191e1512b0eef5d8, type: 3}
+  projectilePrefab: {fileID: 0}
   attackHitboxObject: {fileID: 6893478604481139868}
   hitboxActiveDuration: 0.2
 --- !u!114 &5521621866240864658
@@ -657,6 +671,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 663006a77a609c14290fa11de93ce105, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bangSatThuongChung: {fileID: 11400000, guid: a60a65e6a8b057b4ea1e9fc841c3d9bc, type: 2}
   ThanhMau: {fileID: 1902231558862897719}
   maxHP: 250
 --- !u!1 &9170739919545821047
@@ -777,7 +792,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -6455650543256838446, guid: 08b2e5224b7d40f49b7be99061516009, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.526411
+      value: 0.5171328
       objectReference: {fileID: 0}
     - target: {fileID: -6455650543256838446, guid: 08b2e5224b7d40f49b7be99061516009, type: 3}
       propertyPath: m_LocalRotation.x
@@ -789,11 +804,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -6455650543256838446, guid: 08b2e5224b7d40f49b7be99061516009, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.8502303
+      value: -0.85590523
       objectReference: {fileID: 0}
     - target: {fileID: -6455650543256838446, guid: 08b2e5224b7d40f49b7be99061516009, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: -116.473
+      value: -117.72
       objectReference: {fileID: 0}
     - target: {fileID: -6155836138034507394, guid: 08b2e5224b7d40f49b7be99061516009, type: 3}
       propertyPath: m_SortingOrder

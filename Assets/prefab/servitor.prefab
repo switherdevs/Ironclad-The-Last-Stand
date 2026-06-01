@@ -78,7 +78,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 10
+  m_SortingOrder: 80
   m_Sprite: {fileID: -7350924463968529948, guid: b484e81fe93de0e42a8d421b648c189e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -169,6 +169,6 @@ MonoBehaviour:
   trangThaiHienTai: 0
   DiemBaiVang: {fileID: 8182526867054258276, guid: 988ca65c3c5130e40a1a25ce434cc1ca, type: 3}
   DiemNhaChinh: {fileID: 4433333938362103560, guid: 77e38137f71460547a74aea953cc9856, type: 3}
-  tocDoDiChuyen: 4
+  tocDoDiChuyen: 6
   thoiGianDaoVang: 5
   luongVangMangTheo: 50

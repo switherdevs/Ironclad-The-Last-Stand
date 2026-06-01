@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 0a512c509bb8db347b4ff3e30a997fb5
+guid: b0b7e33eed76c1346b4adf236a11004c
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -554143905804696134
-    second: Update_0
+      213: -5909984572565836660
+    second: phechinh_slider_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Update_0
+      name: phechinh_slider_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 1584
-        height: 672
+        x: 146
+        y: 98
+        width: 1212
+        height: 205
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: ab5401cbd094f48f0800000000000000
-      internalID: -554143905804696134
+      spriteID: c8cac2cf7548bfda0800000000000000
+      internalID: -5909984572565836660
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Update_0: -554143905804696134
+      phechinh_slider_0: -5909984572565836660
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

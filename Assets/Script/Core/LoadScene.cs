@@ -33,6 +33,8 @@ public class LoadScene : MonoBehaviour
     public void VeMenu()
     {
         SceneManager.LoadScene(Menu.name);
+        Time.timeScale = 1;
+
     }
     private void FixedUpdate()
     {

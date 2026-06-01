@@ -10,13 +10,20 @@ public class ResourceManager : MonoBehaviour
     public TextMeshProUGUI textHienThiTien;   // Ô kéo chữ hiển thị Tiền (Ví dụ: "Vàng: 500")
     public TextMeshProUGUI textHienThiLinh;  // Ô kéo chữ hiển thị Lính (Ví dụ: "Lính: 10/100")
 
+    // BỔ SUNG: Tham chiếu UI cho Servitor
+    public TextMeshProUGUI textHienThiServitor;
+
     [Header("--- CẤU HÌNH TÀI NGUYÊN GAME ---")]
-    public int soTienHienTai = 0;
+    [SerializeField]
+    public int soTienHienTai = 50;
     public int soTienToiDa = 9999;
 
     public int soLinhHienTai = 0;
-
     public int soLinhToiDa = 100;
+
+    // BỔ SUNG: Biến đếm và cấu hình Servitor
+    public int soSevitorHienTai = 0;
+    public int soSevitorToiDa = 6; // Có thể tùy chỉnh trong Inspector
 
     void Awake()
     {
@@ -28,6 +35,7 @@ public class ResourceManager : MonoBehaviour
     void Start()
     {
         // Vừa vào game, lập tức vẽ số tiền và số lính ban đầu lên màn hình
+        soSevitorHienTai = 2;
         CapNhatGiaoDienUI();
     }
 
@@ -45,44 +53,72 @@ public class ResourceManager : MonoBehaviour
         CapNhatGiaoDienUI(); // Vẽ lại con số mới lên màn hình
     }
 
+    public bool KiemTraVaTruTien(int soTienCanTra)
+    {
+        if (soTienHienTai >= soTienCanTra)
+        {
+            soTienHienTai -= soTienCanTra;
+            CapNhatGiaoDienUI();
+            return true; // Đủ tiền, cho phép mua
+        }
+        else
+        {
+            Debug.Log("KHÔNG ĐỦ VÀNG!");
+            return false; // Không đủ tiền
+        }
+    }
+
     public void NutBamCongTienTestGame()
     {
         Debug.Log("Nút Test Game được nhấn! Thực hiện cộng 500 vàng.");
         TangTien(500); // Gọi hàm gốc ở trên và truyền tham số 500 vào
     }
 
-    // HÀM XỬ LÝ THÊM LÍNH (Có kiểm tra chốt chặn tối đa 100 con)
-    public bool KiemTraVaThemLinh(int soSlotChiem)
+    // HÀM XỬ LÝ THÊM LÍNH
+    public bool KiemTraVaThemLinh(int soSlotChiem, bool isSevitor = false)
     {
-        // Kiểm tra xem số lượng lính hiện tại cộng thêm số slot dự kiến có vượt quá giới hạn tối đa không
+        // KIỂM TRA ĐIỀU KIỆN RIÊNG CHO SERVITOR
+        if (isSevitor)
+        {
+            if (soSevitorHienTai >= soSevitorToiDa)
+            {
+                Debug.LogWarning("ĐẠT GIỚI HẠN SERVITOR!");
+                return false;
+            }
+        }
+
+        // KIỂM TRA ĐIỀU KIỆN TỔNG SLOT
         if (soLinhHienTai + soSlotChiem > soLinhToiDa)
         {
             Debug.LogWarning($"KHÔNG ĐỦ SLOT TRỐNG! Cần thêm {soSlotChiem} slot nhưng hiện tại chỉ còn trống {soLinhToiDa - soLinhHienTai} slot.");
-            return false; // Trả về false để Script sinh lính biết mà hủy lệnh sinh
+            return false;
         }
 
-        // Nếu đủ chỗ trống, tiến hành cộng số slot chiếm dụng vào tổng số lính hiện tại
+        // THỰC THI CỘNG DỒN
+        if (isSevitor) soSevitorHienTai++;
         soLinhHienTai += soSlotChiem;
-        CapNhatGiaoDienUI(); // Cập nhật lại UI hiển thị số lính mới
-        return true; // Trả về true báo hiệu chiếm slot thành công, cho phép sinh lính
+        CapNhatGiaoDienUI();
+        return true;
     }
 
-    // --- ĐOẠN SỬA ĐỔI: THÊM HÀM TRỪ SLOT LÍNH KHI BỊ CHẾT HOẶC BỊ HỦY ---
-    public void TruLinh(int soSlotGiaiPhong)
+    public void TruLinh(int soSlotGiaiPhong, bool isSevitor = false)
     {
-        // Thực hiện trừ số slot của con lính vừa chết khỏi tổng số quân đang có
         soLinhHienTai -= soSlotGiaiPhong;
 
-        // CHỐT CHẶN AN TOÀN: Đảm bảo số lính không bao giờ bị âm dưới 0 do lỗi logic hệ thống
+        // GIẢM BIẾN ĐẾM SERVITOR NẾU ĐƠN VỊ BỊ HỦY LÀ SERVITOR
+        if (isSevitor && soSevitorHienTai > 0)
+        {
+            soSevitorHienTai--;
+        }
+
+        // CHỐT CHẶN AN TOÀN
         if (soLinhHienTai < 0)
         {
             soLinhHienTai = 0;
         }
 
-        // Vẽ lại con số lính mới (đã giảm) lên màn hình giao diện công khai
         CapNhatGiaoDienUI();
     }
-    // -----------------------------------------------------------------
 
     // HÀM VẼ CHỮ LÊN MÀN HÌNH UI
     void CapNhatGiaoDienUI()
@@ -95,6 +131,12 @@ public class ResourceManager : MonoBehaviour
         if (textHienThiLinh != null)
         {
             textHienThiLinh.text = "LÍNH: " + soLinhHienTai + " / " + soLinhToiDa;
+        }
+
+        // BỔ SUNG: Hiển thị Servitor lên UI
+        if (textHienThiServitor != null)
+        {
+            textHienThiServitor.text = "SERVITOR: " + soSevitorHienTai + " / " + soSevitorToiDa;
         }
     }
 }

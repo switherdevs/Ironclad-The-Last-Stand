@@ -24,14 +24,12 @@ public class TitanPhe9 : MonoBehaviour
 
     void Start()
     {
-        // Nếu bạn gán vùng Box, Titan sẽ tự tìm 1 điểm ngẫu nhiên trong vùng đó để đi ra
         if (vungBoxPhongThu != null)
         {
             viTriCoDinh = LayViTriNgauNhienTrongBox(vungBoxPhongThu);
         }
         else
         {
-            // Nếu quên gán Box, đứng im tại chỗ cũ
             viTriCoDinh = transform.position;
             daDenViTriThu = true;
         }
@@ -39,10 +37,14 @@ public class TitanPhe9 : MonoBehaviour
 
     void Update()
     {
-        if (Tayperer.skibidi != null && Tayperer.skibidi.GameOver) return;
+        // 1. KIỂM TRA VÀ QUÉT TÌM QUÁI ĐI ĐẦU HÀNG CHỐNG DỒN ĐAM
+        if (mucTieuQuai == null || !mucTieuQuai.gameObject.activeInHierarchy)
+        {
+            mucTieuQuai = null;
+            TimMucTieuThongMinh();
+        }
 
-        // 1. LUÔN LUÔN quét tìm quái liên tục trên bản đồ
-        TimQuaiGanNhat();
+        bool dangDungBan = false;
 
         // BƯỚC 1: XỬ LÝ CHIẾN ĐẤU VÀ TỰ CĂN LÀN Y KHI THẤY QUÁI
         if (mucTieuQuai != null)
@@ -50,34 +52,34 @@ public class TitanPhe9 : MonoBehaviour
             float doLechYThucTe = Mathf.Abs(transform.position.y - mucTieuQuai.position.y);
             float khoangCachXThucTe = Mathf.Abs(transform.position.x - mucTieuQuai.position.x);
 
-            // Nếu quái lọt vào phạm vi kích hoạt (Tầm bắn + 2 ô)
             if (khoangCachXThucTe <= (TamBan + 2f))
             {
-                // NẾU BỊ LỆCH LÀN Y: Tự động trượt Y bám theo quái luôn (kể cả khi đang hành quân)
+                dangDungBan = true;
+
+                // NẾU BỊ LỆCH LÀN Y: Tự động trượt Y bám theo quái luôn
                 if (doLechYThucTe > doLechHangY)
                 {
                     DiChuyenTrungHangY();
-                    return; // Ngăn không cho chạy hàm hành quân phía dưới, tập trung bám làn quái
+                    return;
                 }
 
-                // NẾU ĐÃ THẲNG LÀN Y & LỌT TẦM BẮN X: Đứng im xả đạn Plasma!
-                if (khoangCachXThucTe <= TamBan)
+                // NẾU ĐÃ THẲNG LÀN Y & LỌT TẦM BẮN X: Đứng im xả đạn!
+                if (doLechYThucTe <= doLechHangY && khoangCachXThucTe <= TamBan)
                 {
-                    XoayMat(mucTieuQuai.position.x);
+                    XoayMat(mucTieuQuai.position.x); // Đã sửa từ XoMat thành XoayMat chuẩn xác
 
-                    // Kiểm tra hồi chiêu bắn đạn
                     if (Time.time >= thoiGianBanTiepTheo)
                     {
                         TitanBanDanPooling();
                         thoiGianBanTiepTheo = Time.time + thoiGianHoiChieu;
                     }
 
-                    return; // Chặn đứng mọi di chuyển, đứng im bắn quái
+                    return;
                 }
             }
         }
-        // BƯỚC 2: NẾU KHÔNG CÓ QUÁI (HOẶC QUÁI Ở QUÁ XA) -> ĐI RA BOX THỦ
-        if (!daDenViTriThu)
+        // BƯỚC 2: NẾU KHÔNG CÓ QUÁI -> ĐI RA BOX THỦ
+        if (!daDenViTriThu && !dangDungBan)
         {
             HanhQuanVaoViTri();
         }
@@ -88,10 +90,10 @@ public class TitanPhe9 : MonoBehaviour
         XoayMat(viTriCoDinh.x);
         transform.position = Vector3.MoveTowards(transform.position, viTriCoDinh, tocDoHanhQuan * Time.deltaTime);
 
-        if (Vector3.Distance(transform.position, viTriCoDinh) < 0.05f)
+        if (Vector3.Distance(transform.position, viTriCoDinh) < 0.2f)
         {
             transform.position = viTriCoDinh;
-            daDenViTriThu = true; // Đến nơi an toàn, chuyển sang trạng thái thủ chốt!
+            daDenViTriThu = true;
         }
     }
 
@@ -99,7 +101,6 @@ public class TitanPhe9 : MonoBehaviour
     {
         if (mucTieuQuai == null) return;
 
-        // Giữ nguyên tọa độ X cố định trong Box, chỉ thay đổi vị trí Y bám theo quái
         Vector3 viTriMucTieu = new Vector3(transform.position.x, mucTieuQuai.position.y, transform.position.z);
         transform.position = Vector3.MoveTowards(transform.position, viTriMucTieu, tocDoDiChuyenY * Time.deltaTime);
     }
@@ -112,27 +113,60 @@ public class TitanPhe9 : MonoBehaviour
         return new Vector3(xNgauNhien, yNgauNhien, transform.position.z);
     }
 
-    void TimQuaiGanNhat()
+    void TimMucTieuThongMinh()
     {
         GameObject[] mangQuai = GameObject.FindGameObjectsWithTag("Enemy");
-        float khoangCachNganNhat = Mathf.Infinity;
-        GameObject quaiGanNhat = null;
+        float xLonNhat = -Mathf.Infinity;
+        GameObject quaiUuTien = null;
+        GameObject quaiDuPhong = null;
+        float xDuPhongLonNhat = -Mathf.Infinity;
 
         foreach (GameObject quai in mangQuai)
         {
             if (quai.activeInHierarchy)
             {
-                float kc = Vector2.Distance(transform.position, quai.transform.position);
-                if (kc < khoangCachNganNhat)
+                float viTriX = quai.transform.position.x;
+
+                KhoaMucTieu marker = quai.GetComponent<KhoaMucTieu>();
+                if (marker == null) marker = quai.AddComponent<KhoaMucTieu>();
+
+                if (!marker.daBiKhoaMucTieu)
                 {
-                    khoangCachNganNhat = kc;
-                    quaiGanNhat = quai;
+                    if (viTriX > xLonNhat)
+                    {
+                        xLonNhat = viTriX;
+                        quaiUuTien = quai;
+                    }
+                }
+                else
+                {
+                    if (viTriX > xDuPhongLonNhat)
+                    {
+                        xDuPhongLonNhat = viTriX;
+                        quaiDuPhong = quai;
+                    }
                 }
             }
         }
+        XacDinhVaKhoaMucTieu(quaiUuTien, quaiDuPhong);
+    }
 
-        if (quaiGanNhat != null) mucTieuQuai = quaiGanNhat.transform;
-        else mucTieuQuai = null;
+    void XacDinhVaKhoaMucTieu(GameObject quaiUuTien, GameObject quaiDuPhong)
+    {
+        if (quaiUuTien != null)
+        {
+            mucTieuQuai = quaiUuTien.transform;
+            KhoaMucTieu marker = quaiUuTien.GetComponent<KhoaMucTieu>();
+            if (marker != null) marker.daBiKhoaMucTieu = true;
+        }
+        else if (quaiDuPhong != null)
+        {
+            mucTieuQuai = quaiDuPhong.transform;
+        }
+        else
+        {
+            mucTieuQuai = null;
+        }
     }
 
     void XoayMat(float xMucTieu)
@@ -155,6 +189,7 @@ public class TitanPhe9 : MonoBehaviour
         {
             vienDan.transform.position = DiemBan.position;
             vienDan.transform.rotation = rotation;
+            vienDan.transform.SetParent(null);
             vienDan.SetActive(true);
 
             Dannv2 scriptDan = vienDan.GetComponent<Dannv2>();
@@ -163,6 +198,15 @@ public class TitanPhe9 : MonoBehaviour
                 scriptDan.satThuong = satThuong;
                 scriptDan.KichHoatVienDan();
             }
+        }
+    }
+
+    private void OnDisable()
+    {
+        if (mucTieuQuai != null)
+        {
+            KhoaMucTieu marker = mucTieuQuai.GetComponent<KhoaMucTieu>();
+            if (marker != null) marker.daBiKhoaMucTieu = false;
         }
     }
 

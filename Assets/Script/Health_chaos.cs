@@ -3,6 +3,9 @@ using UnityEngine.UI;
 
 public class Health_chaos : MonoBehaviour
 {
+    [Header("--- KẾT NỐI SCRIPTABLE OBJECT DUY NHẤT ---")]
+    public HeThongSatThuongData bangSatThuongChung; // Kéo file ScriptableObject duy nhất vào đây
+
     [Header("--- KẾT NỐI UI THANH MÁU ---")]
     public Slider ThanhMau;
 
@@ -24,7 +27,6 @@ public class Health_chaos : MonoBehaviour
         }
     }
 
-
     public void TakeDamage(int damage)
     {
         currentHp -= damage;
@@ -40,27 +42,44 @@ public class Health_chaos : MonoBehaviour
             Die();
         }
     }
-    
+
     void Die()
     {
         gameObject.SetActive(false);
     }
 
+    // LUỒNG TỰ ĐỘNG CHỌN LỌC SÁT THƯƠNG
     public void OnTriggerEnter2D(Collider2D collision)
     {
-         if(collision.CompareTag("SatthuongI"))
+        // Kiểm tra đúng Tag phe địch
+        if (collision.CompareTag("SatthuongI"))
         {
-            TakeDamage(5);
-            ThanhMau.gameObject.SetActive(true);
+            DamageSource nguonDan = collision.GetComponent<DamageSource>();
 
+            if (nguonDan != null && bangSatThuongChung != null)
+            {
+                // 1. Đạn báo tên chủng lính bắn ra nó (Ví dụ: "Titan")
+                string chungLoaiDan = nguonDan.tenChungLinhBan;
+
+                // 2. ScriptableObject tự động chọn lọc và trả về đúng số dam tương ứng
+                int damSauCung = bangSatThuongChung.LaySatThuongTuChung(chungLoaiDan);
+
+                Debug.Log($"🎯 Trúng đạn từ chủng: {chungLoaiDan} | Tự động lọc ra Đam: {damSauCung}");
+
+                // 3. Trừ máu
+                TakeDamage(damSauCung);
+            }
+
+            ThanhMau.gameObject.SetActive(true);
         }
     }
+
     private void OnEnable()
     {
         currentHp = maxHP;
     }
     private void OnDisable()
     {
-           ThanhMau.gameObject.SetActive(false);
+        ThanhMau.gameObject.SetActive(false);
     }
 }

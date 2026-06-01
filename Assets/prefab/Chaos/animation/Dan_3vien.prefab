@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 2657664663101956236}
   - component: {fileID: 2348894176732805615}
   - component: {fileID: 2355767427335098852}
+  - component: {fileID: -1864757412168303801}
   m_Layer: 0
   m_Name: Dan_3vien
   m_TagString: SatthuongQ
@@ -176,3 +177,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lifeTime: 7
+--- !u!114 &-1864757412168303801
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1115379077512075570}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 658f3af7cdeca5e4b980a27a7a957238, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  owner: {fileID: 0}

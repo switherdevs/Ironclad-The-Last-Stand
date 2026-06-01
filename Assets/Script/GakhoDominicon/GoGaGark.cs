@@ -19,11 +19,13 @@ public class NhanVat1Controller : MonoBehaviour
 
     private Vector3 viTriCoDinh;
     private bool daDenViTriThu = false;
-    private Transform ThayDich;
+    private Transform ThayDich; // Đây chính là mucTieuQuai của Nhân vật 1
     private float HoiChieu = 0f;
 
+    private Animator Khogark_animatior;
     void Start()
     {
+        Khogark_animatior = GetComponentInChildren<Animator>();
         if (vungBoxPhongThu != null)
         {
             viTriCoDinh = LayViTriNgauNhienTrongBox(vungBoxPhongThu);
@@ -37,47 +39,49 @@ public class NhanVat1Controller : MonoBehaviour
 
     void Update()
     {
-        if (Tayperer.skibidi != null && Tayperer.skibidi.GameOver) return;
+        // 1. KIỂM TRA VÀ QUÉT TÌM KIẾM ĐỊCH THÔNG MINH CHỐNG DỒN ĐAM
+        if (ThayDich == null || !ThayDich.gameObject.activeInHierarchy)
+        {
+            ThayDich = null; // Reset nếu quái cũ đã chết hoặc bị ẩn
+            TimMucTieuThongMinh();
+        }
 
-        // LUÔN LUÔN quét tìm kiếm kẻ địch liên tục trên bản đồ
-        TimKiemKeDich();
+        bool dangDungBan = false;
 
-
-        // XỬ LÝ CHIẾN ĐẤU VÀ TỰ CĂN LÀN Y KHI THẤY ĐỊCH
-
+        // 2. XỬ LÝ CHIẾN ĐẤU VÀ TỰ CĂN LÀN Y KHI THẤY ĐỊCH
         if (ThayDich != null)
         {
             float doLechYThucTe = Mathf.Abs(transform.position.y - ThayDich.position.y);
             float khoangCachX = Mathf.Abs(transform.position.x - ThayDich.position.x);
 
-            // Nếu kẻ địch lọt vào phạm vi kích hoạt (Tầm bắn + 2 ô)
+            // Kẻ địch lọt vào phạm vi kích hoạt bám đuổi (Tầm bắn + 2 ô)
             if (khoangCachX <= (TamBan + 2f))
             {
-                // NẾU BỊ LỆCH LÀN Y: Tự động trượt Y bám theo địch luôn (kể cả khi đang hành quân)
+                dangDungBan = true; // Chặn trạng thái đi lùi về vị trí thủ
+
+                // NẾU BỊ LỆCH LÀN Y: Tự động trượt Y bám theo làn địch trước
                 if (doLechYThucTe > DolechHangY)
                 {
                     DiChuyenTrungHangY();
-                    return; // Ngăn không cho chạy hàm hành quân phía dưới, tập trung bám làn đón đầu
                 }
 
                 // NẾU ĐÃ THẲNG LÀN Y & LỌT TẦM BẮN X: Đứng im tấn công!
-                if (khoangCachX <= TamBan)
+                if (doLechYThucTe <= DolechHangY && khoangCachX <= TamBan)
                 {
                     Xoaymat(ThayDich.position.x);
 
-                    if (Time.time >= HoiChieu)
+                    // Nếu chưa có luồng bắn nào đang chạy thì mới bắt đầu bắn
+                    if (HoiChieu <= Time.time)
                     {
-                        TanCong();
-                        HoiChieu = Time.time + 1f / soDanBan;
+                        StartCoroutine(TanCong());
+                        HoiChieu = Time.time + (1f / soDanBan); // Giữ mốc thời gian chặn Update gọi trùng
                     }
-
-                    return; // Chặn đứng mọi di chuyển, đứng im xả đạn
                 }
             }
         }
 
-        // NẾU KHÔNG CÓ ĐỊCH (HOẶC ĐỊCH Ở QUÁ XA) -> TIẾP TỤC RA BOX THỦ
-        if (!daDenViTriThu)
+        // 3. NẾU KHÔNG CÓ ĐỊCH (HOẶC ĐỊCH Ở QUÁ XA) -> TIẾP TỤC RA BOX THỦ
+        if (!daDenViTriThu && !dangDungBan)
         {
             HanhQuanVaoViTri();
         }
@@ -88,14 +92,14 @@ public class NhanVat1Controller : MonoBehaviour
         Xoaymat(viTriCoDinh.x);
         transform.position = Vector3.MoveTowards(transform.position, viTriCoDinh, tocDoHanhQuan * Time.deltaTime);
 
-        if (Vector3.Distance(transform.position, viTriCoDinh) < 0.05f)
+
+        if (Vector3.Distance(transform.position, viTriCoDinh) < 0.2f)
         {
             transform.position = viTriCoDinh;
             daDenViTriThu = true;
         }
     }
 
-    // Đã chuyển thành public để đảm bảo Update gọi xuống dễ dàng và không trùng phạm vi
     public void DiChuyenTrungHangY()
     {
         if (ThayDich == null) return;
@@ -112,39 +116,80 @@ public class NhanVat1Controller : MonoBehaviour
         return new Vector3(xNgauNhien, yNgauNhien, transform.position.z);
     }
 
-    void TimKiemKeDich()
+    void TimMucTieuThongMinh()
     {
-        GameObject[] mangDich = GameObject.FindGameObjectsWithTag("Enemy");
+        GameObject[] mangQuai = GameObject.FindGameObjectsWithTag("Enemy");
         float khoangCachNganNhat = Mathf.Infinity;
-        GameObject dichGanNhat = null;
+        GameObject quaiUuTien = null;
+        GameObject quaiDuPhong = null;
+        float kcDuPhongNganNhat = Mathf.Infinity;
 
-        foreach (GameObject dich in mangDich)
+        foreach (GameObject quai in mangQuai)
         {
-            if (dich.activeInHierarchy)
+            if (quai.activeInHierarchy)
             {
-                float khoangCach = Vector2.Distance(transform.position, dich.transform.position);
-                if (khoangCach < khoangCachNganNhat)
+                float kc = Vector2.Distance(transform.position, quai.transform.position);
+
+                // Tự động kiểm tra và thêm component đánh dấu nếu quái chưa có
+                KhoaMucTieu marker = quai.GetComponent<KhoaMucTieu>();
+                if (marker == null) marker = quai.AddComponent<KhoaMucTieu>();
+
+                // Ưu tiên 1: Gần nhất và CHƯA bị ai khóa
+                if (!marker.daBiKhoaMucTieu)
                 {
-                    khoangCachNganNhat = khoangCach;
-                    dichGanNhat = dich;
+                    if (kc < khoangCachNganNhat)
+                    {
+                        khoangCachNganNhat = kc;
+                        quaiUuTien = quai;
+                    }
+                }
+                // Dự phòng: Gần nhất nhưng đã bị khóa
+                else
+                {
+                    if (kc < kcDuPhongNganNhat)
+                    {
+                        kcDuPhongNganNhat = kc;
+                        quaiDuPhong = quai;
+                    }
                 }
             }
         }
+        XacDinhVaKhoaMucTieu(quaiUuTien, quaiDuPhong);
+    }
 
-        if (dichGanNhat != null) ThayDich = dichGanNhat.transform;
-        else ThayDich = null;
+    // HÀM XỬ LÝ GÁN KHÓA VÀ ĐỒNG BỘ VÀO BIẾN ThayDich
+    void XacDinhVaKhoaMucTieu(GameObject quaiUuTien, GameObject quaiDuPhong)
+    {
+        if (quaiUuTien != null)
+        {
+            ThayDich = quaiUuTien.transform;
+            KhoaMucTieu marker = quaiUuTien.GetComponent<KhoaMucTieu>();
+            if (marker != null) marker.daBiKhoaMucTieu = true;
+        }
+        else if (quaiDuPhong != null)
+        {
+            ThayDich = quaiDuPhong.transform; // Chấp nhận bắn chung nếu map hết quái tự do
+        }
+        else
+        {
+            ThayDich = null;
+        }
     }
 
     void Xoaymat(float xMucTieu)
     {
-        if (xMucTieu < transform.position.x) transform.localScale = new Vector3(-1, 1, 1);
-        else transform.localScale = new Vector3(1, 1, 1);
+        if (xMucTieu < transform.position.x) transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+        else transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
     }
 
-    void TanCong()
+    // Sử dụng IEnumerator để tự quản lý thời gian diễn hoạt ảnh, an toàn 100%
+    private System.Collections.IEnumerator TanCong()
     {
-        if (ThayDich == null || DiemBan == null || QuanLyDan.Instance == null || prefabDanNho == null) return;
+        if (ThayDich == null || DiemBan == null || QuanLyDan.Instance == null || prefabDanNho == null) yield break;
 
+        // 1. Giật cò Animator đúng 1 lần duy nhất
+        Khogark_animatior.SetTrigger("Attack");
+        // 2. Tạo viên đạn bay đi (Giữ nguyên toàn bộ logic gốc của bạn ngài)
         float huongBanX = (ThayDich.position.x < transform.position.x) ? 180f : 0f;
         Quaternion rotation = Quaternion.Euler(0, 0, huongBanX);
 
@@ -153,6 +198,7 @@ public class NhanVat1Controller : MonoBehaviour
         {
             vienDan.transform.position = DiemBan.position;
             vienDan.transform.rotation = rotation;
+            vienDan.transform.SetParent(null);
             vienDan.SetActive(true);
 
             DanNV1 scriptDan = vienDan.GetComponent<DanNV1>();
@@ -161,6 +207,19 @@ public class NhanVat1Controller : MonoBehaviour
                 scriptDan.satThuong = satThuong;
                 scriptDan.KichHoatVienDan();
             }
+        }
+
+        // 3. ÉP ANIMATOR PHẢI ĐỢI: Nghỉ đúng bằng thời gian hồi chiêu rồi mới thoát ra
+        yield return new WaitForSeconds(1f / soDanBan);
+    }
+
+    // GIẢI PHÓNG QUÁI KHI NHÂN VẬT 1 BỊ CHẾT HOẶC THU HỒI
+    private void OnDisable()
+    {
+        if (ThayDich != null)
+        {
+            KhoaMucTieu marker = ThayDich.GetComponent<KhoaMucTieu>();
+            if (marker != null) marker.daBiKhoaMucTieu = false;
         }
     }
 

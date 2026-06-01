@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a709be1bc24a49343ad7aa230abd4a50, type: 3}
+  m_Name: HeThongSatThuongData
+  m_EditorClassIdentifier: 
+  danhSachSatThuong:
+  - tenChungLinh: prefab_KhoGrak_Guand
+    satThuongGoc: 5
+    heSoBoTro: 1
+  - tenChungLinh: IronStorm
+    satThuongGoc: 15
+    heSoBoTro: 1
+  - tenChungLinh: Terminator
+    satThuongGoc: 20
+    heSoBoTro: 1
+  - tenChungLinh: Dead Iron walk
+    satThuongGoc: 50
+    heSoBoTro: 1
+  - tenChungLinh: Titan
+    satThuongGoc: 100
+    heSoBoTro: 1
+  - tenChungLinh: Chaos zelos
+    satThuongGoc: 4
+    heSoBoTro: 1
+  - tenChungLinh: Warp Marine Sword
+    satThuongGoc: 12
+    heSoBoTro: 1
+  - tenChungLinh: Warp Marine
+    satThuongGoc: 20
+    heSoBoTro: 1
+  - tenChungLinh: Terminator
+    satThuongGoc: 30
+    heSoBoTro: 1

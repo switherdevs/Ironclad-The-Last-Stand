@@ -22,7 +22,7 @@ public class ChaosDirector : MonoBehaviour
     public GameObject prefabHellBrute;
     public GameObject prefabDemonPrince;
 
-    private float dongHoDem = -10f;
+    private float dongHoDem = -20f;
     private float tongThoiGian = 600f;
     //private bool daRaBossCuoi = false;
     public bool WinGame = false;

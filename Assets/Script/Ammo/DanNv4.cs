@@ -68,7 +68,6 @@ public class DanNv4 : MonoBehaviour
                             {
                                 mauDich.TakeDamage(satThuong);
                                 danhSachQuaiDaTrungDan.Add(mauDich); // Đánh dấu đã xử lý
-                                Debug.Log($"💥 Nổ lan trúng {vatThe.name} gây {satThuong} sát thương thực tế!");
                             }
                             continue;
                         }

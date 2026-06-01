@@ -419,10 +419,10 @@ MonoBehaviour:
   moveSpeed: 10
   keepDistance: 80
   leftMoveBias: 0.6
-  detectionRange: 140
+  detectionRange: 70
   normalHP: 20
   attackCooldown: 3
-  projectileSpeed: 10
+  projectileSpeed: 70
   projectilePrefab: {fileID: 1115379077512075570, guid: daf581b181dfc12489b745b3767e7601, type: 3}
   burstDelay: 0.15
   spawnOffsetDistance: 1
@@ -438,6 +438,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 663006a77a609c14290fa11de93ce105, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bangSatThuongChung: {fileID: 11400000, guid: a60a65e6a8b057b4ea1e9fc841c3d9bc, type: 2}
   ThanhMau: {fileID: 436096490989326454}
   maxHP: 400
 --- !u!1 &4755064117091521756
