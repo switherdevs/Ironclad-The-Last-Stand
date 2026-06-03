@@ -5,13 +5,16 @@ public class NhanVat4 : MonoBehaviour
     [Header("Chỉ số chiến đấu (Pháo Hạng Nặng)")]
     public float TamBan = 12f;
     public int satThuong = 150;
-    public float tocDoBan = 0.4f;
     public Transform DiemBan;
     public GameObject prefabDanMobi;
 
+    [Header("Hiệu ứng nạp năng lượng")]
+    public GameObject hieuUngNapNangLuong; // Kéo Prefab/GameObject ánh sáng vào đây
+    public float thoiGianNapNangLuong = 5f; // Đổi thành 5 giây theo yêu cầu
+
     [Header("Chỉ số di chuyển bám làn")]
     public float tocDoDiChuyenY = 4f;
-    public float doLechHangY = 0.2f; // Độ lệch nhỏ để đảm bảo thẳng hàng mới bắn
+    public float doLechHangY = 0.2f;
 
     [Header("Vùng Box Phòng Thủ")]
     public BoxCollider2D vungBoxPhongThu;
@@ -21,6 +24,7 @@ public class NhanVat4 : MonoBehaviour
     private bool daDenViTriThu = false;
     private Transform mucTieuQuai;
     private float thoiGianBanTiepTheo = 0f;
+    private bool dangTrongLuongBan = false; // Biến chặn trùng lặp Coroutine
 
     void Start()
     {
@@ -33,14 +37,16 @@ public class NhanVat4 : MonoBehaviour
             viTriCoDinh = transform.position;
             daDenViTriThu = true;
         }
+
+        // Đảm bảo ban đầu hiệu ứng nạp năng lượng luôn tắt
+        if (hieuUngNapNangLuong != null) hieuUngNapNangLuong.SetActive(false);
     }
 
     void Update()
     {
-        // 1. KIỂM TRA VÀ QUÉT TÌM QUÁI THÔNG MINH CHỐNG DỒN ĐAM
         if (mucTieuQuai == null || !mucTieuQuai.gameObject.activeInHierarchy)
         {
-            mucTieuQuai = null; // Reset nếu quái cũ đã chết hoặc ẩn
+            mucTieuQuai = null;
             TimMucTieuThongMinh();
         }
 
@@ -51,41 +57,70 @@ public class NhanVat4 : MonoBehaviour
             float doLechYThucTe = Mathf.Abs(transform.position.y - mucTieuQuai.position.y);
             float khoangCachXThucTe = Mathf.Abs(transform.position.x - mucTieuQuai.position.x);
 
-            // Nếu quái nằm trong tầm quét radar (Tầm bắn + thêm khoảng cách chuẩn bị)
             if (khoangCachXThucTe <= (TamBan + 5f))
             {
-                dangDungBan = true; // Ưu tiên bám đuổi quái, dừng việc đi lùi về box thủ
+                dangDungBan = true;
 
-                // NẾU BỊ LỆCH LÀN Y: Tự động trượt Y bám theo quái luôn
                 if (doLechYThucTe > doLechHangY)
                 {
                     DiChuyenTrungHangY();
                 }
 
-                // ĐIỀU KIỆN CHÍ MẠNG: CHỈ bắn khi ĐÃ THẲNG HÀNG (Y) và TRONG TẦM BẮN (X)
+                // Điều kiện bắn: Thẳng hàng Y, trong tầm bắn X, hết thời gian hồi và CHƯA nằm trong luồng bắn nào
                 if (doLechYThucTe <= doLechHangY && khoangCachXThucTe <= TamBan)
                 {
-                    XoayMat(mucTieuQuai.position.x); // Đã sửa hoàn toàn thành XoayMat theo yêu cầu
+                    XoayMat(mucTieuQuai.position.x);
 
-                    if (Time.time >= thoiGianBanTiepTheo)
+                    if (Time.time >= thoiGianBanTiepTheo && !dangTrongLuongBan)
                     {
-                        BanThienThachPooling();
-                        thoiGianBanTiepTheo = Time.time + (1f / tocDoBan);
+                        StartCoroutine(LuongBanNapNangLuong());
                     }
                 }
             }
         }
 
-        // Nếu không có quái hoặc quái ở quá xa, quay trở về vị trí phòng thủ ban đầu
-        if (!daDenViTriThu && !dangDungBan)
+        // Nếu không có quái hoặc đang bận nạp năng lượng/bắn thì không đi lùi về thủ
+        if (!daDenViTriThu && !dangDungBan && !dangTrongLuongBan)
         {
             HanhQuanVaoViTri();
         }
     }
 
+    // Luồng xử lý nạp năng lượng và bắn tuần tự
+    private System.Collections.IEnumerator LuongBanNapNangLuong()
+    {
+        dangTrongLuongBan = true;
+
+        // 1. Kích hoạt hiệu ứng ánh sáng nạp năng lượng (Animation tự reset chạy từ đầu)
+        if (hieuUngNapNangLuong != null)
+        {
+            hieuUngNapNangLuong.SetActive(true);
+        }
+
+        // 2. Chờ 5 giây nạp năng lượng
+        yield return new WaitForSeconds(thoiGianNapNangLuong);
+
+        // 3. Thực hiện bắn đạn plasma ra sau khi nạp đầy
+        if (mucTieuQuai != null) // Kiểm tra lại đề phòng quái chết trong 5 giây chờ
+        {
+            BanThienThachPooling();
+        }
+
+        // 4. Bắn xong lập tức tắt hiệu ứng ánh sáng
+        if (hieuUngNapNangLuong != null)
+        {
+            hieuUngNapNangLuong.SetActive(false);
+        }
+
+        // 5. Đặt thời gian hồi cho phát bắn kế tiếp (Nếu muốn bắn liên tục không hồi thì bỏ dòng dưới)
+        thoiGianBanTiepTheo = Time.time + 0.5f;
+
+        dangTrongLuongBan = false;
+    }
+
     void HanhQuanVaoViTri()
     {
-        XoayMat(viTriCoDinh.x); // Đã sửa thành XoayMat
+        XoayMat(viTriCoDinh.x);
         transform.position = Vector3.MoveTowards(transform.position, viTriCoDinh, tocDoHanhQuan * Time.deltaTime);
 
         if (Vector3.Distance(transform.position, viTriCoDinh) < 0.2f)
@@ -97,12 +132,11 @@ public class NhanVat4 : MonoBehaviour
 
     void DiChuyenTrungHangY()
     {
-        if (mucTieuQuai == null) return;
+        if (mucTieuQuai == null || dangTrongLuongBan) return; // Không trượt Y khi đang đứng tụ năng lượng bắn
         Vector3 viTriMucTieu = new Vector3(transform.position.x, mucTieuQuai.position.y, transform.position.z);
         transform.position = Vector3.MoveTowards(transform.position, viTriMucTieu, tocDoDiChuyenY * Time.deltaTime);
     }
 
-    // LOGIC CHỌN ĐỊCH THÔNG MINH CHỐNG TRÙNG MỤC TIÊU (ƯU TIÊN QUÁI GẦN NHẤT CHƯA KHÓA)
     void TimMucTieuThongMinh()
     {
         GameObject[] mangQuai = GameObject.FindGameObjectsWithTag("Enemy");
@@ -116,11 +150,9 @@ public class NhanVat4 : MonoBehaviour
             if (quai.activeInHierarchy)
             {
                 float kc = Vector2.Distance(transform.position, quai.transform.position);
-
                 KhoaMucTieu marker = quai.GetComponent<KhoaMucTieu>();
                 if (marker == null) marker = quai.AddComponent<KhoaMucTieu>();
 
-                // Ưu tiên 1: Gần nhất và CHƯA bị ai khóa mục tiêu
                 if (!marker.daBiKhoaMucTieu)
                 {
                     if (kc < khoangCachNganNhat)
@@ -129,7 +161,6 @@ public class NhanVat4 : MonoBehaviour
                         quaiUuTien = quai;
                     }
                 }
-                // Dự phòng: Gần nhất nhưng đã có đồng đội khóa trước
                 else
                 {
                     if (kc < kcDuPhongNganNhat)
@@ -149,11 +180,11 @@ public class NhanVat4 : MonoBehaviour
         {
             mucTieuQuai = quaiUuTien.transform;
             KhoaMucTieu marker = quaiUuTien.GetComponent<KhoaMucTieu>();
-            if (marker != null) marker.daBiKhoaMucTieu = true; // Thực hiện khóa quái
+            if (marker != null) marker.daBiKhoaMucTieu = true;
         }
         else if (quaiDuPhong != null)
         {
-            mucTieuQuai = quaiDuPhong.transform; // Nếu map hết quái rảnh thì chấp nhận bắn chung
+            mucTieuQuai = quaiDuPhong.transform;
         }
         else
         {
@@ -182,7 +213,7 @@ public class NhanVat4 : MonoBehaviour
         {
             vienDan.transform.position = DiemBan.position;
             vienDan.transform.rotation = rotation;
-            vienDan.transform.SetParent(null); // Đưa đạn ra ngoài cha để bay tự do
+            vienDan.transform.SetParent(null);
             vienDan.SetActive(true);
         }
 
@@ -197,9 +228,9 @@ public class NhanVat4 : MonoBehaviour
         }
     }
 
-    // Đã chuyển thành tên hàm XoayMat viết hoa chuẩn xác
     void XoayMat(float xMucTieu)
     {
+        if (dangTrongLuongBan) return; // Khóa xoay hướng khi đang tụ pháo nạp năng lượng để tăng độ logic
         if (xMucTieu < transform.position.x)
             transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
         else
@@ -213,6 +244,7 @@ public class NhanVat4 : MonoBehaviour
         float yNgauNhien = Random.Range(bounds.min.y, bounds.max.y);
         return new Vector3(xNgauNhien, yNgauNhien, transform.position.z);
     }
+
     private void OnDisable()
     {
         if (mucTieuQuai != null)

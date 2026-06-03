@@ -70,11 +70,9 @@ public class ResourceManager : MonoBehaviour
 
     public void NutBamCongTienTestGame()
     {
-        Debug.Log("Nút Test Game được nhấn! Thực hiện cộng 500 vàng.");
-        TangTien(500); // Gọi hàm gốc ở trên và truyền tham số 500 vào
+        TangTien(500);
     }
 
-    // HÀM XỬ LÝ THÊM LÍNH
     public bool KiemTraVaThemLinh(int soSlotChiem, bool isSevitor = false)
     {
         // KIỂM TRA ĐIỀU KIỆN RIÊNG CHO SERVITOR
@@ -125,12 +123,12 @@ public class ResourceManager : MonoBehaviour
     {
         if (textHienThiTien != null)
         {
-            textHienThiTien.text = "VÀNG: " + soTienHienTai + " / " + soTienToiDa;
+            textHienThiTien.text = "Gold: " + soTienHienTai + " / " + soTienToiDa;
         }
 
         if (textHienThiLinh != null)
         {
-            textHienThiLinh.text = "LÍNH: " + soLinhHienTai + " / " + soLinhToiDa;
+            textHienThiLinh.text = "Solider: " + soLinhHienTai + " / " + soLinhToiDa;
         }
 
         // BỔ SUNG: Hiển thị Servitor lên UI

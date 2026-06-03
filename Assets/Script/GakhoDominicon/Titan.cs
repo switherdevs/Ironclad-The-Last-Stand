@@ -3,31 +3,43 @@ using UnityEngine;
 public class TitanPhe9 : MonoBehaviour
 {
     [Header("Chỉ số chiến đấu")]
-    public float TamBan = 50f;          // Tầm bắn quét kẻ địch của Titan
-    public float thoiGianHoiChieu = 3f; // Khoảng cách thời gian bắn giữa các viên đạn là 3 giây
+    public float TamBan = 50f;
     public int satThuong = 40;
     public Transform DiemBan;
-    public GameObject prefabDanLon; // Kéo thả Prefab viên đạn to màu xanh (DanLon) vào đây
+    public GameObject prefabDanLon;
+
+    [Header("Hệ thống bắn loạt (Burst)")]
+    public int soVienMoiLoat = 3;           // Số viên mỗi loạt
+    public float thoiGianGiuaCacVien = 0.2f; // Thời gian giữa các viên trong loạt
+    public float thoiGianHoiChieu = 3f;      // Thời gian nghỉ giữa các loạt
+
+    [Range(0.1f, 5f)]
+    public float heSoTangToc = 1f;           // Hệ số nhân (buff/debuff tốc độ bắn)
 
     [Header("Chỉ số di chuyển bám làn")]
-    public float tocDoDiChuyenY = 4f;  // Tốc độ di chuyển tịnh tiến lên/xuống để bắt quái
-    public float doLechHangY = 0.3f;   // Sai số hàng Y
+    public float tocDoDiChuyenY = 4f;
+    public float doLechHangY = 0.3f;
 
     [Header("Vùng Box Phòng Thủ")]
-    public BoxCollider2D vungBoxPhongThu; // Kéo thả ô Box Collider đại diện vùng thủ của Titan vào đây
-    public float tocDoHanhQuan = 2f;   // Tốc độ đi từ nhà ra điểm thủ của Titan
+    public BoxCollider2D vungBoxPhongThu;
+    public float tocDoHanhQuan = 2f;
 
-    private Vector3 viTriCoDinh;        // Vị trí ngẫu nhiên tính toán được trong Box
-    private bool daDenViTriThu = false; // Kiểm tra xem đã đến nơi chưa
+    private Vector3 viTriCoDinh;
+    private bool daDenViTriThu = false;
     private Transform mucTieuQuai;
-    private float thoiGianBanTiepTheo = 0f; // Biến lưu mốc thời gian được phép bắn tiếp
+
+    // --- Biến quản lý burst ---
+    private int soVienDaBan = 0;             // Đã bắn bao nhiêu viên trong loạt hiện tại
+    private bool dangTrongLoat = false;      // Đang trong giữa 1 loạt chưa
+    private float thoiGianBanTiepTheo = 0f; // Mốc thời gian được phép bắn tiếp
+
+    // Thời gian hồi chiêu thực tế (đã nhân hệ số)
+    private float HoiChieuThucTe => thoiGianHoiChieu / Mathf.Max(heSoTangToc, 0.01f);
 
     void Start()
     {
         if (vungBoxPhongThu != null)
-        {
             viTriCoDinh = LayViTriNgauNhienTrongBox(vungBoxPhongThu);
-        }
         else
         {
             viTriCoDinh = transform.position;
@@ -37,7 +49,6 @@ public class TitanPhe9 : MonoBehaviour
 
     void Update()
     {
-        // 1. KIỂM TRA VÀ QUÉT TÌM QUÁI ĐI ĐẦU HÀNG CHỐNG DỒN ĐAM
         if (mucTieuQuai == null || !mucTieuQuai.gameObject.activeInHierarchy)
         {
             mucTieuQuai = null;
@@ -46,7 +57,6 @@ public class TitanPhe9 : MonoBehaviour
 
         bool dangDungBan = false;
 
-        // BƯỚC 1: XỬ LÝ CHIẾN ĐẤU VÀ TỰ CĂN LÀN Y KHI THẤY QUÁI
         if (mucTieuQuai != null)
         {
             float doLechYThucTe = Mathf.Abs(transform.position.y - mucTieuQuai.position.y);
@@ -56,35 +66,66 @@ public class TitanPhe9 : MonoBehaviour
             {
                 dangDungBan = true;
 
-                // NẾU BỊ LỆCH LÀN Y: Tự động trượt Y bám theo quái luôn
                 if (doLechYThucTe > doLechHangY)
                 {
                     DiChuyenTrungHangY();
                     return;
                 }
 
-                // NẾU ĐÃ THẲNG LÀN Y & LỌT TẦM BẮN X: Đứng im xả đạn!
                 if (doLechYThucTe <= doLechHangY && khoangCachXThucTe <= TamBan)
                 {
-                    XoayMat(mucTieuQuai.position.x); // Đã sửa từ XoMat thành XoayMat chuẩn xác
-
-                    if (Time.time >= thoiGianBanTiepTheo)
-                    {
-                        TitanBanDanPooling();
-                        thoiGianBanTiepTheo = Time.time + thoiGianHoiChieu;
-                    }
-
+                    XoayMat(mucTieuQuai.position.x);
+                    XuLyBanLoat();
                     return;
                 }
             }
         }
-        // BƯỚC 2: NẾU KHÔNG CÓ QUÁI -> ĐI RA BOX THỦ
+
         if (!daDenViTriThu && !dangDungBan)
-        {
             HanhQuanVaoViTri();
+    }
+
+    void XuLyBanLoat()
+    {
+        if (Time.time < thoiGianBanTiepTheo) return;
+
+        // Đang trong loạt -> bắn viên tiếp theo
+        if (dangTrongLoat)
+        {
+            TitanBanDanPooling();
+            soVienDaBan++;
+
+            if (soVienDaBan >= soVienMoiLoat)
+            {
+                // Đã bắn đủ loạt -> bắt đầu hồi chiêu
+                dangTrongLoat = false;
+                soVienDaBan = 0;
+                thoiGianBanTiepTheo = Time.time + HoiChieuThucTe;
+            }
+            else
+            {
+                // Còn viên trong loạt -> chờ khoảng cách giữa viên
+                thoiGianBanTiepTheo = Time.time + thoiGianGiuaCacVien;
+            }
+        }
+        else
+        {
+            // Hồi xong -> bắt đầu loạt mới, bắn viên đầu tiên
+            dangTrongLoat = true;
+            soVienDaBan = 0;
+
+            TitanBanDanPooling();
+            soVienDaBan++;
+
+            thoiGianBanTiepTheo = Time.time + thoiGianGiuaCacVien;
         }
     }
 
+    // ─── Buff / Debuff từ ngoài ────────────────────────────────────────
+    public void DatHeSoTangToc(float heSo) => heSoTangToc = Mathf.Max(0.1f, heSo);
+    public void DatSoVienMoiLoat(int soVien) => soVienMoiLoat = Mathf.Max(1, soVien);
+
+    // ─── Các hàm còn lại ──────────────────────────────────────────────
     void HanhQuanVaoViTri()
     {
         XoayMat(viTriCoDinh.x);
@@ -100,7 +141,6 @@ public class TitanPhe9 : MonoBehaviour
     public void DiChuyenTrungHangY()
     {
         if (mucTieuQuai == null) return;
-
         Vector3 viTriMucTieu = new Vector3(transform.position.x, mucTieuQuai.position.y, transform.position.z);
         transform.position = Vector3.MoveTowards(transform.position, viTriMucTieu, tocDoDiChuyenY * Time.deltaTime);
     }
@@ -108,9 +148,11 @@ public class TitanPhe9 : MonoBehaviour
     Vector3 LayViTriNgauNhienTrongBox(BoxCollider2D box)
     {
         Bounds bounds = box.bounds;
-        float xNgauNhien = Random.Range(bounds.min.x, bounds.max.x);
-        float yNgauNhien = Random.Range(bounds.min.y, bounds.max.y);
-        return new Vector3(xNgauNhien, yNgauNhien, transform.position.z);
+        return new Vector3(
+            Random.Range(bounds.min.x, bounds.max.x),
+            Random.Range(bounds.min.y, bounds.max.y),
+            transform.position.z
+        );
     }
 
     void TimMucTieuThongMinh()
@@ -123,31 +165,21 @@ public class TitanPhe9 : MonoBehaviour
 
         foreach (GameObject quai in mangQuai)
         {
-            if (quai.activeInHierarchy)
+            if (!quai.activeInHierarchy) continue;
+
+            float viTriX = quai.transform.position.x;
+            KhoaMucTieu marker = quai.GetComponent<KhoaMucTieu>() ?? quai.AddComponent<KhoaMucTieu>();
+
+            if (!marker.daBiKhoaMucTieu)
             {
-                float viTriX = quai.transform.position.x;
-
-                KhoaMucTieu marker = quai.GetComponent<KhoaMucTieu>();
-                if (marker == null) marker = quai.AddComponent<KhoaMucTieu>();
-
-                if (!marker.daBiKhoaMucTieu)
-                {
-                    if (viTriX > xLonNhat)
-                    {
-                        xLonNhat = viTriX;
-                        quaiUuTien = quai;
-                    }
-                }
-                else
-                {
-                    if (viTriX > xDuPhongLonNhat)
-                    {
-                        xDuPhongLonNhat = viTriX;
-                        quaiDuPhong = quai;
-                    }
-                }
+                if (viTriX > xLonNhat) { xLonNhat = viTriX; quaiUuTien = quai; }
+            }
+            else
+            {
+                if (viTriX > xDuPhongLonNhat) { xDuPhongLonNhat = viTriX; quaiDuPhong = quai; }
             }
         }
+
         XacDinhVaKhoaMucTieu(quaiUuTien, quaiDuPhong);
     }
 
@@ -160,21 +192,19 @@ public class TitanPhe9 : MonoBehaviour
             if (marker != null) marker.daBiKhoaMucTieu = true;
         }
         else if (quaiDuPhong != null)
-        {
             mucTieuQuai = quaiDuPhong.transform;
-        }
         else
-        {
             mucTieuQuai = null;
-        }
     }
 
     void XoayMat(float xMucTieu)
     {
-        if (xMucTieu < transform.position.x)
-            transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
-        else
-            transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+        float scaleX = Mathf.Abs(transform.localScale.x);
+        transform.localScale = new Vector3(
+            xMucTieu < transform.position.x ? -scaleX : scaleX,
+            transform.localScale.y,
+            transform.localScale.z
+        );
     }
 
     void TitanBanDanPooling()
@@ -182,13 +212,12 @@ public class TitanPhe9 : MonoBehaviour
         if (DiemBan == null || QuanLyDan.Instance == null || prefabDanLon == null) return;
 
         float huongBanX = (mucTieuQuai.position.x < transform.position.x) ? 180f : 0f;
-        Quaternion rotation = Quaternion.Euler(0, 0, huongBanX);
-
         GameObject vienDan = QuanLyDan.Instance.LayDanTuKho(prefabDanLon);
+
         if (vienDan != null)
         {
             vienDan.transform.position = DiemBan.position;
-            vienDan.transform.rotation = rotation;
+            vienDan.transform.rotation = Quaternion.Euler(0, 0, huongBanX);
             vienDan.transform.SetParent(null);
             vienDan.SetActive(true);
 
@@ -208,6 +237,9 @@ public class TitanPhe9 : MonoBehaviour
             KhoaMucTieu marker = mucTieuQuai.GetComponent<KhoaMucTieu>();
             if (marker != null) marker.daBiKhoaMucTieu = false;
         }
+        // Reset trạng thái burst khi bị tắt
+        dangTrongLoat = false;
+        soVienDaBan = 0;
     }
 
     private void OnDrawGizmosSelected()

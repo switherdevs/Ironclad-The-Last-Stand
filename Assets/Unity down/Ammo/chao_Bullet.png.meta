@@ -1,0 +1,533 @@
+fileFormatVersion: 2
+guid: e3782d8e822a9c44ebb1b960f725498b
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -5834401488416339996
+    second: chao_Bullet_0
+  - first:
+      213: -8097671606304797966
+    second: chao_Bullet_1
+  - first:
+      213: -7769906567216562419
+    second: chao_Bullet_2
+  - first:
+      213: 4628072610912551305
+    second: chao_Bullet_3
+  - first:
+      213: -2076127602823420040
+    second: chao_Bullet_4
+  - first:
+      213: 8782068691085450127
+    second: chao_Bullet_5
+  - first:
+      213: 8111357925567042372
+    second: chao_Bullet_6
+  - first:
+      213: 6919283925732929403
+    second: chao_Bullet_7
+  - first:
+      213: -7473760244002218567
+    second: chao_Bullet_8
+  - first:
+      213: -2966390058983801206
+    second: chao_Bullet_9
+  - first:
+      213: -5149374371127497893
+    second: chao_Bullet_10
+  - first:
+      213: -881419686462402184
+    second: chao_Bullet_11
+  - first:
+      213: -1051571462709052495
+    second: chao_Bullet_12
+  - first:
+      213: 2138984037123186759
+    second: chao_Bullet_13
+  - first:
+      213: 6454502295718333844
+    second: chao_Bullet_14
+  - first:
+      213: -1925477308734397677
+    second: chao_Bullet_15
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: chao_Bullet_0
+      rect:
+        serializedVersion: 2
+        x: 186
+        y: 1204
+        width: 298
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4e70fed12ca080fa0800000000000000
+      internalID: -5834401488416339996
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: chao_Bullet_1
+      rect:
+        serializedVersion: 2
+        x: 144
+        y: 920
+        width: 360
+        height: 200
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2fa8f6ec39a4f9f80800000000000000
+      internalID: -8097671606304797966
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: chao_Bullet_2
+      rect:
+        serializedVersion: 2
+        x: 186
+        y: 726
+        width: 488
+        height: 108
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d0ff413d42fbb2490800000000000000
+      internalID: -7769906567216562419
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: chao_Bullet_3
+      rect:
+        serializedVersion: 2
+        x: 123
+        y: 496
+        width: 23
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9814820e4873a3040800000000000000
+      internalID: 4628072610912551305
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: chao_Bullet_4
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 390
+        width: 458
+        height: 291
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 877a35de1fc1033e0800000000000000
+      internalID: -2076127602823420040
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: chao_Bullet_5
+      rect:
+        serializedVersion: 2
+        x: 93
+        y: 434
+        width: 31
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f8b5a35f1fc20e970800000000000000
+      internalID: 8782068691085450127
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: chao_Bullet_6
+      rect:
+        serializedVersion: 2
+        x: 76
+        y: 414
+        width: 14
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4431977be05519070800000000000000
+      internalID: 8111357925567042372
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: chao_Bullet_7
+      rect:
+        serializedVersion: 2
+        x: 120
+        y: 406
+        width: 34
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b7fa16d021c360060800000000000000
+      internalID: 6919283925732929403
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: chao_Bullet_8
+      rect:
+        serializedVersion: 2
+        x: 229
+        y: 389
+        width: 35
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9bd9fcfd7aed74890800000000000000
+      internalID: -7473760244002218567
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: chao_Bullet_9
+      rect:
+        serializedVersion: 2
+        x: 383
+        y: 377
+        width: 29
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a8e350d35f345d6d0800000000000000
+      internalID: -2966390058983801206
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: chao_Bullet_10
+      rect:
+        serializedVersion: 2
+        x: 431
+        y: 369
+        width: 37
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b5be171ca4fb988b0800000000000000
+      internalID: -5149374371127497893
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: chao_Bullet_11
+      rect:
+        serializedVersion: 2
+        x: 370
+        y: 314
+        width: 23
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8715f52177194c3f0800000000000000
+      internalID: -881419686462402184
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: chao_Bullet_12
+      rect:
+        serializedVersion: 2
+        x: 166
+        y: 212
+        width: 23
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1bbf94d73511861f0800000000000000
+      internalID: -1051571462709052495
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: chao_Bullet_13
+      rect:
+        serializedVersion: 2
+        x: 190
+        y: 45
+        width: 356
+        height: 268
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 74065f026a23fad10800000000000000
+      internalID: 2138984037123186759
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: chao_Bullet_14
+      rect:
+        serializedVersion: 2
+        x: 152
+        y: 154
+        width: 27
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 49d0c3af3aff29950800000000000000
+      internalID: 6454502295718333844
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: chao_Bullet_15
+      rect:
+        serializedVersion: 2
+        x: 536
+        y: 103
+        width: 20
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 313afcdd6945745e0800000000000000
+      internalID: -1925477308734397677
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      chao_Bullet_0: -5834401488416339996
+      chao_Bullet_1: -8097671606304797966
+      chao_Bullet_10: -5149374371127497893
+      chao_Bullet_11: -881419686462402184
+      chao_Bullet_12: -1051571462709052495
+      chao_Bullet_13: 2138984037123186759
+      chao_Bullet_14: 6454502295718333844
+      chao_Bullet_15: -1925477308734397677
+      chao_Bullet_2: -7769906567216562419
+      chao_Bullet_3: 4628072610912551305
+      chao_Bullet_4: -2076127602823420040
+      chao_Bullet_5: 8782068691085450127
+      chao_Bullet_6: 8111357925567042372
+      chao_Bullet_7: 6919283925732929403
+      chao_Bullet_8: -7473760244002218567
+      chao_Bullet_9: -2966390058983801206
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

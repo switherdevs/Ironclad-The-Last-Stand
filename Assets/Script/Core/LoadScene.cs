@@ -1,68 +1,93 @@
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+
 public class LoadScene : MonoBehaviour
 {
-    [SerializeField]
-    public GameObject BanThuaGame;
-    [SerializeField]
-    public GameObject Wingame;
-    [SerializeField]
-    public Object scene1;
-    [SerializeField]
-    public Object scene2;
-    [SerializeField]
-    public Object Menu;
-    [SerializeField]
-    public Object UpdateBase;
+    [Header("Bảng trạng thái trận đấu")]
+    [SerializeField] public GameObject BanThuaGame;
+    [SerializeField] public GameObject Wingame;
+
+    [Header("Giao diện UI & Animator riêng biệt")]
+    [SerializeField] public GameObject mainMenuUI;
+    [SerializeField] public Animator mainMenuAnimator;
+
+    [SerializeField] public GameObject bangChonMapUI;
+    [SerializeField] public Animator bangMapAnimator;
+
+    [Header("Tự quy định thời gian chờ (giây)")]
+    [SerializeField] public float thoiGianChoAnMenu = 1.5f;   // Tự gõ số giây chờ ẩn Menu ngoài Inspector
+    [SerializeField] public float thoiGianChoAnBangMap = 1.5f; // Tự gõ số gsây chờ ẩn Bảng chọn Map ngoài Inspector
+
+    [Header("Tên các Animation (Điền đúng tên trong Animator)")]
+    [SerializeField] public string animHienMenu = "HienMenu";
+    [SerializeField] public string animAnMenu = "AnMenu";
+    [SerializeField] public string animHienBangMap = "HienMap";
+    [SerializeField] public string animAnBangMap = "AnMap";
+
+    [Header("Cấu hình Scenes")]
+    [SerializeField] public Object scene1;
+    [SerializeField] public Object scene2;
+    [SerializeField] public Object Menu;
+    [SerializeField] public Object UpdateBase;
+
     void Start()
     {
-        BanThuaGame.SetActive(false);
-        Wingame.SetActive(false);
+        if (BanThuaGame != null) BanThuaGame.SetActive(false);
+        if (Wingame != null) Wingame.SetActive(false);
+
+        if (mainMenuUI != null) mainMenuUI.SetActive(true);
+        if (bangChonMapUI != null) bangChonMapUI.SetActive(false);
     }
 
-    public void VaoGame()
+    // --- 1. LUỒNG MỞ BẢNG CHỌN MAP (ẨN MENU -> HIỆN MAP) ---
+    public void MoBangChonMap()
     {
-        SceneManager.LoadScene(scene1.name);
+        if (mainMenuUI != null && bangChonMapUI != null && mainMenuAnimator != null && bangMapAnimator != null)
+        {
+            StartCoroutine(LuongMoBangMap());
+        }
     }
-    public void TryAgain()
-    {
-        SceneManager.LoadScene(scene1.name);
-        Time.timeScale = 1;
-    }
-    public void VeMenu()
-    {
-        SceneManager.LoadScene(Menu.name);
-        Time.timeScale = 1;
 
-    }
-    private void FixedUpdate()
+    private System.Collections.IEnumerator LuongMoBangMap()
     {
-        ThuaGame();
-        WinGame();
+        mainMenuAnimator.Play(animAnMenu);
+
+        // Chờ đúng số giây bạn đã cài đặt ở biến thoiGianChoAnMenu
+        yield return new WaitForSeconds(thoiGianChoAnMenu);
+
+        mainMenuUI.SetActive(false);
+        bangChonMapUI.SetActive(true);
+        bangMapAnimator.Play(animHienBangMap);
     }
-    private void ThuaGame()
+
+    // --- 2. LUỒNG ĐÓNG BẢNG CHỌN MAP (ẨN MAP -> HIỆN MENU) ---
+    public void DongBangChonMap()
     {
-        if(Tayperer.skibidi != null && Tayperer.skibidi.GameOver)
+        if (mainMenuUI != null && bangChonMapUI != null && mainMenuAnimator != null && bangMapAnimator != null)
         {
-            BanThuaGame.SetActive(true);
+            StartCoroutine(LuongDongBangMap());
         }
     }
-    public void WinGame()
+
+    private System.Collections.IEnumerator LuongDongBangMap()
     {
-        if (ChaosDirector.instance != null && ChaosDirector.instance.WinGame)
-        {
-            Wingame.SetActive(true);
-        }
+        bangMapAnimator.Play(animAnBangMap);
+
+        // Chờ đúng số giây bạn đã cài đặt ở biến thoiGianChoAnBangMap
+        yield return new WaitForSeconds(thoiGianChoAnBangMap);
+
+        bangChonMapUI.SetActive(false);
+        mainMenuUI.SetActive(true);
+        mainMenuAnimator.Play(animHienMenu);
     }
-    public void Nextmap()
-    {
-        SceneManager.LoadScene(scene2.name);
-        Time.timeScale = 1;
-    }
-    public void Updates() 
-    {
-        SceneManager.LoadScene(UpdateBase.name);
-        Time.timeScale = 1;
-    }
+
+    // --- LOGIC GỐC CỦA BẠN ---
+    public void VaoGame() { SceneManager.LoadScene(scene1.name); }
+    public void TryAgain() { SceneManager.LoadScene(scene1.name); Time.timeScale = 1; }
+    public void VeMenu() { SceneManager.LoadScene(Menu.name); Time.timeScale = 1; }
+    private void FixedUpdate() { ThuaGame(); WinGame(); }
+    private void ThuaGame() { if (Tayperer.skibidi != null && Tayperer.skibidi.GameOver) BanThuaGame.SetActive(true); }
+    public void WinGame() { if (ChaosDirector.instance != null && ChaosDirector.instance.WinGame) Wingame.SetActive(true); }
+    public void Nextmap() { SceneManager.LoadScene(scene2.name); Time.timeScale = 1; }
+    public void Updates() { SceneManager.LoadScene(UpdateBase.name); Time.timeScale = 1; }
 }

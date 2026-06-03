@@ -2,15 +2,13 @@ using UnityEngine;
 
 public class Sevirtor : MonoBehaviour
 {
-    // Các trạng thái của thợ đào vàng
     public enum MinerState { DiToiBaiVang, DangDaoVang, VeNhaChinh, CatVang }
 
     [Header("Trạng thái hiện tại")]
     public MinerState trangThaiHienTai = MinerState.DiToiBaiVang;
 
     [Header("Cấu hình vị trí")]
-    public Transform DiemBaiVang;   // Kéo GameObject Mỏ Vàng vào đây ngoài Unity
-    public Transform DiemNhaChinh;  // Kéo GameObject Nhà Chính vào đây ngoài Unity
+    public Transform DiemNhaChinh;
 
     [Header("Chỉ số đào vàng")]
     public float tocDoDiChuyen = 3f;
@@ -18,13 +16,16 @@ public class Sevirtor : MonoBehaviour
     public int luongVangMangTheo = 10;
 
     private float demThoiGianDao;
-    private float doLechToiThieu = 0.5f; // Tăng nhẹ sai số để chống kẹt trục Y lẻ
+    private float doLechToiThieu = 0.15f;
+
+    private GoldMine moDangDao = null;
+    private int indexSlotCuaTho = -1;       // Index slot thợ này đang giữ
 
     void Start()
     {
-        // Tự động tìm kiếm theo đúng Tag bạn đã đặt ngoài Editor
-        if (DiemBaiVang == null) DiemBaiVang = GameObject.FindWithTag("gold")?.transform;
-        if (DiemNhaChinh == null) DiemNhaChinh = GameObject.FindWithTag("Home")?.transform;
+        if (DiemNhaChinh == null)
+            DiemNhaChinh = GameObject.FindWithTag("Home")?.transform;
+        TimVaDangKyMo();
     }
 
     void Update()
@@ -33,45 +34,87 @@ public class Sevirtor : MonoBehaviour
 
         switch (trangThaiHienTai)
         {
-            case MinerState.DiToiBaiVang:
-                HanhDong_DiToiBaiVang();
-                break;
+            case MinerState.DiToiBaiVang: HanhDong_DiToiBaiVang(); break;
+            case MinerState.DangDaoVang: HanhDong_DangDaoVang(); break;
+            case MinerState.VeNhaChinh: HanhDong_VeNhaChinh(); break;
+            case MinerState.CatVang: HanhDong_CatVang(); break;
+        }
+    }
 
-            case MinerState.DangDaoVang:
-                HanhDong_DangDaoVang();
-                break;
+    void TimVaDangKyMo()
+    {
+        GiaiPhongMoHienTai();
 
-            case MinerState.VeNhaChinh:
-                HanhDong_VeNhaChinh();
-                break;
+        GameObject[] tatCaMo = GameObject.FindGameObjectsWithTag("gold");
+        GoldMine moGanNhat = null;
+        float khoangCachNgan = Mathf.Infinity;
 
-            case MinerState.CatVang: // ĐÃ MỞ KHÓA: Giúp lính thực hiện cất tiền và quay đầu
-                HanhDong_CatVang();
-                break;
+        foreach (GameObject mo in tatCaMo)
+        {
+            GoldMine goldMine = mo.GetComponent<GoldMine>();
+            if (goldMine == null) goldMine = mo.AddComponent<GoldMine>();
+
+            if (!goldMine.CoChoTrong) continue;
+
+            float khoangCach = Vector3.Distance(transform.position, mo.transform.position);
+            if (khoangCach < khoangCachNgan)
+            {
+                khoangCachNgan = khoangCach;
+                moGanNhat = goldMine;
+            }
+        }
+
+        if (moGanNhat != null)
+        {
+            int slot = moGanNhat.DangKyLaySlot();
+            if (slot != -1)
+            {
+                moDangDao = moGanNhat;
+                indexSlotCuaTho = slot;
+                trangThaiHienTai = MinerState.DiToiBaiVang;
+                return;
+            }
+        }
+
+        Invoke(nameof(TimVaDangKyMo), 1f);
+    }
+
+    void GiaiPhongMoHienTai()
+    {
+        if (moDangDao != null)
+        {
+            moDangDao.TraSlot(indexSlotCuaTho);
+            moDangDao = null;
+            indexSlotCuaTho = -1;
         }
     }
 
     void HanhDong_DiToiBaiVang()
     {
-        if (DiemBaiVang == null) return;
+        if (moDangDao == null) { TimVaDangKyMo(); return; }
 
-        XoayMat(DiemBaiVang.position.x);
-        transform.position = Vector3.MoveTowards(transform.position, DiemBaiVang.position, tocDoDiChuyen * Time.deltaTime);
+        // Lấy vị trí slot realtime (theo cục vàng nếu nó di chuyển)
+        Vector3 viTriSlot = moDangDao.LayViTriSlot(indexSlotCuaTho);
 
-        // Lớp bảo vệ 1: Đo khoảng cách gần sát thì đào luôn
-        if (Vector3.Distance(transform.position, DiemBaiVang.position) <= doLechToiThieu)
-        {
+        XoayMat(viTriSlot.x);
+        transform.position = Vector3.MoveTowards(
+            transform.position, viTriSlot, tocDoDiChuyen * Time.deltaTime);
+        if (Vector3.Distance(transform.position, viTriSlot) <= doLechToiThieu)
             BatDauDaoVang();
-        }
     }
 
     void HanhDong_DangDaoVang()
     {
+        // Xoay mặt nhìn vào tâm cục vàng khi đào
+
+        if (moDangDao != null)
+            XoayMat(moDangDao.transform.position.x);
+
         demThoiGianDao -= Time.deltaTime;
         if (demThoiGianDao <= 0f)
         {
+            GiaiPhongMoHienTai();
             trangThaiHienTai = MinerState.VeNhaChinh;
-            Debug.Log("Đào xong! Đang vác " + luongVangMangTheo + " vàng về nhà chính.");
         }
     }
 
@@ -80,28 +123,21 @@ public class Sevirtor : MonoBehaviour
         if (DiemNhaChinh == null) return;
 
         XoayMat(DiemNhaChinh.position.x);
-        transform.position = Vector3.MoveTowards(transform.position, DiemNhaChinh.position, tocDoDiChuyen * Time.deltaTime);
+        transform.position = Vector3.MoveTowards(
+            transform.position, DiemNhaChinh.position, tocDoDiChuyen * Time.deltaTime);
 
-        // Lớp bảo vệ 1: Đo khoảng cách gần sát nhà thì cất vàng luôn
         if (Vector3.Distance(transform.position, DiemNhaChinh.position) <= doLechToiThieu)
-        {
             trangThaiHienTai = MinerState.CatVang;
-        }
     }
 
     void HanhDong_CatVang()
     {
         if (ResourceManager.Instance != null)
-        {
             ResourceManager.Instance.TangTien(luongVangMangTheo);
-            Debug.Log("Thợ mỏ đã cất vàng vào kho thành công! Tổng tiền tăng.");
-        }
         else
-        {
-            Debug.LogError("Không tìm thấy ResourceManager trên bản đồ!");
-        }
-        // Cất vàng xong lập tức đổi trạng thái để đi bộ ra bãi đào tiếp
-        trangThaiHienTai = MinerState.DiToiBaiVang;
+            Debug.LogError("Không tìm thấy ResourceManager!");
+
+        TimVaDangKyMo();
     }
 
     void BatDauDaoVang()
@@ -110,30 +146,26 @@ public class Sevirtor : MonoBehaviour
         {
             trangThaiHienTai = MinerState.DangDaoVang;
             demThoiGianDao = thoiGianDaoVang;
-            Debug.Log("Bắt đầu đào vàng!");
         }
     }
 
-    // Lớp bảo vệ 2: Chạm trực tiếp bằng Collider Trigger vật lý
     void OnTriggerEnter2D(Collider2D collision)
     {
         if (trangThaiHienTai == MinerState.DiToiBaiVang && collision.CompareTag("gold"))
-        {
             BatDauDaoVang();
-        }
 
         if (trangThaiHienTai == MinerState.VeNhaChinh && collision.CompareTag("Home"))
-        {
             trangThaiHienTai = MinerState.CatVang;
-        }
     }
+
+    void OnDisable() => GiaiPhongMoHienTai();
+    void OnDestroy() => GiaiPhongMoHienTai();
 
     void XoayMat(float xMucTieu)
     {
-        if (xMucTieu < transform.position.x)
-            transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
-        else
-            transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+        float scaleX = Mathf.Abs(transform.localScale.x);
+        transform.localScale = new Vector3(
+            xMucTieu < transform.position.x ? -scaleX : scaleX,
+            transform.localScale.y, transform.localScale.z);
     }
-
 }

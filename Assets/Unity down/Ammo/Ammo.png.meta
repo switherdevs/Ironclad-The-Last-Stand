@@ -115,13 +115,13 @@ TextureImporter:
       name: Ammo_0
       rect:
         serializedVersion: 2
-        x: 64
-        y: 128
-        width: 118
-        height: 506
+        x: 0
+        y: 1184
+        width: 768
+        height: 224
       alignment: 0
       pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      border: {x: 0, y: 15, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
@@ -137,13 +137,13 @@ TextureImporter:
       name: Ammo_1
       rect:
         serializedVersion: 2
-        x: 257
-        y: 131
-        width: 178
-        height: 492
+        x: 0
+        y: 956
+        width: 768
+        height: 214
       alignment: 0
       pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      border: {x: 0, y: 40, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
@@ -159,10 +159,10 @@ TextureImporter:
       name: Ammo_2
       rect:
         serializedVersion: 2
-        x: 506
-        y: 157
-        width: 249
-        height: 463
+        x: 0
+        y: 641
+        width: 768
+        height: 281
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -181,10 +181,10 @@ TextureImporter:
       name: Ammo_3
       rect:
         serializedVersion: 2
-        x: 820
-        y: 259
-        width: 233
-        height: 235
+        x: 0
+        y: 325
+        width: 768
+        height: 281
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -203,10 +203,10 @@ TextureImporter:
       name: Ammo_4
       rect:
         serializedVersion: 2
-        x: 1126
-        y: 60
-        width: 219
-        height: 633
+        x: 0
+        y: 24
+        width: 768
+        height: 281
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -225,7 +225,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: a138e524217956e4d8aaffd520cdbf19
     internalID: 0
     vertices: []
     indices: 
