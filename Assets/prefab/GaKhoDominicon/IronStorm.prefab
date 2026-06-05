@@ -234,6 +234,7 @@ MonoBehaviour:
   DolechHangY: 0.3
   vungBoxPhongThu: {fileID: 7942286887352987862, guid: 43e938c73a2cad44e9d19025d21e3afb, type: 3}
   tocDoHanhQuan: 15
+  soVienLoatNay: 1
 --- !u!114 &6395516811327084429
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -964,7 +965,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5805503335785621624, guid: 596b58aa7b74662438975e244c49064d, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.05643949
+      value: 0.067185275
       objectReference: {fileID: 0}
     - target: {fileID: 5805503335785621624, guid: 596b58aa7b74662438975e244c49064d, type: 3}
       propertyPath: m_LocalRotation.x
@@ -972,11 +973,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5805503335785621624, guid: 596b58aa7b74662438975e244c49064d, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.99840605
+      value: 0.9977405
       objectReference: {fileID: 0}
     - target: {fileID: 5805503335785621624, guid: 596b58aa7b74662438975e244c49064d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 173.529
+      value: 172.295
       objectReference: {fileID: 0}
     - target: {fileID: 7357629115649176072, guid: 596b58aa7b74662438975e244c49064d, type: 3}
       propertyPath: m_SortingOrder

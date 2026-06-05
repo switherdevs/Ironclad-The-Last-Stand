@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -29,14 +30,16 @@ public class LoadScene : MonoBehaviour
     [SerializeField] public Object scene2;
     [SerializeField] public Object Menu;
     [SerializeField] public Object UpdateBase;
-
+    [SerializeField] public GameObject pauGames;
+    private bool isPaused = false;
     void Start()
     {
-        if (BanThuaGame != null) BanThuaGame.SetActive(false);
-        if (Wingame != null) Wingame.SetActive(false);
+       if(pauGames != null) pauGames.SetActive(false);
+       BanThuaGame.SetActive(false);
+       Wingame.SetActive(false);
 
-        if (mainMenuUI != null) mainMenuUI.SetActive(true);
-        if (bangChonMapUI != null) bangChonMapUI.SetActive(false);
+       if(mainMenuUI != null) mainMenuUI.SetActive(true);
+       if (bangChonMapUI != null) bangChonMapUI.SetActive(false);
     }
 
     // --- 1. LUỒNG MỞ BẢNG CHỌN MAP (ẨN MENU -> HIỆN MAP) ---
@@ -86,8 +89,44 @@ public class LoadScene : MonoBehaviour
     public void TryAgain() { SceneManager.LoadScene(scene1.name); Time.timeScale = 1; }
     public void VeMenu() { SceneManager.LoadScene(Menu.name); Time.timeScale = 1; }
     private void FixedUpdate() { ThuaGame(); WinGame(); }
-    private void ThuaGame() { if (Tayperer.skibidi != null && Tayperer.skibidi.GameOver) BanThuaGame.SetActive(true); }
-    public void WinGame() { if (ChaosDirector.instance != null && ChaosDirector.instance.WinGame) Wingame.SetActive(true); }
-    public void Nextmap() { SceneManager.LoadScene(scene2.name); Time.timeScale = 1; }
-    public void Updates() { SceneManager.LoadScene(UpdateBase.name); Time.timeScale = 1; }
+    private void ThuaGame() {
+        if (Tayperer.skibidi != null && Tayperer.skibidi.GameOver) 
+            BanThuaGame.SetActive(true); 
+    }
+    public void WinGame() { 
+        if (ChaosDirector.instance != null && ChaosDirector.instance.WinGame) 
+            Wingame.SetActive(true); 
+    }
+    public void Nextmap() { 
+        SceneManager.LoadScene(scene2.name); 
+        Time.timeScale = 1;
+    }
+    public void Updates() { 
+        SceneManager.LoadScene(UpdateBase.name);
+        Time.timeScale = 1; 
+    }
+    public void Resume()
+    {
+        pauGames.SetActive(false);
+        Time.timeScale = 1;
+        isPaused = false;
+    }
+    
+    public void pausegame()
+    {
+        if (!pauGames.activeInHierarchy)
+        {
+            pauGames.SetActive(true);
+        }
+        else pauGames.SetActive(false);
+    }
+
+    public void TogglePauseGame()
+    {
+        isPaused = !isPaused;
+
+        Time.timeScale = isPaused ? 0f : 1f;
+
+    }
+
 }

@@ -51,7 +51,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TamBan: 200
-  soDanBan: 0.5
+  soDanBan: 0.75
   satThuong: 3
   DiemBan: {fileID: 2004108194799325827}
   prefabDanNho: {fileID: 5603226188732681372, guid: df6f67a729046c64eafe9fd29744a575, type: 3}
@@ -772,7 +772,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8089108032486474258, guid: 5762fe66509a7644695fe62b1e25eea4, type: 3}
       propertyPath: m_SortingOrder
-      value: 2
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: -8065550675819560793, guid: 5762fe66509a7644695fe62b1e25eea4, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1096,7 +1096,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8567469889307049261, guid: 5762fe66509a7644695fe62b1e25eea4, type: 3}
       propertyPath: m_SortingOrder
-      value: 25
+      value: 26
       objectReference: {fileID: 0}
     - target: {fileID: 9089696665922693603, guid: 5762fe66509a7644695fe62b1e25eea4, type: 3}
       propertyPath: m_LocalPosition.x

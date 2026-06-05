@@ -1,3 +1,4 @@
+using UnityEditor.Timeline;
 using UnityEngine;
 
 public class NhanVat1Controller : MonoBehaviour
@@ -21,8 +22,11 @@ public class NhanVat1Controller : MonoBehaviour
     private bool daDenViTriThu = false;
     private Transform ThayDich; // Đây chính là mucTieuQuai của Nhân vật 1
     private float HoiChieu = 0f;
+    [SerializeField]
+    private int soVienLoatNay = 1;
 
     private Animator Khogark_animatior;
+    private Vector3 viTriKhungHinhTruoc;
     void Start()
     {
         Khogark_animatior = GetComponentInChildren<Animator>();
@@ -47,7 +51,13 @@ public class NhanVat1Controller : MonoBehaviour
         }
 
         bool dangDungBan = false;
+        if (Khogark_animatior != null)
+        {
+            bool dangDiChuyen = transform.position != viTriKhungHinhTruoc;
 
+            Khogark_animatior.SetBool("isMoving", dangDiChuyen);
+        }
+        viTriKhungHinhTruoc = transform.position;
         // 2. XỬ LÝ CHIẾN ĐẤU VÀ TỰ CĂN LÀN Y KHI THẤY ĐỊCH
         if (ThayDich != null)
         {
@@ -187,29 +197,47 @@ public class NhanVat1Controller : MonoBehaviour
     {
         if (ThayDich == null || DiemBan == null || QuanLyDan.Instance == null || prefabDanNho == null) yield break;
 
-        // 1. Giật cò Animator đúng 1 lần duy nhất
-        Khogark_animatior.SetTrigger("Attack");
-        // 2. Tạo viên đạn bay đi (Giữ nguyên toàn bộ logic gốc của bạn ngài)
-        float huongBanX = (ThayDich.position.x < transform.position.x) ? 180f : 0f;
-        Quaternion rotation = Quaternion.Euler(0, 0, huongBanX);
+        // 1. BẬT TRẠNG THÁI BẮN (Nhân vật sẽ giữ nguyên tư thế giương súng, không bị giật hoạt ảnh)
+        Khogark_animatior.SetBool("isAttacking", true);
 
-        GameObject vienDan = QuanLyDan.Instance.LayDanTuKho(prefabDanNho);
-        if (vienDan != null)
+        // Giả sử mỗi lần kích hoạt, con lính sẽ bắn liên tiếp 3 viên đạn
+
+        for (int i = 0; i < soVienLoatNay; i++)
         {
-            vienDan.transform.position = DiemBan.position;
-            vienDan.transform.rotation = rotation;
-            vienDan.transform.SetParent(null);
-            vienDan.SetActive(true);
+            // Kiểm tra bảo hiểm nếu đang bắn mà quái bị chết thì dừng loạt đạn
+            if (ThayDich == null || !ThayDich.gameObject.activeInHierarchy) break;
 
-            DanNV1 scriptDan = vienDan.GetComponent<DanNV1>();
-            if (scriptDan != null)
+            // Tự động xoay mặt theo địch trước mỗi viên đạn
+            Xoaymat(ThayDich.position.x);
+
+            // LOGIC TẠO ĐẠN GỐC CỦA BẠN (Giữ nguyên hoàn toàn)
+            float huongBanX = (ThayDich.position.x < transform.position.x) ? 180f : 0f;
+            Quaternion rotation = Quaternion.Euler(0, 0, huongBanX);
+
+            GameObject vienDan = QuanLyDan.Instance.LayDanTuKho(prefabDanNho);
+            if (vienDan != null)
             {
-                scriptDan.satThuong = satThuong;
-                scriptDan.KichHoatVienDan();
+                vienDan.transform.position = DiemBan.position;
+                vienDan.transform.rotation = rotation;
+                vienDan.transform.SetParent(null);
+                vienDan.SetActive(true);
+
+                DanNV1 scriptDan = vienDan.GetComponent<DanNV1>();
+                if (scriptDan != null)
+                {
+                    scriptDan.satThuong = satThuong;
+                    scriptDan.KichHoatVienDan();
+                }
             }
+
+            // KHOẢNG CÁCH GIỮA CÁC VIÊN ĐẠN TRONG 1 LOẠT: Cách nhau 0.1 giây rất nhanh và mượt
+            yield return new WaitForSeconds(0.1f);
         }
 
-        // 3. ÉP ANIMATOR PHẢI ĐỢI: Nghỉ đúng bằng thời gian hồi chiêu rồi mới thoát ra
+        // 2. TẮT TRẠNG THÁI BẮN (Bắn xong cả loạt thì cho nhân vật hạ súng xuống)
+        Khogark_animatior.SetBool("isAttacking", false);
+
+        // 3. THỜI GIAN HỒI CHIÊU GIỮA CÁC LOẠT ĐẠN
         yield return new WaitForSeconds(1f / soDanBan);
     }
 
