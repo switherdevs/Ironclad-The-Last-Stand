@@ -59,6 +59,7 @@ MonoBehaviour:
   DolechHangY: 0.3
   vungBoxPhongThu: {fileID: 7942286887352987862, guid: 43e938c73a2cad44e9d19025d21e3afb, type: 3}
   tocDoHanhQuan: 20
+  soVienLoatNay: 1
 --- !u!70 &2055981072999916834
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -174,6 +175,7 @@ MonoBehaviour:
   bangSatThuongChung: {fileID: 11400000, guid: a60a65e6a8b057b4ea1e9fc841c3d9bc, type: 2}
   ThanhMau: {fileID: 912487205477603797}
   maxHP: 20
+  Dead_ani: 5
 --- !u!1 &1579733531303239221
 GameObject:
   m_ObjectHideFlags: 0

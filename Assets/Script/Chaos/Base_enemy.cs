@@ -7,11 +7,12 @@ public abstract class BaseEnemy : MonoBehaviour
 
     [Header("--- BASE MOVEMENT ---")]
     [SerializeField] protected float moveSpeed = 5f;
-    [SerializeField] protected float keepDistance = 4f;
+    [SerializeField] protected float attackRange = 4f;
     [SerializeField] protected float leftMoveBias = 0.6f;
 
     [Header("--- DETECTION SETTINGS ---")]
     [SerializeField] protected float detectionRange = 8f;
+
     [Header("--- BASE HEALTH ---")]
     [SerializeField] protected int normalHP = 20;
 
@@ -19,6 +20,7 @@ public abstract class BaseEnemy : MonoBehaviour
     [SerializeField] protected float attackCooldown = 3f;
     [SerializeField] protected float projectileSpeed = 10f;
     [SerializeField] protected GameObject projectilePrefab;
+    public Health_chaos deads;
 
     protected EnemyState currentState = EnemyState.Chasing;
     protected Transform targetTransform;
@@ -36,6 +38,12 @@ public abstract class BaseEnemy : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+
+        // SỬA TẠI ĐÂY: Tự động quét và lấy script Health_chaos trên chính nó hoặc lớp con để tránh lỗi quên kéo thả ngoài Inspector
+        if (deads == null)
+        {
+            deads = GetComponent<Health_chaos>();
+        }
     }
 
     protected virtual void Start()
@@ -52,12 +60,9 @@ public abstract class BaseEnemy : MonoBehaviour
 
     protected virtual void FixedUpdate()
     {
-        if (Tayperer.skibidi != null && Tayperer.skibidi.GameOver) return;
-
         if (rb == null) return;
         if (rb.IsSleeping()) rb.WakeUp();
 
-        // Quét tìm mục tiêu có phân cấp ưu tiên và GIỚI HẠN TẦM
         FindPriorityTarget();
 
         if (currentState == EnemyState.Holding || currentState == EnemyState.Attacking)
@@ -81,21 +86,17 @@ public abstract class BaseEnemy : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Thuật toán ưu tiên kết hợp bộ lọc tầm quét tối đa (detectionRange)
-    /// </summary>
     protected void FindPriorityTarget()
     {
         Vector2 currentPosition = transform.position;
 
-        // ƯU TIÊN 1: Quét mục tiêu "Sannha" xem có con nào lọt vào tầm quét không
         GameObject[] sannhaTargets = GameObject.FindGameObjectsWithTag(TAG_SAN_NHA);
         if (sannhaTargets != null && sannhaTargets.Length > 0)
         {
             targetTransform = GetNearestInDetectionRange(sannhaTargets, currentPosition);
             if (targetTransform != null) return;
         }
-        // ƯU TIÊN 2: Nếu không có Sannha trong tầm, quét "Phechinh" trong tầm
+
         GameObject[] phechinhTargets = GameObject.FindGameObjectsWithTag(TAG_PHE_CHINH);
         if (phechinhTargets != null && phechinhTargets.Length > 0)
         {
@@ -103,11 +104,9 @@ public abstract class BaseEnemy : MonoBehaviour
             return;
         }
 
-        // Không có ai lọt vào tầm quét cả
         targetTransform = null;
     }
 
-    // Hàm lọc lấy Object gần nhất NHƯNG phải nhỏ hơn hoặc bằng detectionRange
     private Transform GetNearestInDetectionRange(GameObject[] group, Vector2 currentPos)
     {
         GameObject nearest = null;
@@ -129,6 +128,14 @@ public abstract class BaseEnemy : MonoBehaviour
 
     protected virtual void HandleMovement()
     {
+        // SỬA TẠI ĐÂY: Thêm điều kiện kiểm tra an toàn (deads != null) trước khi đọc biến Deadre. 
+        // Nếu quái chết (Deadre == true), đứng khựng vận tốc về 0 và thoát hàm không cho di chuyển tiếp.
+        if (deads != null && deads.Deadre)
+        {
+            rb.linearVelocity = Vector2.zero;
+            return;
+        }
+
         Vector2 targetVelocity = Vector2.zero;
 
         if (targetTransform != null)
@@ -137,15 +144,9 @@ public abstract class BaseEnemy : MonoBehaviour
             float distance = directionToTarget.magnitude;
             Vector2 normalDir = directionToTarget.normalized;
 
-            float stopThreshold = 0.2f;
-
-            if (distance > keepDistance + stopThreshold)
+            if (distance > attackRange)
             {
                 targetVelocity = normalDir * moveSpeed;
-            }
-            else if (distance < keepDistance - stopThreshold)
-            {
-                targetVelocity = -normalDir * (moveSpeed * 1.2f);
             }
             else
             {
@@ -155,7 +156,6 @@ public abstract class BaseEnemy : MonoBehaviour
         }
         else
         {
-            // Nếu không có mục tiêu lọt vào tầm quét -> Cứ lững thững hành quân qua trái màn hình
             targetVelocity = Vector2.left * moveSpeed * leftMoveBias;
         }
 
@@ -173,15 +173,20 @@ public abstract class BaseEnemy : MonoBehaviour
 
     protected virtual void HandleStateTransition()
     {
+        // SỬA TẠI ĐÂY: Chặn hoàn toàn việc chuyển trạng thái tấn công nếu quái đã chết
+        if (deads != null && deads.Deadre) return;
+
         if (currentState == EnemyState.Chasing && Time.time >= nextAttackTime && targetTransform != null)
         {
             float distanceToTarget = Vector2.Distance(transform.position, targetTransform.position);
-            if (distanceToTarget <= (keepDistance + 0.5f))
+
+            if (distanceToTarget <= attackRange)
             {
                 ExecuteAttackPattern();
             }
         }
     }
+
     public virtual void TakeDamage(int damage)
     {
         currentHP -= damage;
@@ -208,6 +213,6 @@ public abstract class BaseEnemy : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, detectionRange);
 
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, keepDistance);
+        Gizmos.DrawWireSphere(transform.position, attackRange);
     }
 }

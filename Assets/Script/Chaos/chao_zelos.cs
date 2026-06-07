@@ -7,27 +7,38 @@ public class EnemyMelee : BaseEnemy
     [SerializeField] private GameObject attackHitboxObject;
     [SerializeField] private float hitboxActiveDuration = 0.2f;
 
+    // ── [ANIMATION] Khai báo Animator ───────────────────────────────────────
+    private Animator ChaoZelos_animator;
+    private Vector3 viTriKhungHinhTruoc;
+    // ────────────────────────────────────────────────────────────────────────
+
     protected override void Start()
     {
-        base.Start(); // Gọi Start của lớp Base để cài đặt máu và vật lý
+        base.Start();
 
-        // Ẩn hitbox lúc đầu game
         if (attackHitboxObject != null)
-        {
             attackHitboxObject.SetActive(false);
-        }
 
-        // Ép khoảng cách giữ chân của quái cận chiến về sát Player
-        keepDistance = 1.2f;
+        attackRange = 1.2f;
+
+        // ── [ANIMATION] Lấy Animator từ children ────────────────────────────
+        ChaoZelos_animator = GetComponentInChildren<Animator>();
+        // ────────────────────────────────────────────────────────────────────
     }
 
     protected override void HandleMovement()
     {
-        // Chạy logic di chuyển tiếp cận mục tiêu của lớp Base
         base.HandleMovement();
-
-        // Xoay hướng của Hitbox cận chiến luôn ở phía trước mặt quái dựa theo Sprite đang lật hướng nào
         RotateHitbox(GetLookDirection());
+
+        // ── [ANIMATION] Cập nhật isWalking theo vị trí thực tế ──────────────
+        if (ChaoZelos_animator != null)
+        {
+            bool dangDiChuyen = transform.position != viTriKhungHinhTruoc;
+            ChaoZelos_animator.SetBool("ChaoZelos_isWalking", dangDiChuyen);
+        }
+        viTriKhungHinhTruoc = transform.position;
+        // ────────────────────────────────────────────────────────────────────
     }
 
     private void RotateHitbox(float lookDir)
@@ -46,26 +57,25 @@ public class EnemyMelee : BaseEnemy
 
     protected override void ExecuteAttackPattern()
     {
-        // Chuyển trạng thái để đứng im vung kiếm
         currentState = EnemyState.Attacking;
         StartCoroutine(TriggerHitboxRoutine());
     }
 
     private IEnumerator TriggerHitboxRoutine()
     {
+        // ── [ANIMATION] Kích hoạt animation tấn công cận chiến ──────────────
+        if (ChaoZelos_animator != null)
+            ChaoZelos_animator.SetTrigger("ChaoZelos_doAttack");
+        // ────────────────────────────────────────────────────────────────────
+
         if (attackHitboxObject != null)
-        {
             attackHitboxObject.SetActive(true);
-        }
 
         yield return new WaitForSeconds(hitboxActiveDuration);
 
         if (attackHitboxObject != null)
-        {
             attackHitboxObject.SetActive(false);
-        }
 
-        // Kết thúc vung kiếm, đưa vào cooldown và hồi phục di chuyển
         nextAttackTime = Time.time + attackCooldown;
         currentState = EnemyState.Chasing;
     }

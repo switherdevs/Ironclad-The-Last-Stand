@@ -9,8 +9,8 @@ public class NhanVat4 : MonoBehaviour
     public GameObject prefabDanMobi;
 
     [Header("Hiệu ứng nạp năng lượng")]
-    public GameObject hieuUngNapNangLuong; // Kéo Prefab/GameObject ánh sáng vào đây
-    public float thoiGianNapNangLuong = 5f; // Đổi thành 5 giây theo yêu cầu
+    public GameObject hieuUngNapNangLuong;
+    public float thoiGianNapNangLuong = 5f;
 
     [Header("Chỉ số di chuyển bám làn")]
     public float tocDoDiChuyenY = 4f;
@@ -24,10 +24,19 @@ public class NhanVat4 : MonoBehaviour
     private bool daDenViTriThu = false;
     private Transform mucTieuQuai;
     private float thoiGianBanTiepTheo = 0f;
-    private bool dangTrongLuongBan = false; // Biến chặn trùng lặp Coroutine
+    private bool dangTrongLuongBan = false;
+
+    // ── [ANIMATION] Khai báo Animator ───────────────────────────────────────
+    private Animator DeadIron_animator;
+    private Vector3 viTriKhungHinhTruoc;
+    // ────────────────────────────────────────────────────────────────────────
 
     void Start()
     {
+        // ── [ANIMATION] Lấy Animator từ children ────────────────────────────
+        DeadIron_animator = GetComponentInChildren<Animator>();
+        // ────────────────────────────────────────────────────────────────────
+
         if (vungBoxPhongThu != null)
         {
             viTriCoDinh = LayViTriNgauNhienTrongBox(vungBoxPhongThu);
@@ -38,7 +47,6 @@ public class NhanVat4 : MonoBehaviour
             daDenViTriThu = true;
         }
 
-        // Đảm bảo ban đầu hiệu ứng nạp năng lượng luôn tắt
         if (hieuUngNapNangLuong != null) hieuUngNapNangLuong.SetActive(false);
     }
 
@@ -47,8 +55,24 @@ public class NhanVat4 : MonoBehaviour
         if (mucTieuQuai == null || !mucTieuQuai.gameObject.activeInHierarchy)
         {
             mucTieuQuai = null;
+            // ── [ANIMATION] Reset isShooting khi mất target giữa luồng bắn ──
+            if (!dangTrongLuongBan)
+            {
+                if (DeadIron_animator != null)
+                    DeadIron_animator.SetBool("DeadIron_isShooting", false);
+            }
+            // ──────────────────────────────────────────────────────────────
             TimMucTieuThongMinh();
         }
+
+        // ── [ANIMATION] Cập nhật isMoving theo vị trí thực tế ───────────────
+        if (DeadIron_animator != null)
+        {
+            bool dangDiChuyen = transform.position != viTriKhungHinhTruoc;
+            DeadIron_animator.SetBool("DeadIron_isMoving", dangDiChuyen);
+        }
+        viTriKhungHinhTruoc = transform.position;
+        // ────────────────────────────────────────────────────────────────────
 
         bool dangDungBan = false;
 
@@ -66,7 +90,6 @@ public class NhanVat4 : MonoBehaviour
                     DiChuyenTrungHangY();
                 }
 
-                // Điều kiện bắn: Thẳng hàng Y, trong tầm bắn X, hết thời gian hồi và CHƯA nằm trong luồng bắn nào
                 if (doLechYThucTe <= doLechHangY && khoangCachXThucTe <= TamBan)
                 {
                     XoayMat(mucTieuQuai.position.x);
@@ -79,40 +102,40 @@ public class NhanVat4 : MonoBehaviour
             }
         }
 
-        // Nếu không có quái hoặc đang bận nạp năng lượng/bắn thì không đi lùi về thủ
         if (!daDenViTriThu && !dangDungBan && !dangTrongLuongBan)
         {
             HanhQuanVaoViTri();
         }
     }
 
-    // Luồng xử lý nạp năng lượng và bắn tuần tự
     private System.Collections.IEnumerator LuongBanNapNangLuong()
     {
         dangTrongLuongBan = true;
 
-        // 1. Kích hoạt hiệu ứng ánh sáng nạp năng lượng (Animation tự reset chạy từ đầu)
         if (hieuUngNapNangLuong != null)
-        {
             hieuUngNapNangLuong.SetActive(true);
-        }
 
-        // 2. Chờ 5 giây nạp năng lượng
+        // ── [ANIMATION] Bật isShooting khi bắt đầu nạp năng lượng ──────────
+        // (DeadIron dùng animation "charge + fire" gộp chung trong isShooting)
+        if (DeadIron_animator != null)
+            DeadIron_animator.SetBool("DeadIron_isShooting", true);
+        // ────────────────────────────────────────────────────────────────────
+
         yield return new WaitForSeconds(thoiGianNapNangLuong);
 
-        // 3. Thực hiện bắn đạn plasma ra sau khi nạp đầy
-        if (mucTieuQuai != null) // Kiểm tra lại đề phòng quái chết trong 5 giây chờ
+        if (mucTieuQuai != null)
         {
             BanThienThachPooling();
         }
 
-        // 4. Bắn xong lập tức tắt hiệu ứng ánh sáng
         if (hieuUngNapNangLuong != null)
-        {
             hieuUngNapNangLuong.SetActive(false);
-        }
 
-        // 5. Đặt thời gian hồi cho phát bắn kế tiếp (Nếu muốn bắn liên tục không hồi thì bỏ dòng dưới)
+        // ── [ANIMATION] Tắt isShooting sau khi bắn xong ─────────────────────
+        if (DeadIron_animator != null)
+            DeadIron_animator.SetBool("DeadIron_isShooting", false);
+        // ────────────────────────────────────────────────────────────────────
+
         thoiGianBanTiepTheo = Time.time + 0.5f;
 
         dangTrongLuongBan = false;
@@ -132,7 +155,7 @@ public class NhanVat4 : MonoBehaviour
 
     void DiChuyenTrungHangY()
     {
-        if (mucTieuQuai == null || dangTrongLuongBan) return; // Không trượt Y khi đang đứng tụ năng lượng bắn
+        if (mucTieuQuai == null || dangTrongLuongBan) return;
         Vector3 viTriMucTieu = new Vector3(transform.position.x, mucTieuQuai.position.y, transform.position.z);
         transform.position = Vector3.MoveTowards(transform.position, viTriMucTieu, tocDoDiChuyenY * Time.deltaTime);
     }
@@ -230,7 +253,7 @@ public class NhanVat4 : MonoBehaviour
 
     void XoayMat(float xMucTieu)
     {
-        if (dangTrongLuongBan) return; // Khóa xoay hướng khi đang tụ pháo nạp năng lượng để tăng độ logic
+        if (dangTrongLuongBan) return;
         if (xMucTieu < transform.position.x)
             transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
         else
@@ -252,6 +275,14 @@ public class NhanVat4 : MonoBehaviour
             KhoaMucTieu marker = mucTieuQuai.GetComponent<KhoaMucTieu>();
             if (marker != null) marker.daBiKhoaMucTieu = false;
         }
+
+        // ── [ANIMATION] Reset animation khi bị disable ──────────────────────
+        if (DeadIron_animator != null)
+        {
+            DeadIron_animator.SetBool("DeadIron_isMoving", false);
+            DeadIron_animator.SetBool("DeadIron_isShooting", false);
+        }
+        // ────────────────────────────────────────────────────────────────────
     }
 
     private void OnDrawGizmosSelected()

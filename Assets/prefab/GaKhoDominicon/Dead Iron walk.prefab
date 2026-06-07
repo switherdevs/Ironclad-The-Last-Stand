@@ -561,6 +561,7 @@ MonoBehaviour:
   bangSatThuongChung: {fileID: 11400000, guid: a60a65e6a8b057b4ea1e9fc841c3d9bc, type: 2}
   ThanhMau: {fileID: 4798192230094738336}
   maxHP: 800
+  Dead_ani: 5
 --- !u!1 &8476792514699107856
 GameObject:
   m_ObjectHideFlags: 0

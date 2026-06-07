@@ -10,9 +10,37 @@ public class EnemyHolding : BaseEnemy
     [SerializeField] private float scalePerSecond = 0.5f;
     [SerializeField] private float maxScaleTime = 5f;
     [SerializeField] private int holdingHPMultiplier = 2;
-    [SerializeField] private float spawnOffsetDistance = 1.2f; // Khoảng cách đẩy điểm bắn ra trước mặt
+    [SerializeField] private float spawnOffsetDistance = 1.2f;
 
     private GameObject spawnedHoldingObj;
+
+    // ── [ANIMATION] Khai báo Animator ───────────────────────────────────────
+    private Animator WarpMarine_animator;
+    private Vector3 viTriKhungHinhTruoc;
+    // ────────────────────────────────────────────────────────────────────────
+
+    protected override void Start()
+    {
+        base.Start();
+
+        // ── [ANIMATION] Lấy Animator từ children ────────────────────────────
+        WarpMarine_animator = GetComponentInChildren<Animator>();
+        // ────────────────────────────────────────────────────────────────────
+    }
+
+    protected override void HandleMovement()
+    {
+        base.HandleMovement();
+
+        // ── [ANIMATION] Cập nhật isWalking theo vị trí thực tế ──────────────
+        if (WarpMarine_animator != null)
+        {
+            bool dangDiChuyen = transform.position != viTriKhungHinhTruoc;
+            WarpMarine_animator.SetBool("WarpMarine_isWalking", dangDiChuyen);
+        }
+        viTriKhungHinhTruoc = transform.position;
+        // ────────────────────────────────────────────────────────────────────
+    }
 
     protected override void ExecuteAttackPattern()
     {
@@ -28,7 +56,6 @@ public class EnemyHolding : BaseEnemy
 
         if (holdingObjectPrefab != null)
         {
-            // Spawn cục gồng năng lượng ngay trước mặt quái một chút
             Vector3 holdingSpawnPos = transform.position + new Vector3(GetLookDirection() * 0.5f, 0f, 0f);
             spawnedHoldingObj = Instantiate(holdingObjectPrefab, holdingSpawnPos, Quaternion.identity, transform);
 
@@ -38,6 +65,12 @@ public class EnemyHolding : BaseEnemy
                 holdingSR.sortingOrder = spriteRenderer.sortingOrder + 1;
             }
         }
+
+        // ── [ANIMATION] Bật isCharging khi bắt đầu nén năng lượng ──────────
+        // isCharging giữ nguyên suốt holdingDuration, đồng bộ với hiệu ứng scale
+        if (WarpMarine_animator != null)
+            WarpMarine_animator.SetBool("WarpMarine_isCharging", true);
+        // ────────────────────────────────────────────────────────────────────
 
         float elapsed = 0f;
         float scaleTimer = 0f;
@@ -54,6 +87,14 @@ public class EnemyHolding : BaseEnemy
             }
             yield return null;
         }
+
+        // ── [ANIMATION] Tắt isCharging, kích hoạt isShooting khi phóng ──────
+        if (WarpMarine_animator != null)
+        {
+            WarpMarine_animator.SetBool("WarpMarine_isCharging", false);
+            WarpMarine_animator.SetTrigger("WarpMarine_doShoot");
+        }
+        // ────────────────────────────────────────────────────────────────────
 
         currentState = EnemyState.Attacking;
 
@@ -75,7 +116,6 @@ public class EnemyHolding : BaseEnemy
 
         Vector2 fireDirection = ((Vector2)targetTransform.position - (Vector2)transform.position).normalized;
 
-        // 🔥 TỐI ƯU TỌA ĐỘ: Đẩy vị trí xuất phát ra trước mặt quái dựa theo hướng bắn thực tế
         Vector3 spawnPosition = transform.position + (Vector3)(fireDirection * spawnOffsetDistance);
 
         GameObject projectile = Instantiate(projectilePrefab, spawnPosition, Quaternion.identity);

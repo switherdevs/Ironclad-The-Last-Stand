@@ -23,14 +23,21 @@ public class Terminator : MonoBehaviour
     private Transform ThayDich;
     private float HoiChieu = 0f;
 
-    // --- ĐOẠN SỬA ĐỔI: THÊM BIẾN MỚI ĐỂ QUẢN LÝ BĂNG ĐẠN VÀ TỐC ĐỘ XẢ ĐẠN ---
-    public int soLuongDanTrongLoat = 5; // Số lượng viên đạn xả ra trong một loạt bắn trước khi nghỉ 3 giây
-    public float thoiGianCachNhauGiuaCacVien = 0.2f; // Tốc độ bắn giữa các viên đạn trong cùng một loạt (tính bằng giây)
+    public int soLuongDanTrongLoat = 5;
+    public float thoiGianCachNhauGiuaCacVien = 0.2f;
     private bool dangTrongThoiGianNghi = false;
-    // ---------------------------------------------------------------------
+
+    // ── [ANIMATION] Khai báo Animator ───────────────────────────────────────
+    private Animator Terminator_animator;
+    private Vector3 viTriKhungHinhTruoc;
+    // ────────────────────────────────────────────────────────────────────────
 
     void Start()
     {
+        // ── [ANIMATION] Lấy Animator từ children ────────────────────────────
+        Terminator_animator = GetComponentInChildren<Animator>();
+        // ────────────────────────────────────────────────────────────────────
+
         if (vungBoxPhongThu != null)
         {
             viTriCoDinh = LayViTriNgauNhienTrongBox(vungBoxPhongThu);
@@ -47,6 +54,15 @@ public class Terminator : MonoBehaviour
         if (Tayperer.skibidi != null && Tayperer.skibidi.GameOver) return;
 
         TimKiemKeDich();
+
+        // ── [ANIMATION] Cập nhật isMoving theo vị trí thực tế ───────────────
+        if (Terminator_animator != null)
+        {
+            bool dangDiChuyen = transform.position != viTriKhungHinhTruoc;
+            Terminator_animator.SetBool("Terminator_isMoving", dangDiChuyen);
+        }
+        viTriKhungHinhTruoc = transform.position;
+        // ────────────────────────────────────────────────────────────────────
 
         if (ThayDich != null)
         {
@@ -65,14 +81,11 @@ public class Terminator : MonoBehaviour
                 {
                     Xoaymat(ThayDich.position.x);
 
-                    // --- ĐOẠN SỬA ĐỔI: KÍCH HOẠT CHU KỲ XẢ ĐẠN THEO LOẠT LIÊN TỤC RỒI MỚI NGHỈ ---
                     if (!dangTrongThoiGianNghi && Time.time >= HoiChieu)
                     {
                         StartCoroutine(ChuKyXaDanVaNguongBan());
-                        // Tính toán hồi chiêu tổng dựa trên biến tốc độ bắn gốc soDanBan
                         HoiChieu = Time.time + 1f / soDanBan;
                     }
-                    // -------------------------------------------------------------------------
 
                     return;
                 }
@@ -85,24 +98,30 @@ public class Terminator : MonoBehaviour
         }
     }
 
-    // --- ĐOẠN SỬA ĐỔI: IEMUNERATOR XỬ LÝ XẢ LIÊN TỤC THEO TỐC ĐỘ RỒI MỚI NGỪNG 3 GIÂY ---
     IEnumerator ChuKyXaDanVaNguongBan()
     {
-        dangTrongThoiGianNghi = true; // Khóa trạng thái để không bị gọi trùng lặp nhiều lần
+        dangTrongThoiGianNghi = true;
 
-        // Vòng lặp bắn liên tục hết số lượng đạn quy định trong loạt
+        // ── [ANIMATION] Bật trạng thái bắn ──────────────────────────────────
+        if (Terminator_animator != null)
+            Terminator_animator.SetBool("Terminator_isShooting", true);
+        // ────────────────────────────────────────────────────────────────────
+
         for (int i = 0; i < soLuongDanTrongLoat; i++)
         {
-            TanCong(); // Bắn 1 viên
-            yield return new WaitForSeconds(thoiGianCachNhauGiuaCacVien); // Chờ một khoảng thời gian ngắn theo tốc độ bắn quy định
+            TanCong();
+            yield return new WaitForSeconds(thoiGianCachNhauGiuaCacVien);
         }
 
-        // Sau khi xả xong toàn bộ băng đạn, bắt đầu đếm ngược thời gian ngừng bắn
+        // ── [ANIMATION] Tắt trạng thái bắn ──────────────────────────────────
+        if (Terminator_animator != null)
+            Terminator_animator.SetBool("Terminator_isShooting", false);
+        // ────────────────────────────────────────────────────────────────────
+
         yield return new WaitForSeconds(3f);
 
-        dangTrongThoiGianNghi = false; // Mở khóa để chuẩn bị cho loạt xả đạn tiếp theo
+        dangTrongThoiGianNghi = false;
     }
-    // ---------------------------------------------------------------------------------
 
     void HanhQuanVaoViTri()
     {
@@ -152,7 +171,14 @@ public class Terminator : MonoBehaviour
         }
 
         if (dichGanNhat != null) ThayDich = dichGanNhat.transform;
-        else ThayDich = null;
+        else
+        {
+            ThayDich = null;
+            // ── [ANIMATION] Reset isShooting khi không còn địch ─────────────
+            if (Terminator_animator != null)
+                Terminator_animator.SetBool("Terminator_isShooting", false);
+            // ──────────────────────────────────────────────────────────────
+        }
     }
 
     void Xoaymat(float xMucTieu)
@@ -188,5 +214,17 @@ public class Terminator : MonoBehaviour
     {
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(transform.position, TamBan);
+    }
+
+    private void OnDisable()
+    {
+        dangTrongThoiGianNghi = false;
+        // ── [ANIMATION] Reset animation khi bị disable ──────────────────────
+        if (Terminator_animator != null)
+        {
+            Terminator_animator.SetBool("Terminator_isMoving", false);
+            Terminator_animator.SetBool("Terminator_isShooting", false);
+        }
+        // ────────────────────────────────────────────────────────────────────
     }
 }

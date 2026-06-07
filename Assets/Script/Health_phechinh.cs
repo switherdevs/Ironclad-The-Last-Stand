@@ -1,10 +1,11 @@
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
 
 public class Health_phechinh : MonoBehaviour
 {
     [Header("--- KẾT NỐI SCRIPTABLE OBJECT DUY NHẤT ---")]
-    public HeThongSatThuongData bangSatThuongChung; // Kéo file ScriptableObject duy nhất của hệ thống vào đây
+    public HeThongSatThuongData bangSatThuongChung;
 
     [Header("--- KẾT NỐI UI THANH MÁU ---")]
     public Slider ThanhMau;
@@ -13,6 +14,14 @@ public class Health_phechinh : MonoBehaviour
     [SerializeField]
     private int maxHP = 20;
     private int currentHp;
+    [SerializeField]
+    private float Dead_ani;
+    private Animator animator;
+
+    private void Awake()
+    {
+        animator = GetComponentInChildren<Animator>();
+    }
 
     void Start()
     {
@@ -45,7 +54,6 @@ public class Health_phechinh : MonoBehaviour
 
     void Die()
     {
-        // --- GIỮ NGUYÊN CƠ CHẾ TỰ ĐỘNG THU HỒI SLOT LÍNH CỦA NHÓM BẠN ---
         if (ResourceManager.Instance != null)
         {
             string tenLinhQuetDuoc = gameObject.name.ToLower();
@@ -80,39 +88,50 @@ public class Health_phechinh : MonoBehaviour
                 Debug.LogWarning($"[CẢNH BÁO] Không tìm thấy từ khóa nhận diện trong tên: '{gameObject.name}' để thu hồi slot!");
             }
         }
-        // ---------------------------------------------------------------------
 
+        // SỬA TẠI ĐÂY: Đẩy lệnh set animation chết ra khỏi ngoặc if để luôn luôn chạy khi Die()
+        if (animator != null)
+        {
+            animator.SetBool("die", true);
+        }
+
+        // SỬA TẠI ĐÂY: Ẩn thanh máu ngay lập tức khi bắt đầu chết để không bị hiện đè lên xác
+        if (ThanhMau != null)
+        {
+            ThanhMau.gameObject.SetActive(false);
+        }
+
+        StartCoroutine(Out());
+    }
+
+    IEnumerator Out()
+    {
+        yield return new WaitForSeconds(Dead_ani);
         gameObject.SetActive(false);
     }
 
-    // LUỒNG HOẠT ĐỘNG ĐÃ ĐỒNG BỘ: Tự động lọc sát thương nhận vào từ phe Chaos
     public void OnTriggerEnter2D(Collider2D collision)
     {
-        // Kiểm tra nếu trúng đạn hoặc kiếm của phe dị giáo (Tag: SatthuongQ)
+        // SỬA TẠI ĐÂY: Chặn không nhận thêm sát thương và không bật lại thanh máu nếu máu đã hết (đang trong trạng thái chết)
+        if (currentHp <= 0) return;
+
         if (collision.CompareTag("SatthuongQ"))
         {
             DamageSource nguonDanChaos = collision.GetComponent<DamageSource>();
 
             if (nguonDanChaos != null && bangSatThuongChung != null)
             {
-                // 1. Lấy tên chủng lính Chaos bắn viên đạn/vung kiếm này (Ví dụ: "Chaos zelos")
                 string chungLoaiDanChaos = nguonDanChaos.tenChungLinhBan;
-
-                // 2. Tra cứu vào ScriptableObject duy nhất để lấy số đam tương ứng của con quái đó
                 int damNhanVe = bangSatThuongChung.LaySatThuongTuChung(chungLoaiDanChaos);
-
                 Debug.Log($"🛡️ Phe chính trúng đạn từ chủng Chaos: {chungLoaiDanChaos} | Hệ thống lọc ra Đam: {damNhanVe}");
-
-                // 3. Thực hiện trừ máu
                 TakeDamage(damNhanVe);
             }
             else
             {
-                // Sát thương dự phòng nếu bạn chưa kịp gán tên chủng cho viên đạn/kiếm của quái
                 TakeDamage(5);
             }
 
-            if (ThanhMau != null)
+            if (ThanhMau != null && currentHp > 0)
             {
                 ThanhMau.gameObject.SetActive(true);
             }
@@ -121,7 +140,19 @@ public class Health_phechinh : MonoBehaviour
 
     private void OnEnable()
     {
+        // SỬA TẠI ĐÂY: Thêm điều kiện if bảo hiểm để tránh lỗi crash NullReference khi lấy dữ liệu Animator từ Object Pool
+        if (animator != null)
+        {
+            animator.SetBool("die", false);
+        }
+        else
+        {
+            animator = GetComponentInChildren<Animator>();
+            if (animator != null) animator.SetBool("die", false);
+        }
+
         currentHp = maxHP;
+
         if (ThanhMau != null)
         {
             ThanhMau.value = maxHP;

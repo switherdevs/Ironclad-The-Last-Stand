@@ -7,8 +7,8 @@ public class Sevirtor : MonoBehaviour
     [Header("Trạng thái hiện tại")]
     public MinerState trangThaiHienTai = MinerState.DiToiBaiVang;
 
-    [Header("Cấu hình vị trí")]
-    public Transform DiemNhaChinh;
+    // SỬA TẠI ĐÂY: Chuyển sang biến ẩn (private) để loại bỏ gán bằng tay ngoài Inspector, tránh bị kẹt dữ liệu cũ của Prefab
+    private Transform DiemNhaChinh;
 
     [Header("Chỉ số đào vàng")]
     public float tocDoDiChuyen = 3f;
@@ -19,12 +19,17 @@ public class Sevirtor : MonoBehaviour
     private float doLechToiThieu = 0.15f;
 
     private GoldMine moDangDao = null;
-    private int indexSlotCuaTho = -1;       // Index slot thợ này đang giữ
+    private int indexSlotCuaTho = -1;
 
     void Start()
     {
-        if (DiemNhaChinh == null)
-            DiemNhaChinh = GameObject.FindWithTag("Home")?.transform;
+        // SỬA TẠI ĐÂY: Loại bỏ điều kiện kiểm tra null cũ, ép buộc mọi con lính khi spawn ra phải tự tìm tag "Home" hiện tại của Map
+        GameObject nhaChinhmOnMap = GameObject.FindWithTag("Home");
+        if (nhaChinhmOnMap != null)
+        {
+            DiemNhaChinh = nhaChinhmOnMap.transform;
+        }
+
         TimVaDangKyMo();
     }
 
@@ -93,7 +98,6 @@ public class Sevirtor : MonoBehaviour
     {
         if (moDangDao == null) { TimVaDangKyMo(); return; }
 
-        // Lấy vị trí slot realtime (theo cục vàng nếu nó di chuyển)
         Vector3 viTriSlot = moDangDao.LayViTriSlot(indexSlotCuaTho);
 
         XoayMat(viTriSlot.x);
@@ -105,8 +109,6 @@ public class Sevirtor : MonoBehaviour
 
     void HanhDong_DangDaoVang()
     {
-        // Xoay mặt nhìn vào tâm cục vàng khi đào
-
         if (moDangDao != null)
             XoayMat(moDangDao.transform.position.x);
 

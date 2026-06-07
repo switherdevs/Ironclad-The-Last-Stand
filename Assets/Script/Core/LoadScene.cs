@@ -28,6 +28,7 @@ public class LoadScene : MonoBehaviour
     [Header("Cấu hình Scenes")]
     [SerializeField] public Object scene1;
     [SerializeField] public Object scene2;
+    [SerializeField] public Object scene3;
     [SerializeField] public Object Menu;
     [SerializeField] public Object UpdateBase;
     [SerializeField] public GameObject pauGames;
@@ -97,10 +98,16 @@ public class LoadScene : MonoBehaviour
         if (ChaosDirector.instance != null && ChaosDirector.instance.WinGame) 
             Wingame.SetActive(true); 
     }
-    public void Nextmap() { 
+    public void Map2() { 
         SceneManager.LoadScene(scene2.name); 
         Time.timeScale = 1;
     }
+    public void Map3()
+    {
+        SceneManager.LoadScene(scene3.name);
+        Time.timeScale = 1;
+    }
+
     public void Updates() { 
         SceneManager.LoadScene(UpdateBase.name);
         Time.timeScale = 1; 

@@ -4,26 +4,62 @@ using System.Collections;
 public class EnemyBurst : BaseEnemy
 {
     [Header("--- BURST LINE SETTINGS ---")]
-    [SerializeField] private float burstDelay = 0.15f; // Thời gian giãn cách giữa mỗi viên (giây)
-    [SerializeField] private float spawnOffsetDistance = 1.0f; // Đẩy điểm bắn ra trước mặt
+    [SerializeField] private float burstDelay = 0.15f;
+    [SerializeField] private float spawnOffsetDistance = 1.0f;
+
+    // ── [ANIMATION] Khai báo Animator ───────────────────────────────────────
+    private Animator ChaosTerminator_animator;
+    private Vector3 viTriKhungHinhTruoc;
+    // ────────────────────────────────────────────────────────────────────────
+
+    protected override void Start()
+    {
+        base.Start();
+
+        // ── [ANIMATION] Lấy Animator từ children ────────────────────────────
+        ChaosTerminator_animator = GetComponentInChildren<Animator>();
+        // ────────────────────────────────────────────────────────────────────
+    }
+
+    protected override void HandleMovement()
+    {
+        base.HandleMovement();
+
+        // ── [ANIMATION] Cập nhật isWalking theo vị trí thực tế ──────────────
+        if (ChaosTerminator_animator != null)
+        {
+            bool dangDiChuyen = transform.position != viTriKhungHinhTruoc;
+            ChaosTerminator_animator.SetBool("ChaosTerminator_isWalking", dangDiChuyen);
+        }
+        viTriKhungHinhTruoc = transform.position;
+        // ────────────────────────────────────────────────────────────────────
+    }
 
     protected override void ExecuteAttackPattern()
     {
         currentState = EnemyState.Attacking;
-        // Sử dụng Coroutine để bắn tuần tự theo thời gian
         StartCoroutine(BurstAttackRoutine());
     }
 
     private IEnumerator BurstAttackRoutine()
     {
+        // ── [ANIMATION] Bật isShooting khi bắt đầu loạt bắn ────────────────
+        if (ChaosTerminator_animator != null)
+            ChaosTerminator_animator.SetBool("ChaosTerminator_isShooting", true);
+        // ────────────────────────────────────────────────────────────────────
+
         for (int i = 0; i < 3; i++)
         {
             if (targetTransform != null)
-            {
                 FireSingleLinearProjectile();
-            }
+
             yield return new WaitForSeconds(burstDelay);
         }
+
+        // ── [ANIMATION] Tắt isShooting sau khi bắn xong loạt ───────────────
+        if (ChaosTerminator_animator != null)
+            ChaosTerminator_animator.SetBool("ChaosTerminator_isShooting", false);
+        // ────────────────────────────────────────────────────────────────────
 
         nextAttackTime = Time.time + attackCooldown;
         currentState = EnemyState.Chasing;
@@ -33,11 +69,9 @@ public class EnemyBurst : BaseEnemy
     {
         if (projectilePrefab == null || targetTransform == null) return;
 
-        // Khóa Vector hướng bay thẳng về phía Player
         Vector2 fireDirection = ((Vector2)targetTransform.position - (Vector2)transform.position).normalized;
         float angle = Mathf.Atan2(fireDirection.y, fireDirection.x) * Mathf.Rad2Deg;
 
-        // Đẩy điểm xuất phát đạn ra trước mặt quái
         Vector3 spawnPosition = transform.position + (Vector3)(fireDirection * spawnOffsetDistance);
 
         GameObject projectile = Instantiate(projectilePrefab, spawnPosition, Quaternion.Euler(0f, 0f, angle));

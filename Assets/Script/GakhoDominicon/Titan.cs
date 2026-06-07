@@ -9,12 +9,12 @@ public class TitanPhe9 : MonoBehaviour
     public GameObject prefabDanLon;
 
     [Header("Hệ thống bắn loạt (Burst)")]
-    public int soVienMoiLoat = 3;           // Số viên mỗi loạt
-    public float thoiGianGiuaCacVien = 0.2f; // Thời gian giữa các viên trong loạt
-    public float thoiGianHoiChieu = 3f;      // Thời gian nghỉ giữa các loạt
+    public int soVienMoiLoat = 3;
+    public float thoiGianGiuaCacVien = 0.2f;
+    public float thoiGianHoiChieu = 3f;
 
     [Range(0.1f, 5f)]
-    public float heSoTangToc = 1f;           // Hệ số nhân (buff/debuff tốc độ bắn)
+    public float heSoTangToc = 1f;
 
     [Header("Chỉ số di chuyển bám làn")]
     public float tocDoDiChuyenY = 4f;
@@ -28,16 +28,23 @@ public class TitanPhe9 : MonoBehaviour
     private bool daDenViTriThu = false;
     private Transform mucTieuQuai;
 
-    // --- Biến quản lý burst ---
-    private int soVienDaBan = 0;             // Đã bắn bao nhiêu viên trong loạt hiện tại
-    private bool dangTrongLoat = false;      // Đang trong giữa 1 loạt chưa
-    private float thoiGianBanTiepTheo = 0f; // Mốc thời gian được phép bắn tiếp
+    private int soVienDaBan = 0;
+    private bool dangTrongLoat = false;
+    private float thoiGianBanTiepTheo = 0f;
 
-    // Thời gian hồi chiêu thực tế (đã nhân hệ số)
     private float HoiChieuThucTe => thoiGianHoiChieu / Mathf.Max(heSoTangToc, 0.01f);
+
+    // ── [ANIMATION] Khai báo Animator ───────────────────────────────────────
+    private Animator Titan_animator;
+    private Vector3 viTriKhungHinhTruoc;
+    // ────────────────────────────────────────────────────────────────────────
 
     void Start()
     {
+        // ── [ANIMATION] Lấy Animator từ children ────────────────────────────
+        Titan_animator = GetComponentInChildren<Animator>();
+        // ────────────────────────────────────────────────────────────────────
+
         if (vungBoxPhongThu != null)
             viTriCoDinh = LayViTriNgauNhienTrongBox(vungBoxPhongThu);
         else
@@ -52,8 +59,23 @@ public class TitanPhe9 : MonoBehaviour
         if (mucTieuQuai == null || !mucTieuQuai.gameObject.activeInHierarchy)
         {
             mucTieuQuai = null;
+            dangTrongLoat = false;
+            soVienDaBan = 0;
+            // ── [ANIMATION] Reset isShooting khi mất target giữa loạt ───────
+            if (Titan_animator != null)
+                Titan_animator.SetBool("Titan_isShooting", false);
+            // ──────────────────────────────────────────────────────────────
             TimMucTieuThongMinh();
         }
+
+        // ── [ANIMATION] Cập nhật isMoving theo vị trí thực tế ───────────────
+        if (Titan_animator != null)
+        {
+            bool dangDiChuyen = transform.position != viTriKhungHinhTruoc;
+            Titan_animator.SetBool("Titan_isMoving", dangDiChuyen);
+        }
+        viTriKhungHinhTruoc = transform.position;
+        // ────────────────────────────────────────────────────────────────────
 
         bool dangDungBan = false;
 
@@ -89,30 +111,41 @@ public class TitanPhe9 : MonoBehaviour
     {
         if (Time.time < thoiGianBanTiepTheo) return;
 
-        // Đang trong loạt -> bắn viên tiếp theo
         if (dangTrongLoat)
         {
+            // ── [ANIMATION] Bật isShooting khi bắn viên trong loạt ──────────
+            if (Titan_animator != null)
+                Titan_animator.SetBool("Titan_isShooting", true);
+            // ──────────────────────────────────────────────────────────────
+
             TitanBanDanPooling();
             soVienDaBan++;
 
             if (soVienDaBan >= soVienMoiLoat)
             {
-                // Đã bắn đủ loạt -> bắt đầu hồi chiêu
                 dangTrongLoat = false;
                 soVienDaBan = 0;
                 thoiGianBanTiepTheo = Time.time + HoiChieuThucTe;
+
+                // ── [ANIMATION] Tắt isShooting khi hết loạt, vào hồi chiêu ──
+                if (Titan_animator != null)
+                    Titan_animator.SetBool("Titan_isShooting", false);
+                // ──────────────────────────────────────────────────────────
             }
             else
             {
-                // Còn viên trong loạt -> chờ khoảng cách giữa viên
                 thoiGianBanTiepTheo = Time.time + thoiGianGiuaCacVien;
             }
         }
         else
         {
-            // Hồi xong -> bắt đầu loạt mới, bắn viên đầu tiên
             dangTrongLoat = true;
             soVienDaBan = 0;
+
+            // ── [ANIMATION] Bật isShooting khi bắt đầu loạt mới ────────────
+            if (Titan_animator != null)
+                Titan_animator.SetBool("Titan_isShooting", true);
+            // ──────────────────────────────────────────────────────────────
 
             TitanBanDanPooling();
             soVienDaBan++;
@@ -121,11 +154,9 @@ public class TitanPhe9 : MonoBehaviour
         }
     }
 
-    // ─── Buff / Debuff từ ngoài ────────────────────────────────────────
     public void DatHeSoTangToc(float heSo) => heSoTangToc = Mathf.Max(0.1f, heSo);
     public void DatSoVienMoiLoat(int soVien) => soVienMoiLoat = Mathf.Max(1, soVien);
 
-    // ─── Các hàm còn lại ──────────────────────────────────────────────
     void HanhQuanVaoViTri()
     {
         XoayMat(viTriCoDinh.x);
@@ -237,9 +268,16 @@ public class TitanPhe9 : MonoBehaviour
             KhoaMucTieu marker = mucTieuQuai.GetComponent<KhoaMucTieu>();
             if (marker != null) marker.daBiKhoaMucTieu = false;
         }
-        // Reset trạng thái burst khi bị tắt
         dangTrongLoat = false;
         soVienDaBan = 0;
+
+        // ── [ANIMATION] Reset animation khi bị disable ──────────────────────
+        if (Titan_animator != null)
+        {
+            Titan_animator.SetBool("Titan_isMoving", false);
+            Titan_animator.SetBool("Titan_isShooting", false);
+        }
+        // ────────────────────────────────────────────────────────────────────
     }
 
     private void OnDrawGizmosSelected()

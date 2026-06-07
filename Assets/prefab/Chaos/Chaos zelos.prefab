@@ -409,8 +409,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a9e119a6e3b2a743bb883771eb9b8b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 20
-  keepDistance: 80
+  moveSpeed: 15
+  attackRange: 10
   leftMoveBias: 0.6
   detectionRange: 30
   normalHP: 20
@@ -418,7 +418,7 @@ MonoBehaviour:
   projectileSpeed: 10
   projectilePrefab: {fileID: 5603226188732681372, guid: df6f67a729046c64eafe9fd29744a575, type: 3}
   attackHitboxObject: {fileID: 324100953337365044}
-  hitboxActiveDuration: 0.2
+  hitboxActiveDuration: 0.5
 --- !u!114 &757804643765367269
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -434,6 +434,7 @@ MonoBehaviour:
   bangSatThuongChung: {fileID: 11400000, guid: a60a65e6a8b057b4ea1e9fc841c3d9bc, type: 2}
   ThanhMau: {fileID: 32801034137048565}
   maxHP: 20
+  Animationdead: 5
 --- !u!1 &7134275571937603480
 GameObject:
   m_ObjectHideFlags: 0
@@ -764,7 +765,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -7338124080666070349, guid: 544e6696c5be1564a86e548371c65c4e, type: 3}
       propertyPath: m_SortingOrder
-      value: 2
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: -7290135700803259327, guid: 544e6696c5be1564a86e548371c65c4e, type: 3}
       propertyPath: m_SortingOrder

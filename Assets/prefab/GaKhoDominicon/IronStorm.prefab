@@ -250,6 +250,7 @@ MonoBehaviour:
   bangSatThuongChung: {fileID: 11400000, guid: a60a65e6a8b057b4ea1e9fc841c3d9bc, type: 2}
   ThanhMau: {fileID: 6238817487069980567}
   maxHP: 150
+  Dead_ani: 5
 --- !u!50 &6666461874724065263
 Rigidbody2D:
   serializedVersion: 5
@@ -881,7 +882,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -1527489017596953116, guid: 596b58aa7b74662438975e244c49064d, type: 3}
       propertyPath: m_SortingOrder
-      value: 10
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: -556859716772998449, guid: 596b58aa7b74662438975e244c49064d, type: 3}
       propertyPath: m_LocalScale.x

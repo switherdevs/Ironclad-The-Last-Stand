@@ -213,6 +213,7 @@ MonoBehaviour:
   bangSatThuongChung: {fileID: 11400000, guid: a60a65e6a8b057b4ea1e9fc841c3d9bc, type: 2}
   ThanhMau: {fileID: 7746798906374633708}
   maxHP: 1000
+  Dead_ani: 5
 --- !u!1 &1334450239490756635
 GameObject:
   m_ObjectHideFlags: 0
@@ -687,7 +688,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -7880768541145892991, guid: 2e91fbdbf922bcb4d84279518f8fad7f, type: 3}
       propertyPath: m_SortingOrder
-      value: 75
+      value: 74
       objectReference: {fileID: 0}
     - target: {fileID: -7552582706839291426, guid: 2e91fbdbf922bcb4d84279518f8fad7f, type: 3}
       propertyPath: m_LocalPosition.x

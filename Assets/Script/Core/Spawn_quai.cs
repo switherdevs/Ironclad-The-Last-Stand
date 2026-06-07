@@ -7,11 +7,29 @@ public class ChaosDirector : MonoBehaviour
 {
     public static ChaosDirector instance { get; private set; }
 
+    public enum DoKho { Easy, Normal, Hard }
+
+    [Header("--- THIẾT LẬP ĐỘ KHÓ GAME ---")]
+    public DoKho doKhoHienTai = DoKho.Normal;
+
+    [System.Serializable]
+    public struct CauHinhQuai
+    {
+        public int ez;
+        public int nm;
+        public int hr;
+    }
+    public CauHinhQuai soLuongQuaiTheoDoKho = new CauHinhQuai { ez = 3, nm = 5, hr = 7 };
+
+    [Header("--- CẤU HÌNH CHỐNG TRÙNG VỊ TRÍ ---")]
+    [Tooltip("Khoảng cách lệch ngẫu nhiên sang trái/phải so với điểm gốc để quái không đè lên nhau")]
+    public float doLechSpawnX = 1.5f;
+
     [Header("--- KẾT NỐI UI MÀN HÌNH ---")]
     public TextMeshProUGUI textDongHo;
     public Slider thanhTienTrinhGame;
 
-    [Header("--- DANH SÁCH 3 VỊ TRÍ SPAWN QUÁI ---")]
+    [Header("--- DANH SÁCH VỊ TRÍ SPAWN QUÁI ---")]
     public Transform[] danhSachDiemSpawn;
 
     [Header("--- KHUÔN ĐÚC CÁC LOẠI QUÁI ---")]
@@ -22,15 +40,20 @@ public class ChaosDirector : MonoBehaviour
     public GameObject prefabHellBrute;
     public GameObject prefabDemonPrince;
 
+    [Header("--- Thời gian và số lượng quái ---")]
+    public int ThoiGianSpawn_gd1 = 6;
+    public int ThoiGianSpawn_gd2 = 4;
+    public int ThoiGianSpawn_gd3 = 3;
+
     private float dongHoDem = -20f;
     private float tongThoiGian = 600f;
-    //private bool daRaBossCuoi = false;
     public bool WinGame = false;
 
     private void Awake()
     {
         instance = this;
     }
+
     void Start()
     {
         if (thanhTienTrinhGame != null)
@@ -40,13 +63,11 @@ public class ChaosDirector : MonoBehaviour
             thanhTienTrinhGame.value = 0f;
         }
 
-        // KÍCH HOẠT ĐƯỜNG DÂY TỐI ƯU: Chạy lõi quản lý sinh quái độc lập với hàm Update
         StartCoroutine(HeThongQuanLySpawnQuaiToiUu());
     }
 
     void Update()
     {
-        // ĐÃ SỬA: Kiểm tra nếu thời gian chạy chạm hoặc vượt mốc tổng thời gian thì Thắng trận
         if (dongHoDem >= tongThoiGian)
         {
             WinGame = true;
@@ -55,7 +76,6 @@ public class ChaosDirector : MonoBehaviour
 
         if (Tayperer.skibidi != null && Tayperer.skibidi.GameOver) return;
 
-        // Hàm Update bây giờ SIÊU NHẸ, chỉ duy nhất làm nhiệm vụ chạy thời gian và vẽ giao diện UI
         if (dongHoDem < tongThoiGian)
         {
             dongHoDem += Time.deltaTime;
@@ -63,81 +83,94 @@ public class ChaosDirector : MonoBehaviour
         }
     }
 
-    // LÕI TỐI ƯU CƠ CHẾ SINH QUÁI (COROUTINE)
     IEnumerator HeThongQuanLySpawnQuaiToiUu()
     {
-        // VÒNG LẶP VÔ HẠN: Chạy song song với game cho đến khi hết trận
         while (dongHoDem < tongThoiGian)
         {
-            // Nếu game đang trong thời gian 10 giây chuẩn bị (đồng hồ âm), máy tính sẽ treo lệnh chờ 0.1 giây rồi kiểm tra lại
             if (dongHoDem < 0f)
             {
                 yield return new WaitForSeconds(0.1f);
-                continue; // Quay lại đầu vòng lặp while, bỏ qua đoạn sinh quái phía dưới
+                continue;
             }
 
             float tienTrinh = (dongHoDem / tongThoiGian) * 100f;
 
-            // GIAI ĐOẠN 1: Dưới 20% thời gian (2 phút đầu)
             if (tienTrinh < 20f)
             {
-                yield return StartCoroutine(AloloGoiKhoRaQuaiToiUu(prefabZealot)); // Gọi quái
-                yield return new WaitForSeconds(7f); // Đợi 6 giây sau mới thực hiện đợt quét tiếp theo
+                yield return StartCoroutine(AloloGoiKhoRaQuaiToiUu(prefabZealot));
+                yield return new WaitForSeconds(ThoiGianSpawn_gd1);
             }
-            // GIAI ĐOẠN 2: Từ 20% đến 60% thời gian (Từ phút thứ 2 đến phút thứ 6)
-            else if (tienTrinh >= 20f && tienTrinh < 60f)
+            else if (tienTrinh >= 20f && tienTrinh < 50f)
             {
                 yield return StartCoroutine(AloloGoiKhoRaQuaiToiUu(prefabZealot));
                 yield return StartCoroutine(AloloGoiKhoRaQuaiToiUu(prefabZealot));
-                yield return StartCoroutine(AloloGoiKhoRaQuaiToiUu(prefabMarine_Sword)); // Đẻ con này sau con trước vài mili-giây
-                yield return new WaitForSeconds(6f); // Đợi 5 giây
+                yield return StartCoroutine(AloloGoiKhoRaQuaiToiUu(prefabMarine_Sword));
+                yield return new WaitForSeconds(6f);
             }
-            // GIAI ĐOẠN 3: SỬA ĐỒNG BỘ - Để kết nối mượt mà với Giai đoạn 4, loại bỏ khoảng treo máy
-            else if (tienTrinh >= 60f && tienTrinh < 80f)
+            else if (tienTrinh >= 50f && tienTrinh < 70f)
             {
                 yield return StartCoroutine(AloloGoiKhoRaQuaiToiUu(prefabZealot));
                 yield return StartCoroutine(AloloGoiKhoRaQuaiToiUu(prefabMarine_Sword));
                 yield return StartCoroutine(AloloGoiKhoRaQuaiToiUu(prefabMarine));
-                yield return new WaitForSeconds(5f); // Đợi 4 giây
+                yield return new WaitForSeconds(ThoiGianSpawn_gd2);
             }
-            // GIAI ĐOẠN 4: Trên 90% thời gian (Phút thứ 8 trở đi)
-            else if (tienTrinh >= 80f)
+            else if (tienTrinh >= 70f)
             {
                 yield return StartCoroutine(AloloGoiKhoRaQuaiToiUu(prefabZealot));
                 yield return StartCoroutine(AloloGoiKhoRaQuaiToiUu(prefabZealot));
                 yield return StartCoroutine(AloloGoiKhoRaQuaiToiUu(prefabMarine_Sword));
                 yield return StartCoroutine(AloloGoiKhoRaQuaiToiUu(prefabMarine));
-                SimpleObjectPool.Instance.LayQuaiRa(prefabTerminator, LayViTriSpawnNgauNhien());
 
-                //if (!daRaBossCuoi)
-                //{
-                //    Vector3 viTriGiaoBoss = LayViTriSpawnNgauNhien();
-                //    SimpleObjectPool.Instance.LayQuaiRa(prefabDemonPrince, viTriGiaoBoss);
-                //    daRaBossCuoi = true;
-                //}
-                yield return new WaitForSeconds(6f); // Đợi 2 giây dồn dập
+                // ĐÃ SỬA: Áp dụng vị trí tản ra cho cả Terminator giai đoạn cuối
+                SimpleObjectPool.Instance.LayQuaiRa(prefabTerminator, LayViTriSpawnTandRa());
+                yield return new WaitForSeconds(ThoiGianSpawn_gd3);
             }
 
-            // ĐÃ THÊM: Lệnh bảo hiểm tối ưu, ngăn treo Coroutine tuyệt đối nếu có mili-giây lệch mốc
             yield return null;
         }
     }
 
-    // HÀM GIAO HÀNG TỐI ƯU: Đẻ từng con một cách nhau 1 khung hình, triệt tiêu lag dồn dập
     IEnumerator AloloGoiKhoRaQuaiToiUu(GameObject khuonMuonLay)
     {
         if (khuonMuonLay == null || SimpleObjectPool.Instance == null) yield break;
 
-        int soLuongQuaiDotNay = Random.Range(1, 3);
+        int soLuongQuaiMax = LaySoLuongQuaiToiDaTheoDoKho();
+        int soLuongQuaiDotNay = Random.Range(1, soLuongQuaiMax + 1);
 
         for (int i = 0; i < soLuongQuaiDotNay; i++)
         {
-            Vector3 viTriNgauNhien = LayViTriSpawnNgauNhien();
-            SimpleObjectPool.Instance.LayQuaiRa(khuonMuonLay, viTriNgauNhien);
-
-            // DÒNG CODE CỨU CÁNH TOÀN DIỆN: Ép máy tính đẻ xong 1 con thì dừng lại, đợi đúng 1 khung hình sau mới đẻ tiếp con thứ 2
+            // ĐÃ SỬA: Đổi từ hàm chọn vị trí gốc sang hàm lấy vị trí tản ra chống đè nhau
+            Vector3 viTriTandRa = LayViTriSpawnTandRa();
+            SimpleObjectPool.Instance.LayQuaiRa(khuonMuonLay, viTriTandRa);
             yield return null;
         }
+    }
+
+    int LaySoLuongQuaiToiDaTheoDoKho()
+    {
+        switch (doKhoHienTai)
+        {
+            case DoKho.Easy: return soLuongQuaiTheoDoKho.ez;
+            case DoKho.Normal: return soLuongQuaiTheoDoKho.nm;
+            case DoKho.Hard: return soLuongQuaiTheoDoKho.hr;
+            default: return soLuongQuaiTheoDoKho.nm;
+        }
+    }
+
+    // ĐÃ THÊM: Hàm xử lý toán học tạo độ tản mát cho quái dựa vào điểm gốc
+    Vector3 LayViTriSpawnTandRa()
+    {
+        if (danhSachDiemSpawn == null || danhSachDiemSpawn.Length == 0) return transform.position;
+
+        // Chọn ngẫu nhiên 1 trong các điểm Spawn chính
+        int indexNgauNhien = Random.Range(0, danhSachDiemSpawn.Length);
+        Vector3 viTriGoc = danhSachDiemSpawn[indexNgauNhien].position;
+
+        // Tạo một độ lệch ngẫu nhiên trái/phải trên trục X
+        float lechX = Random.Range(-doLechSpawnX, doLechSpawnX);
+
+        // Trả về vị trí mới đã được tản ra (giữ nguyên độ cao trục Y)
+        return new Vector3(viTriGoc.x + lechX, viTriGoc.y, viTriGoc.z);
     }
 
     void ChayGiaoDienUI()
@@ -157,12 +190,5 @@ public class ChaosDirector : MonoBehaviour
             textDongHo.text = string.Format("{0:00}:{1:00}", phut, giay);
             if (thanhTienTrinhGame != null) thanhTienTrinhGame.value = dongHoDem;
         }
-    }
-
-    Vector3 LayViTriSpawnNgauNhien()
-    {
-        if (danhSachDiemSpawn == null || danhSachDiemSpawn.Length == 0) return transform.position;
-        int indexNgauNhien = Random.Range(0, danhSachDiemSpawn.Length);
-        return danhSachDiemSpawn[indexNgauNhien].position;
     }
 }

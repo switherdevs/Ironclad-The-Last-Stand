@@ -543,15 +543,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 12
-  keepDistance: 90
+  attackRange: 80
   leftMoveBias: 0.6
-  detectionRange: 70
+  detectionRange: 90
   normalHP: 20
   attackCooldown: 3
   projectileSpeed: 60
   projectilePrefab: {fileID: 710202931114451720, guid: fb46f870ab232224191e1512b0eef5d8, type: 3}
   holdingObjectPrefab: {fileID: 3653568467420814684, guid: b2874e43e3e08414291e7843f0695596, type: 3}
-  holdingDuration: 5
+  holdingDuration: 2
   scalePerSecond: 0.5
   maxScaleTime: 5
   holdingHPMultiplier: 2
@@ -571,6 +571,7 @@ MonoBehaviour:
   bangSatThuongChung: {fileID: 11400000, guid: a60a65e6a8b057b4ea1e9fc841c3d9bc, type: 2}
   ThanhMau: {fileID: 5635992745966958847}
   maxHP: 200
+  Animationdead: 5
 --- !u!1 &8529727197274060074
 GameObject:
   m_ObjectHideFlags: 0
@@ -691,6 +692,10 @@ PrefabInstance:
       propertyPath: m_SortingOrder
       value: 45
       objectReference: {fileID: 0}
+    - target: {fileID: -352973707072770722, guid: 8a0e8ec93fe9d334787120dd9de85b47, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.06034195
+      objectReference: {fileID: 0}
     - target: {fileID: -245222285600756826, guid: 8a0e8ec93fe9d334787120dd9de85b47, type: 3}
       propertyPath: m_SortingOrder
       value: 45
@@ -698,6 +703,14 @@ PrefabInstance:
     - target: {fileID: 1138275919657579070, guid: 8a0e8ec93fe9d334787120dd9de85b47, type: 3}
       propertyPath: m_SortingOrder
       value: 45
+      objectReference: {fileID: 0}
+    - target: {fileID: 1168107945508418567, guid: 8a0e8ec93fe9d334787120dd9de85b47, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.44984204
+      objectReference: {fileID: 0}
+    - target: {fileID: 1168107945508418567, guid: 8a0e8ec93fe9d334787120dd9de85b47, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.77418584
       objectReference: {fileID: 0}
     - target: {fileID: 6100894345243170053, guid: 8a0e8ec93fe9d334787120dd9de85b47, type: 3}
       propertyPath: m_SortingOrder
@@ -718,8 +731,38 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: -8653719598885068355, guid: 8a0e8ec93fe9d334787120dd9de85b47, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3143073471718767253}
   m_SourcePrefab: {fileID: 4843985084834002234, guid: 8a0e8ec93fe9d334787120dd9de85b47, type: 3}
+--- !u!1 &4830508459913615557 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -8653719598885068355, guid: 8a0e8ec93fe9d334787120dd9de85b47, type: 3}
+  m_PrefabInstance: {fileID: 4967089984528267640}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &3143073471718767253
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4830508459913615557}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 79d3795ca0b287140bef8019f42584c2, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!4 &6035228177614291110 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -7552582706839291426, guid: 8a0e8ec93fe9d334787120dd9de85b47, type: 3}

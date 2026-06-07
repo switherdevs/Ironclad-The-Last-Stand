@@ -111,9 +111,9 @@ ScriptedImporter:
     spriteBone:
     - name: chan trai
       guid: 6a5febd6fdb81314a8eae94a2afcd77f
-      position: {x: 45.88022, y: 105.55966, z: 0}
+      position: {x: 45.88022, y: 105.55963, z: 0}
       rotation: {x: 0, y: 0, z: -0.74373156, w: 0.6684784}
-      length: 93.99675
+      length: 93.996735
       parentId: -1
       color:
         serializedVersion: 2
@@ -630,8 +630,8 @@ ScriptedImporter:
     - name: Dui trai
       guid: 022f37c634a506a459dfbad7c8136a5a
       position: {x: 29.049255, y: 122.01085, z: 0}
-      rotation: {x: 0, y: 0, z: -0.7763398, w: 0.63031465}
-      length: 49.506836
+      rotation: {x: 0, y: 0, z: -0.7763399, w: 0.6303145}
+      length: 49.50686
       parentId: -1
       color:
         serializedVersion: 2
@@ -1861,9 +1861,9 @@ ScriptedImporter:
     spriteBone:
     - name: sung
       guid: cb2277f604cfc5044bf8d2307b4b2e7e
-      position: {x: 134.86206, y: 51.28105, z: 0}
-      rotation: {x: 0, y: 0, z: -0.99975586, w: 0.022098776}
-      length: 125.69094
+      position: {x: 134.86206, y: 51.281036, z: 0}
+      rotation: {x: 0, y: 0, z: -0.9997558, w: 0.022098897}
+      length: 125.69099
       parentId: -1
       color:
         serializedVersion: 2
@@ -2376,31 +2376,31 @@ ScriptedImporter:
     spriteBone:
     - name: sung
       guid: cb2277f604cfc5044bf8d2307b4b2e7e
-      position: {x: 63.439537, y: -59.27208, z: 0}
-      rotation: {x: 0, y: 0, z: -0.7633939, w: 0.6459334}
-      length: 125.69095
-      parentId: 1
+      position: {x: 63.43951, y: -59.272076, z: 0}
+      rotation: {x: 0, y: 0, z: -0.76339376, w: 0.6459334}
+      length: 125.69096
+      parentId: 2
       color:
         serializedVersion: 2
         rgba: 4294967040
+    - name: tay phai_1
+      guid: 0c71d576bb889d04496bbdac15a6629a
+      position: {x: 84.46671, y: 0.000008405161, z: 0}
+      rotation: {x: 0, y: 0, z: -0.6948687, w: 0.71913666}
+      length: 55.50568
+      parentId: 2
+      color:
+        serializedVersion: 2
+        rgba: 4294901888
     - name: tay phai
       guid: 6da1437b953fe384b85ae67e42904013
       position: {x: 179.56966, y: 125.70538, z: 0}
-      rotation: {x: 0, y: 0, z: -0.62890553, w: 0.77748173}
-      length: 84.466675
+      rotation: {x: 0, y: 0, z: -0.6289055, w: 0.77748185}
+      length: 84.466705
       parentId: -1
       color:
         serializedVersion: 2
         rgba: 4278255360
-    - name: Than
-      guid: a2eeab805eac0a240aac7f0afc90e8de
-      position: {x: 129.19576, y: 24.95758, z: 0}
-      rotation: {x: 0, y: 0, z: 0.7159511, w: 0.69815046}
-      length: 75.720985
-      parentId: -1
-      color:
-        serializedVersion: 2
-        rgba: 4278190335
     spriteOutline: []
     vertices:
     - position: {x: 29.019997, y: 3}
@@ -2459,7 +2459,7 @@ ScriptedImporter:
         weight1: 0
         weight2: 0
         weight3: 0
-        boneIndex0: 1
+        boneIndex0: 0
         boneIndex1: 0
         boneIndex2: 0
         boneIndex3: 0
@@ -2559,7 +2559,7 @@ ScriptedImporter:
         weight1: 0
         weight2: 0
         weight3: 0
-        boneIndex0: 1
+        boneIndex0: 2
         boneIndex1: 0
         boneIndex2: 0
         boneIndex3: 0
@@ -2569,7 +2569,7 @@ ScriptedImporter:
         weight1: 0
         weight2: 0
         weight3: 0
-        boneIndex0: 1
+        boneIndex0: 2
         boneIndex1: 0
         boneIndex2: 0
         boneIndex3: 0
@@ -2579,7 +2579,7 @@ ScriptedImporter:
         weight1: 0
         weight2: 0
         weight3: 0
-        boneIndex0: 1
+        boneIndex0: 2
         boneIndex1: 0
         boneIndex2: 0
         boneIndex3: 0
@@ -2589,18 +2589,18 @@ ScriptedImporter:
         weight1: 0
         weight2: 0
         weight3: 0
-        boneIndex0: 1
+        boneIndex0: 2
         boneIndex1: 0
         boneIndex2: 0
         boneIndex3: 0
     - position: {x: 221.121, y: 105.146}
       boneWeight:
-        weight0: 1
-        weight1: 0
+        weight0: 0.88202804
+        weight1: 0.11797199
         weight2: 0
         weight3: 0
-        boneIndex0: 1
-        boneIndex1: 0
+        boneIndex0: 2
+        boneIndex1: 1
         boneIndex2: 0
         boneIndex3: 0
     - position: {x: 212.511, y: 119.519}
@@ -2609,7 +2609,7 @@ ScriptedImporter:
         weight1: 0
         weight2: 0
         weight3: 0
-        boneIndex0: 1
+        boneIndex0: 2
         boneIndex1: 0
         boneIndex2: 0
         boneIndex3: 0
@@ -2619,7 +2619,7 @@ ScriptedImporter:
         weight1: 0
         weight2: 0
         weight3: 0
-        boneIndex0: 1
+        boneIndex0: 2
         boneIndex1: 0
         boneIndex2: 0
         boneIndex3: 0
@@ -2629,7 +2629,7 @@ ScriptedImporter:
         weight1: 0
         weight2: 0
         weight3: 0
-        boneIndex0: 1
+        boneIndex0: 2
         boneIndex1: 0
         boneIndex2: 0
         boneIndex3: 0
@@ -2639,58 +2639,58 @@ ScriptedImporter:
         weight1: 0
         weight2: 0
         weight3: 0
-        boneIndex0: 1
+        boneIndex0: 2
         boneIndex1: 0
         boneIndex2: 0
         boneIndex3: 0
     - position: {x: 156.666, y: 122.953}
       boneWeight:
-        weight0: 1
-        weight1: 0
+        weight0: 0.87652373
+        weight1: 0.12347629
         weight2: 0
         weight3: 0
-        boneIndex0: 1
+        boneIndex0: 2
         boneIndex1: 0
         boneIndex2: 0
         boneIndex3: 0
     - position: {x: 152.729, y: 106.298}
       boneWeight:
-        weight0: 1
-        weight1: 0
+        weight0: 0.75364935
+        weight1: 0.24635065
         weight2: 0
         weight3: 0
-        boneIndex0: 1
+        boneIndex0: 2
         boneIndex1: 0
         boneIndex2: 0
         boneIndex3: 0
     - position: {x: 150.881, y: 89.062}
       boneWeight:
-        weight0: 1
-        weight1: 0
+        weight0: 0.59645545
+        weight1: 0.40354457
         weight2: 0
         weight3: 0
-        boneIndex0: 1
+        boneIndex0: 2
         boneIndex1: 0
         boneIndex2: 0
         boneIndex3: 0
     - position: {x: 149.233, y: 74.764}
       boneWeight:
-        weight0: 1
-        weight1: 0
+        weight0: 0.7818864
+        weight1: 0.2181136
         weight2: 0
         weight3: 0
-        boneIndex0: 1
-        boneIndex1: 0
+        boneIndex0: 0
+        boneIndex1: 2
         boneIndex2: 0
         boneIndex3: 0
     - position: {x: 143.666, y: 81}
       boneWeight:
-        weight0: 1
-        weight1: 0
+        weight0: 0.92729545
+        weight1: 0.07270455
         weight2: 0
         weight3: 0
-        boneIndex0: 1
-        boneIndex1: 0
+        boneIndex0: 0
+        boneIndex1: 2
         boneIndex2: 0
         boneIndex3: 0
     - position: {x: 122.228, y: 81.678}
@@ -2879,7 +2879,7 @@ ScriptedImporter:
         weight1: 0
         weight2: 0
         weight3: 0
-        boneIndex0: 1
+        boneIndex0: 0
         boneIndex1: 0
         boneIndex2: 0
         boneIndex3: 0
@@ -2889,7 +2889,7 @@ ScriptedImporter:
         weight1: 0
         weight2: 0
         weight3: 0
-        boneIndex0: 1
+        boneIndex0: 0
         boneIndex1: 0
         boneIndex2: 0
         boneIndex3: 0
@@ -2919,7 +2919,7 @@ ScriptedImporter:
         weight1: 0
         weight2: 0
         weight3: 0
-        boneIndex0: 1
+        boneIndex0: 2
         boneIndex1: 0
         boneIndex2: 0
         boneIndex3: 0
@@ -2929,7 +2929,7 @@ ScriptedImporter:
         weight1: 0
         weight2: 0
         weight3: 0
-        boneIndex0: 1
+        boneIndex0: 2
         boneIndex1: 0
         boneIndex2: 0
         boneIndex3: 0
@@ -2939,7 +2939,7 @@ ScriptedImporter:
         weight1: 0
         weight2: 0
         weight3: 0
-        boneIndex0: 1
+        boneIndex0: 2
         boneIndex1: 0
         boneIndex2: 0
         boneIndex3: 0
@@ -2954,7 +2954,7 @@ ScriptedImporter:
         boneIndex2: 0
         boneIndex3: 0
     spritePhysicsOutline: []
-    indices: 000000002a000000010000001a000000350000001b0000001a00000033000000350000001b000000360000001c0000001b000000310000002f0000001b00000035000000310000001b0000002f000000360000001c000000360000001d0000001d000000360000001e0000001e000000360000001f00000015000000330000001600000016000000330000001700000017000000330000001800000018000000330000001900000019000000330000001a0000001f0000002e00000020000000220000002d0000002c000000230000002c00000024000000240000002c00000025000000250000002c00000026000000260000002c000000270000002700000029000000280000002e00000036000000300000002f00000030000000360000003100000035000000320000001f000000360000002e000000200000002d00000021000000200000002e0000002d000000210000002d00000022000000220000002c0000002300000014000000330000001500000013000000340000003300000013000000330000001400000001000000270000002c000000020000002d00000003000000020000002c0000002d000000030000002d00000004000000040000002e00000005000000040000002d0000002e000000050000003000000006000000050000002e00000030000000060000003000000007000000070000002f00000008000000000000002b0000002a000000010000002c00000002000000010000002900000027000000010000002a0000002900000007000000300000002f0000000a00000031000000320000000b000000320000000c0000000c000000320000000d0000000d000000320000000e0000000e000000100000000f0000000e00000011000000100000000e00000012000000110000000e00000034000000120000000e0000003200000034000000120000003400000013000000080000002f0000000900000009000000310000000a000000090000002f000000310000000a000000320000000b000000320000003500000034000000330000003400000035000000
+    indices: 000000002a0000000100000001000000270000002c000000020000002d00000003000000020000002c0000002d000000030000002d00000004000000040000002e00000005000000040000002d0000002e000000050000003000000006000000050000002e00000030000000060000003000000007000000070000002f00000008000000000000002b0000002a000000010000002c00000002000000010000002900000027000000010000002a0000002900000007000000300000002f0000000a00000031000000320000000b000000320000000c0000000c000000320000000d0000000d000000320000000e0000000e000000100000000f0000000e00000011000000100000000e00000012000000110000000e00000034000000120000000e0000003200000034000000120000003400000013000000080000002f0000000900000009000000310000000a000000090000002f000000310000000a000000320000000b00000013000000330000001400000013000000340000003300000014000000330000001500000019000000330000001a0000001a000000350000001b0000001a00000033000000350000001b000000360000001c0000001b000000310000002f0000001b00000035000000310000001b0000002f000000360000001c000000360000001d0000001d000000360000001e0000001e000000360000001f0000001500000033000000160000001600000033000000170000001700000033000000180000001800000033000000190000001f0000002e00000020000000220000002c00000023000000220000002d0000002c000000230000002c00000024000000240000002c00000025000000250000002c00000026000000260000002c000000270000002700000029000000280000002e00000036000000300000002f00000030000000360000003100000035000000320000001f000000360000002e000000200000002d00000021000000200000002e0000002d000000210000002d00000022000000320000003500000034000000330000003400000035000000
     edges:
     - {x: 0, y: 1}
     - {x: 0, y: 43}
@@ -5513,8 +5513,8 @@ ScriptedImporter:
     - name: tay phai
       guid: 6da1437b953fe384b85ae67e42904013
       position: {x: 189.56966, y: 299.70538, z: 0}
-      rotation: {x: 0, y: 0, z: -0.62890553, w: 0.77748173}
-      length: 84.466675
+      rotation: {x: 0, y: 0, z: -0.6289055, w: 0.77748185}
+      length: 84.46671
       parentId: -1
       color:
         serializedVersion: 2
@@ -5558,16 +5558,16 @@ ScriptedImporter:
     - name: Dui trai
       guid: 022f37c634a506a459dfbad7c8136a5a
       position: {x: 117.04927, y: 177.01085, z: 0}
-      rotation: {x: 0, y: 0, z: -0.7763398, w: 0.63031465}
-      length: 49.506836
+      rotation: {x: 0, y: 0, z: -0.7763399, w: 0.6303145}
+      length: 49.506855
       parentId: -1
       color:
         serializedVersion: 2
         rgba: 4278255488
     - name: chan trai
       guid: 6a5febd6fdb81314a8eae94a2afcd77f
-      position: {x: 49.50684, y: 0.00000027814713, z: 0}
-      rotation: {x: 0, y: 0, z: 0.050181534, w: 0.9987402}
+      position: {x: 49.50686, y: 0.000009318055, z: 0}
+      rotation: {x: 0, y: 0, z: 0.05018167, w: 0.99874014}
       length: 93.99674
       parentId: 7
       color:
@@ -5582,6 +5582,15 @@ ScriptedImporter:
       color:
         serializedVersion: 2
         rgba: 4294934528
+    - name: tay phai_1
+      guid: 0c71d576bb889d04496bbdac15a6629a
+      position: {x: 84.46672, y: 0.000009902837, z: 0}
+      rotation: {x: 0, y: 0, z: -0.69486874, w: 0.71913666}
+      length: 55.505676
+      parentId: 2
+      color:
+        serializedVersion: 2
+        rgba: 4294901888
     parts:
     - spritePosition:
         x: 61
@@ -5634,7 +5643,7 @@ ScriptedImporter:
         width: 235
         height: 137
       spriteId: 0a347208dadcf9c489e5ae36ba0ca2d3
-      bones: 030000000200000000000000
+      bones: 030000000a00000002000000
       parentGroup: 0
       order: 0
     - spritePosition:

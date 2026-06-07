@@ -17,6 +17,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/SCENE CHINH/Map2.unity
     guid: 6d7b722df149b0c48bf6f077b99c9b2d
+  - enabled: 1
+    path: Assets/Scenes/SCENE CHINH/Map3.unity
+    guid: d2c4a626657f98c48b1eb02fda511364
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0

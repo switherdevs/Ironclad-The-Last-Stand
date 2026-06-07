@@ -20,13 +20,14 @@ public class NhanVat1Controller : MonoBehaviour
 
     private Vector3 viTriCoDinh;
     private bool daDenViTriThu = false;
-    private Transform ThayDich; // Đây chính là mucTieuQuai của Nhân vật 1
+    private Transform ThayDich;
     private float HoiChieu = 0f;
     [SerializeField]
     private int soVienLoatNay = 1;
 
     private Animator Khogark_animatior;
     private Vector3 viTriKhungHinhTruoc;
+
     void Start()
     {
         Khogark_animatior = GetComponentInChildren<Animator>();
@@ -43,54 +44,54 @@ public class NhanVat1Controller : MonoBehaviour
 
     void Update()
     {
-        // 1. KIỂM TRA VÀ QUÉT TÌM KIẾM ĐỊCH THÔNG MINH CHỐNG DỒN ĐAM
         if (ThayDich == null || !ThayDich.gameObject.activeInHierarchy)
         {
-            ThayDich = null; // Reset nếu quái cũ đã chết hoặc bị ẩn
+            ThayDich = null;
+            // ── [ANIMATION] Reset isShooting khi mất target giữa loạt ───────
+            if (Khogark_animatior != null)
+                Khogark_animatior.SetBool("Khogark_isShooting", false);
+            // ──────────────────────────────────────────────────────────────
             TimMucTieuThongMinh();
         }
 
         bool dangDungBan = false;
+
+        // ── [ANIMATION] Cập nhật isMoving theo vị trí thực tế ──────────────
         if (Khogark_animatior != null)
         {
             bool dangDiChuyen = transform.position != viTriKhungHinhTruoc;
-
-            Khogark_animatior.SetBool("isMoving", dangDiChuyen);
+            Khogark_animatior.SetBool("Khogark_isMoving", dangDiChuyen);
         }
         viTriKhungHinhTruoc = transform.position;
-        // 2. XỬ LÝ CHIẾN ĐẤU VÀ TỰ CĂN LÀN Y KHI THẤY ĐỊCH
+        // ────────────────────────────────────────────────────────────────────
+
         if (ThayDich != null)
         {
             float doLechYThucTe = Mathf.Abs(transform.position.y - ThayDich.position.y);
             float khoangCachX = Mathf.Abs(transform.position.x - ThayDich.position.x);
 
-            // Kẻ địch lọt vào phạm vi kích hoạt bám đuổi (Tầm bắn + 2 ô)
             if (khoangCachX <= (TamBan + 2f))
             {
-                dangDungBan = true; // Chặn trạng thái đi lùi về vị trí thủ
+                dangDungBan = true;
 
-                // NẾU BỊ LỆCH LÀN Y: Tự động trượt Y bám theo làn địch trước
                 if (doLechYThucTe > DolechHangY)
                 {
                     DiChuyenTrungHangY();
                 }
 
-                // NẾU ĐÃ THẲNG LÀN Y & LỌT TẦM BẮN X: Đứng im tấn công!
                 if (doLechYThucTe <= DolechHangY && khoangCachX <= TamBan)
                 {
                     Xoaymat(ThayDich.position.x);
 
-                    // Nếu chưa có luồng bắn nào đang chạy thì mới bắt đầu bắn
                     if (HoiChieu <= Time.time)
                     {
                         StartCoroutine(TanCong());
-                        HoiChieu = Time.time + (1f / soDanBan); // Giữ mốc thời gian chặn Update gọi trùng
+                        HoiChieu = Time.time + (1f / soDanBan);
                     }
                 }
             }
         }
 
-        // 3. NẾU KHÔNG CÓ ĐỊCH (HOẶC ĐỊCH Ở QUÁ XA) -> TIẾP TỤC RA BOX THỦ
         if (!daDenViTriThu && !dangDungBan)
         {
             HanhQuanVaoViTri();
@@ -101,7 +102,6 @@ public class NhanVat1Controller : MonoBehaviour
     {
         Xoaymat(viTriCoDinh.x);
         transform.position = Vector3.MoveTowards(transform.position, viTriCoDinh, tocDoHanhQuan * Time.deltaTime);
-
 
         if (Vector3.Distance(transform.position, viTriCoDinh) < 0.2f)
         {
@@ -140,11 +140,9 @@ public class NhanVat1Controller : MonoBehaviour
             {
                 float kc = Vector2.Distance(transform.position, quai.transform.position);
 
-                // Tự động kiểm tra và thêm component đánh dấu nếu quái chưa có
                 KhoaMucTieu marker = quai.GetComponent<KhoaMucTieu>();
                 if (marker == null) marker = quai.AddComponent<KhoaMucTieu>();
 
-                // Ưu tiên 1: Gần nhất và CHƯA bị ai khóa
                 if (!marker.daBiKhoaMucTieu)
                 {
                     if (kc < khoangCachNganNhat)
@@ -153,7 +151,6 @@ public class NhanVat1Controller : MonoBehaviour
                         quaiUuTien = quai;
                     }
                 }
-                // Dự phòng: Gần nhất nhưng đã bị khóa
                 else
                 {
                     if (kc < kcDuPhongNganNhat)
@@ -167,7 +164,6 @@ public class NhanVat1Controller : MonoBehaviour
         XacDinhVaKhoaMucTieu(quaiUuTien, quaiDuPhong);
     }
 
-    // HÀM XỬ LÝ GÁN KHÓA VÀ ĐỒNG BỘ VÀO BIẾN ThayDich
     void XacDinhVaKhoaMucTieu(GameObject quaiUuTien, GameObject quaiDuPhong)
     {
         if (quaiUuTien != null)
@@ -178,7 +174,7 @@ public class NhanVat1Controller : MonoBehaviour
         }
         else if (quaiDuPhong != null)
         {
-            ThayDich = quaiDuPhong.transform; // Chấp nhận bắn chung nếu map hết quái tự do
+            ThayDich = quaiDuPhong.transform;
         }
         else
         {
@@ -192,25 +188,21 @@ public class NhanVat1Controller : MonoBehaviour
         else transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
     }
 
-    // Sử dụng IEnumerator để tự quản lý thời gian diễn hoạt ảnh, an toàn 100%
     private System.Collections.IEnumerator TanCong()
     {
         if (ThayDich == null || DiemBan == null || QuanLyDan.Instance == null || prefabDanNho == null) yield break;
 
-        // 1. BẬT TRẠNG THÁI BẮN (Nhân vật sẽ giữ nguyên tư thế giương súng, không bị giật hoạt ảnh)
-        Khogark_animatior.SetBool("isAttacking", true);
-
-        // Giả sử mỗi lần kích hoạt, con lính sẽ bắn liên tiếp 3 viên đạn
+        // ── [ANIMATION] Bật trạng thái bắn ─────────────────────────────────
+        if (Khogark_animatior != null)
+            Khogark_animatior.SetBool("Khogark_isShooting", true);
+        // ────────────────────────────────────────────────────────────────────
 
         for (int i = 0; i < soVienLoatNay; i++)
         {
-            // Kiểm tra bảo hiểm nếu đang bắn mà quái bị chết thì dừng loạt đạn
             if (ThayDich == null || !ThayDich.gameObject.activeInHierarchy) break;
 
-            // Tự động xoay mặt theo địch trước mỗi viên đạn
             Xoaymat(ThayDich.position.x);
 
-            // LOGIC TẠO ĐẠN GỐC CỦA BẠN (Giữ nguyên hoàn toàn)
             float huongBanX = (ThayDich.position.x < transform.position.x) ? 180f : 0f;
             Quaternion rotation = Quaternion.Euler(0, 0, huongBanX);
 
@@ -230,18 +222,17 @@ public class NhanVat1Controller : MonoBehaviour
                 }
             }
 
-            // KHOẢNG CÁCH GIỮA CÁC VIÊN ĐẠN TRONG 1 LOẠT: Cách nhau 0.1 giây rất nhanh và mượt
             yield return new WaitForSeconds(0.1f);
         }
 
-        // 2. TẮT TRẠNG THÁI BẮN (Bắn xong cả loạt thì cho nhân vật hạ súng xuống)
-        Khogark_animatior.SetBool("isAttacking", false);
+        // ── [ANIMATION] Tắt trạng thái bắn ─────────────────────────────────
+        if (Khogark_animatior != null)
+            Khogark_animatior.SetBool("Khogark_isShooting", false);
+        // ────────────────────────────────────────────────────────────────────
 
-        // 3. THỜI GIAN HỒI CHIÊU GIỮA CÁC LOẠT ĐẠN
         yield return new WaitForSeconds(1f / soDanBan);
     }
 
-    // GIẢI PHÓNG QUÁI KHI NHÂN VẬT 1 BỊ CHẾT HOẶC THU HỒI
     private void OnDisable()
     {
         if (ThayDich != null)
@@ -249,6 +240,13 @@ public class NhanVat1Controller : MonoBehaviour
             KhoaMucTieu marker = ThayDich.GetComponent<KhoaMucTieu>();
             if (marker != null) marker.daBiKhoaMucTieu = false;
         }
+        // ── [ANIMATION] Reset animation khi bị disable ──────────────────────
+        if (Khogark_animatior != null)
+        {
+            Khogark_animatior.SetBool("Khogark_isMoving", false);
+            Khogark_animatior.SetBool("Khogark_isShooting", false);
+        }
+        // ────────────────────────────────────────────────────────────────────
     }
 
     private void OnDrawGizmosSelected()
