@@ -12,6 +12,7 @@ TagManager:
   - DaoVang
   - SatthuongQ
   - Sannha
+  - Map
   layers:
   - Default
   - TransparentFX

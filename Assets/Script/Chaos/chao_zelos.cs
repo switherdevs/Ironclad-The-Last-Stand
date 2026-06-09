@@ -31,11 +31,22 @@ public class EnemyMelee : BaseEnemy
         base.HandleMovement();
         RotateHitbox(GetLookDirection());
 
-        // ── [ANIMATION] Cập nhật isWalking theo vị trí thực tế ──────────────
+        // ── [ANIMATION] SỬA: Thay thế SetBool bằng CrossFade gọi tên State di chuyển hoặc đứng yên ──
         if (ChaoZelos_animator != null)
         {
             bool dangDiChuyen = transform.position != viTriKhungHinhTruoc;
-            ChaoZelos_animator.SetBool("ChaoZelos_isWalking", dangDiChuyen);
+            if (dangDiChuyen)
+            {
+                ChaoZelos_animator.CrossFade("ChaoZelos_walk", 0.1f);
+            }
+            else
+            {
+                // Nếu quái đang ở trạng thái Attacking thì không ép nó chạy Idle để tránh lỗi ngắt đòn đánh
+                if (currentState != EnemyState.Attacking)
+                {
+                    ChaoZelos_animator.CrossFade("ChaoZelos_idle", 0.1f);
+                }
+            }
         }
         viTriKhungHinhTruoc = transform.position;
         // ────────────────────────────────────────────────────────────────────
@@ -63,9 +74,9 @@ public class EnemyMelee : BaseEnemy
 
     private IEnumerator TriggerHitboxRoutine()
     {
-        // ── [ANIMATION] Kích hoạt animation tấn công cận chiến ──────────────
+        // ── [ANIMATION] SỬA: Thay thế SetTrigger bằng CrossFade gọi đòn tấn công cận chiến ──
         if (ChaoZelos_animator != null)
-            ChaoZelos_animator.SetTrigger("ChaoZelos_doAttack");
+            ChaoZelos_animator.CrossFade("ChaoZelos_Attack", 0.05f);
         // ────────────────────────────────────────────────────────────────────
 
         if (attackHitboxObject != null)

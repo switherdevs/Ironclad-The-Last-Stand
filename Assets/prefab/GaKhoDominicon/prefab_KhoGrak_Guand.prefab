@@ -50,7 +50,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 828003418e8417d4ba0ca276cd6c49fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TamBan: 200
+  TamBan: 175
   soDanBan: 0.75
   satThuong: 3
   DiemBan: {fileID: 2004108194799325827}
@@ -176,6 +176,8 @@ MonoBehaviour:
   ThanhMau: {fileID: 912487205477603797}
   maxHP: 20
   Dead_ani: 5
+  tenAnimationChet: die_khograk
+  prefabPopupSatThuong: {fileID: 3638261266717980917, guid: 3b6786f6b44be624c8cc3efc99707eaa, type: 3}
 --- !u!1 &1579733531303239221
 GameObject:
   m_ObjectHideFlags: 0

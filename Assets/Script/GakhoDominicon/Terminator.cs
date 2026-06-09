@@ -26,6 +26,7 @@ public class Terminator : MonoBehaviour
     public int soLuongDanTrongLoat = 5;
     public float thoiGianCachNhauGiuaCacVien = 0.2f;
     private bool dangTrongThoiGianNghi = false;
+    public Health_phechinh phechinh;
 
     // ── [ANIMATION] Khai báo Animator ───────────────────────────────────────
     private Animator Terminator_animator;
@@ -34,6 +35,7 @@ public class Terminator : MonoBehaviour
 
     void Start()
     {
+        phechinh = GetComponent<Health_phechinh>();
         // ── [ANIMATION] Lấy Animator từ children ────────────────────────────
         Terminator_animator = GetComponentInChildren<Animator>();
         // ────────────────────────────────────────────────────────────────────
@@ -51,6 +53,8 @@ public class Terminator : MonoBehaviour
 
     void Update()
     {
+        if (phechinh.Dear) return;
+
         if (Tayperer.skibidi != null && Tayperer.skibidi.GameOver) return;
 
         TimKiemKeDich();

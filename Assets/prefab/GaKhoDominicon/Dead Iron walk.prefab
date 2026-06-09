@@ -536,7 +536,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89dfff067c0f4e44aa578c0f9717c261, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TamBan: 100
+  TamBan: 175
   satThuong: 100
   DiemBan: {fileID: 5341903135309534571}
   prefabDanMobi: {fileID: 6190148803816918428, guid: b71f4b32123060a40986fbfe2f195db1, type: 3}
@@ -546,6 +546,7 @@ MonoBehaviour:
   doLechHangY: 0.3
   vungBoxPhongThu: {fileID: 7942286887352987862, guid: 43e938c73a2cad44e9d19025d21e3afb, type: 3}
   tocDoHanhQuan: 10
+  phechinh: {fileID: 0}
 --- !u!114 &15355587893971238
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -560,8 +561,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bangSatThuongChung: {fileID: 11400000, guid: a60a65e6a8b057b4ea1e9fc841c3d9bc, type: 2}
   ThanhMau: {fileID: 4798192230094738336}
-  maxHP: 800
+  maxHP: 1000
   Dead_ani: 5
+  tenAnimationChet: dead_iron_die
+  prefabPopupSatThuong: {fileID: 3638261266717980917, guid: 3b6786f6b44be624c8cc3efc99707eaa, type: 3}
+  Dear: 0
 --- !u!1 &8476792514699107856
 GameObject:
   m_ObjectHideFlags: 0

@@ -459,7 +459,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -17.767548, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 4008987593017587103}
@@ -550,8 +550,9 @@ MonoBehaviour:
   attackCooldown: 3
   projectileSpeed: 60
   projectilePrefab: {fileID: 710202931114451720, guid: fb46f870ab232224191e1512b0eef5d8, type: 3}
+  deads: {fileID: 0}
   holdingObjectPrefab: {fileID: 3653568467420814684, guid: b2874e43e3e08414291e7843f0695596, type: 3}
-  holdingDuration: 2
+  holdingDuration: 1.5
   scalePerSecond: 0.5
   maxScaleTime: 5
   holdingHPMultiplier: 2
@@ -570,8 +571,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bangSatThuongChung: {fileID: 11400000, guid: a60a65e6a8b057b4ea1e9fc841c3d9bc, type: 2}
   ThanhMau: {fileID: 5635992745966958847}
-  maxHP: 200
-  Animationdead: 5
+  maxHP: 300
+  Animationdead: 3
+  tenAnimationChet: dead_warps
+  prefabPopupSatThuong: {fileID: 3638261266717980917, guid: 3b6786f6b44be624c8cc3efc99707eaa, type: 3}
+  spritel: {fileID: 4830508459913615557}
+  Deadre: 0
 --- !u!1 &8529727197274060074
 GameObject:
   m_ObjectHideFlags: 0

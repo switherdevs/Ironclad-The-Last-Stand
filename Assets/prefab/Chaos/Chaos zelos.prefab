@@ -119,7 +119,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -517.74994, y: -309.61}
+  m_AnchoredPosition: {x: -517.74994, y: -309.125}
   m_SizeDelta: {x: 160, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &32801034137048565
@@ -367,8 +367,8 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0.11959469, y: -0.058463573}
-  m_Size: {x: 3.3308213, y: 8.164361}
+  m_Offset: {x: 0.11959469, y: -0.08755672}
+  m_Size: {x: 3.3308213, y: 8.069981}
   m_Direction: 0
 --- !u!50 &2304298939167126474
 Rigidbody2D:
@@ -417,6 +417,7 @@ MonoBehaviour:
   attackCooldown: 1
   projectileSpeed: 10
   projectilePrefab: {fileID: 5603226188732681372, guid: df6f67a729046c64eafe9fd29744a575, type: 3}
+  deads: {fileID: 0}
   attackHitboxObject: {fileID: 324100953337365044}
   hitboxActiveDuration: 0.5
 --- !u!114 &757804643765367269
@@ -434,7 +435,11 @@ MonoBehaviour:
   bangSatThuongChung: {fileID: 11400000, guid: a60a65e6a8b057b4ea1e9fc841c3d9bc, type: 2}
   ThanhMau: {fileID: 32801034137048565}
   maxHP: 20
-  Animationdead: 5
+  Animationdead: 3
+  tenAnimationChet: dead_zelos
+  prefabPopupSatThuong: {fileID: 3638261266717980917, guid: 3b6786f6b44be624c8cc3efc99707eaa, type: 3}
+  spritel: {fileID: 2971373222081987329}
+  Deadre: 0
 --- !u!1 &7134275571937603480
 GameObject:
   m_ObjectHideFlags: 0
@@ -695,6 +700,26 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 3339341856927906126}
     m_Modifications:
+    - target: {fileID: -9077108563519852024, guid: 544e6696c5be1564a86e548371c65c4e, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.5867113
+      objectReference: {fileID: 0}
+    - target: {fileID: -9077108563519852024, guid: 544e6696c5be1564a86e548371c65c4e, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -9077108563519852024, guid: 544e6696c5be1564a86e548371c65c4e, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -9077108563519852024, guid: 544e6696c5be1564a86e548371c65c4e, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.8097963
+      objectReference: {fileID: 0}
+    - target: {fileID: -9077108563519852024, guid: 544e6696c5be1564a86e548371c65c4e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: -108.152
+      objectReference: {fileID: 0}
     - target: {fileID: -8653719598885068355, guid: 544e6696c5be1564a86e548371c65c4e, type: 3}
       propertyPath: m_Name
       value: Chaos Zealot

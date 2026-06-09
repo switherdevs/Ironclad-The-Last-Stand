@@ -1,4 +1,4 @@
-using System.Collections; // BẮT BUỘC PHẢI CÓ: Để sử dụng được kiểu cấu trúc IEnumerator
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -40,6 +40,10 @@ public class ChaosDirector : MonoBehaviour
     public GameObject prefabHellBrute;
     public GameObject prefabDemonPrince;
 
+    [Header("--- KHUÔN ĐÚC MINI-BOSS ---")]
+    [Tooltip("Kéo thả chủng quái muốn làm Mini-Boss vào đây (Ví dụ: HellBrute hoặc DemonPrince)")]
+    public GameObject prefabMiniBoss;
+
     [Header("--- Thời gian và số lượng quái ---")]
     public int ThoiGianSpawn_gd1 = 6;
     public int ThoiGianSpawn_gd2 = 4;
@@ -48,6 +52,9 @@ public class ChaosDirector : MonoBehaviour
     private float dongHoDem = -20f;
     private float tongThoiGian = 600f;
     public bool WinGame = false;
+
+    // Cờ hiệu kiểm soát chỉ sinh Mini-Boss đúng 1 lần duy nhất
+    private bool daSpawnMiniBoss = false;
 
     private void Awake()
     {
@@ -68,16 +75,23 @@ public class ChaosDirector : MonoBehaviour
 
     void Update()
     {
-        if (dongHoDem >= tongThoiGian)
-        {
-            WinGame = true;
-        }
         if (WinGame) return;
 
         if (Tayperer.skibidi != null && Tayperer.skibidi.GameOver) return;
 
-        if (dongHoDem < tongThoiGian)
+        // CẬP NHẬT LOGIC WIN GAME: Hết thời gian VÀ đồng thời trên bản đồ không còn quái
+        if (dongHoDem >= tongThoiGian)
         {
+            if (KiemTraKhongConQuaiTrenBanDo())
+            {
+                WinGame = true;
+                Debug.Log("[CHIẾN THẮNG] Toàn bộ quái vật đã bị tiêu diệt sạch sẽ sau khi hết giờ!");
+                return;
+            }
+        }
+        else
+        {
+            // Chỉ chạy đồng hồ đếm ngược khi chưa hết thời gian quy định
             dongHoDem += Time.deltaTime;
             ChayGiaoDienUI();
         }
@@ -116,17 +130,31 @@ public class ChaosDirector : MonoBehaviour
             }
             else if (tienTrinh >= 70f)
             {
+                // KIỂM TRA MINI-BOSS: Spawn chuẩn xác 1 lần độc nhất khi vừa bước vào giai đoạn cuối
+                if (!daSpawnMiniBoss && prefabMiniBoss != null)
+                {
+                    daSpawnMiniBoss = true;
+                    SimpleObjectPool.Instance.LayQuaiRa(prefabMiniBoss, LayViTriSpawnTandRa());
+                    Debug.Log("[CẢNH BÁO] Mini-Boss đã xuất hiện trên chiến trường!");
+                }
+
                 yield return StartCoroutine(AloloGoiKhoRaQuaiToiUu(prefabZealot));
                 yield return StartCoroutine(AloloGoiKhoRaQuaiToiUu(prefabZealot));
                 yield return StartCoroutine(AloloGoiKhoRaQuaiToiUu(prefabMarine_Sword));
                 yield return StartCoroutine(AloloGoiKhoRaQuaiToiUu(prefabMarine));
 
-                // ĐÃ SỬA: Áp dụng vị trí tản ra cho cả Terminator giai đoạn cuối
                 SimpleObjectPool.Instance.LayQuaiRa(prefabTerminator, LayViTriSpawnTandRa());
                 yield return new WaitForSeconds(ThoiGianSpawn_gd3);
             }
 
             yield return null;
+        }
+
+        // ĐÈ LOGIC PHÒNG BỊ: Nếu hết thời gian mà vì lý do gì đó Mini-Boss chưa kịp ra, ép xuất hiện luôn ở giây cuối cùng
+        if (!daSpawnMiniBoss && prefabMiniBoss != null)
+        {
+            daSpawnMiniBoss = true;
+            SimpleObjectPool.Instance.LayQuaiRa(prefabMiniBoss, LayViTriSpawnTandRa());
         }
     }
 
@@ -139,7 +167,6 @@ public class ChaosDirector : MonoBehaviour
 
         for (int i = 0; i < soLuongQuaiDotNay; i++)
         {
-            // ĐÃ SỬA: Đổi từ hàm chọn vị trí gốc sang hàm lấy vị trí tản ra chống đè nhau
             Vector3 viTriTandRa = LayViTriSpawnTandRa();
             SimpleObjectPool.Instance.LayQuaiRa(khuonMuonLay, viTriTandRa);
             yield return null;
@@ -157,19 +184,14 @@ public class ChaosDirector : MonoBehaviour
         }
     }
 
-    // ĐÃ THÊM: Hàm xử lý toán học tạo độ tản mát cho quái dựa vào điểm gốc
     Vector3 LayViTriSpawnTandRa()
     {
         if (danhSachDiemSpawn == null || danhSachDiemSpawn.Length == 0) return transform.position;
 
-        // Chọn ngẫu nhiên 1 trong các điểm Spawn chính
         int indexNgauNhien = Random.Range(0, danhSachDiemSpawn.Length);
         Vector3 viTriGoc = danhSachDiemSpawn[indexNgauNhien].position;
 
-        // Tạo một độ lệch ngẫu nhiên trái/phải trên trục X
         float lechX = Random.Range(-doLechSpawnX, doLechSpawnX);
-
-        // Trả về vị trí mới đã được tản ra (giữ nguyên độ cao trục Y)
         return new Vector3(viTriGoc.x + lechX, viTriGoc.y, viTriGoc.z);
     }
 
@@ -190,5 +212,20 @@ public class ChaosDirector : MonoBehaviour
             textDongHo.text = string.Format("{0:00}:{1:00}", phut, giay);
             if (thanhTienTrinhGame != null) thanhTienTrinhGame.value = dongHoDem;
         }
+    }
+
+    /// <summary>
+    /// Hàm bổ sung quét hệ thống: Kiểm tra xem còn thực thể quái nào còn hoạt động hay không.
+    /// </summary>
+    private bool KiemTraKhongConQuaiTrenBanDo()
+    {
+        // Quét tìm tất cả các Object thừa kế từ lớp quái gốc BaseEnemy
+        BaseEnemy[] danhSachQuaiThongThuong = FindObjectsByType<BaseEnemy>(FindObjectsSortMode.None);
+
+        // Quét bổ sung lớp quái đặc biệt Charger (Hell Iron) nếu nó không kế thừa từ BaseEnemy
+        EnemyCharger[] danhSachQuaiCharger = FindObjectsByType<EnemyCharger>(FindObjectsSortMode.None);
+
+        // Nếu cả 2 danh sách quét đều trống rỗng (bằng 0) -> Trả về true (Bản đồ sạch bóng quân thù)
+        return (danhSachQuaiThongThuong.Length == 0 && danhSachQuaiCharger.Length == 0);
     }
 }

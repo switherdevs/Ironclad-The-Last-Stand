@@ -25,6 +25,7 @@ public class NhanVat4 : MonoBehaviour
     private Transform mucTieuQuai;
     private float thoiGianBanTiepTheo = 0f;
     private bool dangTrongLuongBan = false;
+    public Health_phechinh phechinh;
 
     // ── [ANIMATION] Khai báo Animator ───────────────────────────────────────
     private Animator DeadIron_animator;
@@ -33,6 +34,7 @@ public class NhanVat4 : MonoBehaviour
 
     void Start()
     {
+        phechinh = GetComponent<Health_phechinh>();
         // ── [ANIMATION] Lấy Animator từ children ────────────────────────────
         DeadIron_animator = GetComponentInChildren<Animator>();
         // ────────────────────────────────────────────────────────────────────
@@ -52,6 +54,7 @@ public class NhanVat4 : MonoBehaviour
 
     void Update()
     {
+        if (phechinh.Dear) return;
         if (mucTieuQuai == null || !mucTieuQuai.gameObject.activeInHierarchy)
         {
             mucTieuQuai = null;

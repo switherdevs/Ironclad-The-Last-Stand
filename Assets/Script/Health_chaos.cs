@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
-using UnityEngine.Rendering;
 
 public class Health_chaos : MonoBehaviour
 {
@@ -12,13 +11,19 @@ public class Health_chaos : MonoBehaviour
     public Slider ThanhMau;
 
     [Header("--- CHỈ SỐ MÁU ---")]
-    [SerializeField]
-    private int maxHP = 20;
+    [SerializeField] private int maxHP = 20;
     private int currentHp;
-    [SerializeField]
-    private float Animationdead = 2f;
+    [SerializeField] private float Animationdead = 2f;
+
+    [Header("--- CẤU HÌNH HOẠT ẢNH CHẾT TÙY BIẾN ---")]
+    [SerializeField] private string tenAnimationChet = "die_ter_chaos";
+
+    [Header("--- PREFAB POPUP SÁT THƯƠNG (TEXT MESH PRO) ---")]
+    public GameObject prefabPopupSatThuong;
 
     private Animator animator;
+    [SerializeField]
+    private GameObject spritel;
     public bool Deadre = false;
 
     private void Awake()
@@ -28,6 +33,8 @@ public class Health_chaos : MonoBehaviour
 
     void Start()
     {
+        animator.enabled = false;
+        spritel.SetActive(false);
         currentHp = maxHP;
 
         if (ThanhMau != null)
@@ -44,6 +51,22 @@ public class Health_chaos : MonoBehaviour
         currentHp -= damage;
         currentHp = Mathf.Clamp(currentHp, 0, maxHP);
 
+        if (prefabPopupSatThuong != null)
+        {
+            GameObject popup = Instantiate(prefabPopupSatThuong);
+
+            float doLechNgauNhienX = Random.Range(-0.5f, 0.5f);
+            Vector3 viTriXuatHien = transform.position + new Vector3(doLechNgauNhienX, 1.5f, 0f);
+
+            popup.transform.position = viTriXuatHien;
+
+            DamagePopup scriptPopup = popup.GetComponent<DamagePopup>();
+            if (scriptPopup != null)
+            {
+                scriptPopup.ThietLapThongSo(damage);
+            }
+        }
+
         if (ThanhMau != null)
         {
             ThanhMau.value = currentHp;
@@ -57,13 +80,19 @@ public class Health_chaos : MonoBehaviour
 
     void Die()
     {
+        gameObject.tag = "Untagged";
         Deadre = true;
-        if (animator != null)
+
+        if (HeThongKinhTe.Instance != null)
         {
-            animator.SetBool("die", true);
+            HeThongKinhTe.Instance.NhanTienKhiQuaiChet(gameObject.name);
+        }
+        
+        if (animator != null && !string.IsNullOrEmpty(tenAnimationChet) && animator.enabled)
+        {
+            animator.CrossFade(tenAnimationChet, 0.1f);
         }
 
-        // SỬA TẠI ĐÂY: Ẩn thanh máu ngay lập tức khi chết để không bị hiện đè lên xác quái Chaos
         if (ThanhMau != null)
         {
             ThanhMau.gameObject.SetActive(false);
@@ -80,8 +109,13 @@ public class Health_chaos : MonoBehaviour
 
     public void OnTriggerEnter2D(Collider2D collision)
     {
-        // SỬA TẠI ĐÂY: Chặn không cho quái nhận thêm sát thương hoặc hiện lại thanh máu nếu đã chết
         if (currentHp <= 0) return;
+
+        if (collision.CompareTag("Map"))
+        {
+            spritel.SetActive(true);
+            animator.enabled = true;
+        }
 
         if (collision.CompareTag("SatthuongI"))
         {
@@ -91,7 +125,6 @@ public class Health_chaos : MonoBehaviour
             {
                 string chungLoaiDan = nguonDan.tenChungLinhBan;
                 int damSauCung = bangSatThuongChung.LaySatThuongTuChung(chungLoaiDan);
-                Debug.Log($"🎯 Trúng đạn từ chủng: {chungLoaiDan} | Tự động lọc ra Đam: {damSauCung}");
                 TakeDamage(damSauCung);
             }
 
@@ -104,20 +137,22 @@ public class Health_chaos : MonoBehaviour
 
     private void OnEnable()
     {
-        // SỬA TẠI ĐÂY: Thêm kiểm tra an toàn tránh lỗi NullReferenceException khi tái sử dụng quái từ Object Pool
-        if (animator != null)
-        {
-            animator.SetBool("die", false);
-        }
-        else
-        {
-            animator = GetComponentInChildren<Animator>();
-            if (animator != null) animator.SetBool("die", false);
-        }
-
+        animator.enabled = false;
+        spritel.SetActive(false);
+        gameObject.tag = "Enemy";
+        Deadre = false;
         currentHp = maxHP;
 
-        // SỬA TẠI ĐÂY: Đảm bảo reset lại giá trị thanh máu đầy và ẩn đi khi quái Chaos hồi sinh
+        if (animator == null)
+        {
+            animator = GetComponentInChildren<Animator>();
+        }
+
+        if (animator != null)
+        {
+            animator.Rebind();
+        }
+
         if (ThanhMau != null)
         {
             ThanhMau.value = maxHP;

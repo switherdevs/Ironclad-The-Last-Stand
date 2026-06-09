@@ -511,6 +511,7 @@ MonoBehaviour:
   attackCooldown: 3
   projectileSpeed: 70
   projectilePrefab: {fileID: 1115379077512075570, guid: daf581b181dfc12489b745b3767e7601, type: 3}
+  deads: {fileID: 0}
   burstDelay: 0.15
   spawnOffsetDistance: 1
 --- !u!114 &5433429967847235485
@@ -528,7 +529,11 @@ MonoBehaviour:
   bangSatThuongChung: {fileID: 11400000, guid: a60a65e6a8b057b4ea1e9fc841c3d9bc, type: 2}
   ThanhMau: {fileID: 436096490989326454}
   maxHP: 400
-  Animationdead: 5
+  Animationdead: 3
+  tenAnimationChet: die_ter_chaos
+  prefabPopupSatThuong: {fileID: 3638261266717980917, guid: 3b6786f6b44be624c8cc3efc99707eaa, type: 3}
+  spritel: {fileID: 47023036494362224}
+  Deadre: 0
 --- !u!1 &7135667421039048299
 GameObject:
   m_ObjectHideFlags: 0

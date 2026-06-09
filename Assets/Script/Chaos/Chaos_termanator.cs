@@ -3,7 +3,7 @@ using System.Collections;
 
 public class EnemyBurst : BaseEnemy
 {
-    [Header("--- BURST LINE SETTINGS ---")]
+    [Header("--- BURST LINE SETTINGS ---")] // Đã xóa dấu \ thừa ở đây
     [SerializeField] private float burstDelay = 0.15f;
     [SerializeField] private float spawnOffsetDistance = 1.0f;
 
@@ -25,11 +25,21 @@ public class EnemyBurst : BaseEnemy
     {
         base.HandleMovement();
 
-        // ── [ANIMATION] Cập nhật isWalking theo vị trí thực tế ──────────────
+        // ── [ANIMATION] SỬA: Thay thế SetBool bằng CrossFade quản lý di chuyển ──
         if (ChaosTerminator_animator != null)
         {
             bool dangDiChuyen = transform.position != viTriKhungHinhTruoc;
-            ChaosTerminator_animator.SetBool("ChaosTerminator_isWalking", dangDiChuyen);
+            if (dangDiChuyen)
+            {
+                ChaosTerminator_animator.CrossFade("ChaosTerminator_walk", 0.1f);
+            }
+            else
+            {
+                if (currentState != EnemyState.Attacking)
+                {
+                    ChaosTerminator_animator.CrossFade("ChaosTerminator_idle", 0.1f);
+                }
+            }
         }
         viTriKhungHinhTruoc = transform.position;
         // ────────────────────────────────────────────────────────────────────
@@ -38,27 +48,24 @@ public class EnemyBurst : BaseEnemy
     protected override void ExecuteAttackPattern()
     {
         currentState = EnemyState.Attacking;
-        StartCoroutine(BurstAttackRoutine());
+        StartCoroutine(BurstFireRoutine());
     }
 
-    private IEnumerator BurstAttackRoutine()
+    private IEnumerator BurstFireRoutine()
     {
-        // ── [ANIMATION] Bật isShooting khi bắt đầu loạt bắn ────────────────
+        // ── [ANIMATION] SỬA: Ép nhảy vào trạng thái đứng bắn loạt đạn liên tục ──
         if (ChaosTerminator_animator != null)
-            ChaosTerminator_animator.SetBool("ChaosTerminator_isShooting", true);
+            ChaosTerminator_animator.CrossFade("ChaosTerminator_shoot", 0.05f);
         // ────────────────────────────────────────────────────────────────────
 
         for (int i = 0; i < 3; i++)
         {
-            if (targetTransform != null)
-                FireSingleLinearProjectile();
-
+            FireSingleLinearProjectile();
             yield return new WaitForSeconds(burstDelay);
         }
 
-        // ── [ANIMATION] Tắt isShooting sau khi bắn xong loạt ───────────────
-        if (ChaosTerminator_animator != null)
-            ChaosTerminator_animator.SetBool("ChaosTerminator_isShooting", false);
+        // ── [ANIMATION] XÓA bỏ SetBool("ChaosTerminator_isShooting", false) cũ ──
+        // Hệ thống HandleMovement tự động trả về Idle/Walk khi trạng thái chuyển sang Chasing
         // ────────────────────────────────────────────────────────────────────
 
         nextAttackTime = Time.time + attackCooldown;

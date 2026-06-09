@@ -15,6 +15,7 @@ public class EnemyProjectile : MonoBehaviour
 
     private void Awake()
     {
+
         rb = GetComponent<Rigidbody2D>();
     }
 

@@ -114,7 +114,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentChargerState: 0
-  fastMoveSpeed: 12
+  deads: {fileID: 0}
+  fastMoveSpeed: 10
   leftMoveBias: 0.6
   detectionRange: 150
   normalHP: 20
@@ -129,10 +130,9 @@ MonoBehaviour:
   explosionDuration: 0.5
   meleeMoveSpeed: 5
   meleeAttackRange: 20
-  meleeDamage: 20
   meleeAttackCooldown: 1.2
+  hitboxActiveDuration: 0.2
   meleeHitboxObject: {fileID: 3859087662752273699}
-  meleeHitboxDuration: 1
 --- !u!114 &6330178966856479284
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -147,8 +147,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bangSatThuongChung: {fileID: 11400000, guid: a60a65e6a8b057b4ea1e9fc841c3d9bc, type: 2}
   ThanhMau: {fileID: 2104992899749952239}
-  maxHP: 600
-  Animationdead: 5
+  maxHP: 3000
+  Animationdead: 3
+  tenAnimationChet: chao_dead_die
+  prefabPopupSatThuong: {fileID: 3638261266717980917, guid: 3b6786f6b44be624c8cc3efc99707eaa, type: 3}
+  spritel: {fileID: 2170042348629646210}
+  Deadre: 0
 --- !u!1 &1045464583273961109
 GameObject:
   m_ObjectHideFlags: 0

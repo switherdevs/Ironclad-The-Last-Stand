@@ -31,6 +31,7 @@ public class TitanPhe9 : MonoBehaviour
     private int soVienDaBan = 0;
     private bool dangTrongLoat = false;
     private float thoiGianBanTiepTheo = 0f;
+    public Health_phechinh phechinh;
 
     private float HoiChieuThucTe => thoiGianHoiChieu / Mathf.Max(heSoTangToc, 0.01f);
 
@@ -41,6 +42,7 @@ public class TitanPhe9 : MonoBehaviour
 
     void Start()
     {
+        phechinh = GetComponent<Health_phechinh>();
         // ── [ANIMATION] Lấy Animator từ children ────────────────────────────
         Titan_animator = GetComponentInChildren<Animator>();
         // ────────────────────────────────────────────────────────────────────
@@ -56,6 +58,8 @@ public class TitanPhe9 : MonoBehaviour
 
     void Update()
     {
+        if (phechinh.Dear) return;
+
         if (mucTieuQuai == null || !mucTieuQuai.gameObject.activeInHierarchy)
         {
             mucTieuQuai = null;

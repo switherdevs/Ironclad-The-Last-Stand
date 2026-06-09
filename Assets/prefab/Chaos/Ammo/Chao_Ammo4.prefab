@@ -166,7 +166,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 50
-  m_Sprite: {fileID: 5350311513231917695, guid: f3ab715db69590f4e94879bcde3dc653, type: 3}
+  m_Sprite: {fileID: -2076127602823420040, guid: e3782d8e822a9c44ebb1b960f725498b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -238,8 +238,8 @@ CircleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
-  m_Radius: 1.175
+  m_Offset: {x: 0.8509339, y: 0}
+  m_Radius: 1.3696393
 --- !u!114 &5995761311862745477
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -252,7 +252,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 658f3af7cdeca5e4b980a27a7a957238, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tenChungLinhBan: Dead Iron walk
+  tenChungLinhBan: Chaos DeadIron Walk
 --- !u!96 &-4615820722826080107
 TrailRenderer:
   serializedVersion: 3
@@ -320,7 +320,7 @@ TrailRenderer:
       m_RotationOrder: 4
     colorGradient:
       serializedVersion: 2
-      key0: {r: 0, g: 1, b: 0.8889122, a: 1}
+      key0: {r: 1, g: 0, b: 0.9477639, a: 1}
       key1: {r: 1, g: 1, b: 1, a: 0}
       key2: {r: 0, g: 0, b: 0, a: 0}
       key3: {r: 0, g: 0, b: 0, a: 0}
@@ -337,8 +337,8 @@ TrailRenderer:
       ctime6: 0
       ctime7: 0
       atime0: 0
-      atime1: 16384
-      atime2: 0
+      atime1: 41094
+      atime2: 34618
       atime3: 0
       atime4: 0
       atime5: 0

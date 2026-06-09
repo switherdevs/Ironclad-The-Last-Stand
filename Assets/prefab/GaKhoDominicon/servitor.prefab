@@ -150,9 +150,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trangThaiHienTai: 0
-  DiemNhaChinh: {fileID: 4433333938362103560, guid: 77e38137f71460547a74aea953cc9856, type: 3}
-  tocDoDiChuyen: 6
-  thoiGianDaoVang: 5
+  tocDoDiChuyen: 7
+  thoiGianDaoVang: 3.5
   luongVangMangTheo: 50
 --- !u!114 &3536162725100961749
 MonoBehaviour:
@@ -170,6 +169,8 @@ MonoBehaviour:
   ThanhMau: {fileID: 2021203107893120862}
   maxHP: 50
   Dead_ani: 5
+  tenAnimationChet: die_phechinh_state
+  prefabPopupSatThuong: {fileID: 3638261266717980917, guid: 3b6786f6b44be624c8cc3efc99707eaa, type: 3}
 --- !u!1 &4649563182233616097
 GameObject:
   m_ObjectHideFlags: 0

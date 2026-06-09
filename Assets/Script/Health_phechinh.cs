@@ -11,11 +11,17 @@ public class Health_phechinh : MonoBehaviour
     public Slider ThanhMau;
 
     [Header("--- CHỈ SỐ MÁU ---")]
-    [SerializeField]
-    private int maxHP = 20;
+    [SerializeField] private int maxHP = 20;
     private int currentHp;
-    [SerializeField]
-    private float Dead_ani;
+    [SerializeField] private float Dead_ani;
+
+    [Header("--- CẤU HÌNH HOẠT ẢNH CHẾT TÙY BIẾN ---")]
+    [SerializeField] private string tenAnimationChet = "die_phechinh_state";
+
+    [Header("--- PREFAB POPUP SÁT THƯƠNG (TEXT MESH PRO) ---")]
+    public GameObject prefabPopupSatThuong;
+    public bool Dear = false;
+
     private Animator animator;
 
     private void Awake()
@@ -41,6 +47,24 @@ public class Health_phechinh : MonoBehaviour
         currentHp -= damage;
         currentHp = Mathf.Clamp(currentHp, 0, maxHP);
 
+        // KÍCH HOẠT POPUP CHỮ CHO PHE CHÍNH:
+        if (prefabPopupSatThuong != null)
+        {
+            GameObject popup = Instantiate(prefabPopupSatThuong);
+
+            // Tạo độ lệch ngẫu nhiên trục X để chữ nổi liên tiếp đẹp mắt
+            float doLechNgauNhienX = Random.Range(-0.5f, 0.5f);
+            Vector3 viTriXuatHien = transform.position + new Vector3(doLechNgauNhienX, 1.5f, 0f);
+
+            popup.transform.position = viTriXuatHien;
+
+            DamagePopup scriptPopup = popup.GetComponent<DamagePopup>();
+            if (scriptPopup != null)
+            {
+                scriptPopup.ThietLapThongSo(damage);
+            }
+        }
+
         if (ThanhMau != null)
         {
             ThanhMau.value = currentHp;
@@ -54,6 +78,9 @@ public class Health_phechinh : MonoBehaviour
 
     void Die()
     {
+        Dear = true;
+        gameObject.tag = "Untagged";
+
         if (ResourceManager.Instance != null)
         {
             string tenLinhQuetDuoc = gameObject.name.ToLower();
@@ -89,13 +116,12 @@ public class Health_phechinh : MonoBehaviour
             }
         }
 
-        // SỬA TẠI ĐÂY: Đẩy lệnh set animation chết ra khỏi ngoặc if để luôn luôn chạy khi Die()
-        if (animator != null)
+        // Thay vì SetBool, ép chạy trực tiếp bằng CrossFade dựa trên tên nhập ở Inspector
+        if (animator != null && !string.IsNullOrEmpty(tenAnimationChet))
         {
-            animator.SetBool("die", true);
+            animator.CrossFade(tenAnimationChet, 0.1f);
         }
 
-        // SỬA TẠI ĐÂY: Ẩn thanh máu ngay lập tức khi bắt đầu chết để không bị hiện đè lên xác
         if (ThanhMau != null)
         {
             ThanhMau.gameObject.SetActive(false);
@@ -112,7 +138,6 @@ public class Health_phechinh : MonoBehaviour
 
     public void OnTriggerEnter2D(Collider2D collision)
     {
-        // SỬA TẠI ĐÂY: Chặn không nhận thêm sát thương và không bật lại thanh máu nếu máu đã hết (đang trong trạng thái chết)
         if (currentHp <= 0) return;
 
         if (collision.CompareTag("SatthuongQ"))
@@ -140,15 +165,17 @@ public class Health_phechinh : MonoBehaviour
 
     private void OnEnable()
     {
-        // SỬA TẠI ĐÂY: Thêm điều kiện if bảo hiểm để tránh lỗi crash NullReference khi lấy dữ liệu Animator từ Object Pool
-        if (animator != null)
-        {
-            animator.SetBool("die", false);
-        }
-        else
+        Dear = false;
+        gameObject.tag = "Phechinh";
+
+        if (animator == null)
         {
             animator = GetComponentInChildren<Animator>();
-            if (animator != null) animator.SetBool("die", false);
+        }
+
+        if (animator != null)
+        {
+            animator.Rebind(); // Trả toàn bộ tư thế và hoạt ảnh về mặc định từ Object Pool
         }
 
         currentHp = maxHP;

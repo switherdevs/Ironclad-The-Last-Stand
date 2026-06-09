@@ -225,8 +225,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 828003418e8417d4ba0ca276cd6c49fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TamBan: 150
-  soDanBan: 2
+  TamBan: 100
+  soDanBan: 3
   satThuong: 10
   DiemBan: {fileID: 1309856065696408062}
   prefabDanNho: {fileID: 258804693158038890, guid: 08ed8d023f119464989717e425a14d8e, type: 3}
@@ -235,6 +235,7 @@ MonoBehaviour:
   vungBoxPhongThu: {fileID: 7942286887352987862, guid: 43e938c73a2cad44e9d19025d21e3afb, type: 3}
   tocDoHanhQuan: 15
   soVienLoatNay: 1
+  phechinh: {fileID: 0}
 --- !u!114 &6395516811327084429
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -251,6 +252,9 @@ MonoBehaviour:
   ThanhMau: {fileID: 6238817487069980567}
   maxHP: 150
   Dead_ani: 5
+  tenAnimationChet: die_iron
+  prefabPopupSatThuong: {fileID: 3638261266717980917, guid: 3b6786f6b44be624c8cc3efc99707eaa, type: 3}
+  Dear: 0
 --- !u!50 &6666461874724065263
 Rigidbody2D:
   serializedVersion: 5

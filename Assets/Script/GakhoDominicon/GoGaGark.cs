@@ -27,9 +27,11 @@ public class NhanVat1Controller : MonoBehaviour
 
     private Animator Khogark_animatior;
     private Vector3 viTriKhungHinhTruoc;
+    public Health_phechinh phechinh;
 
     void Start()
     {
+        phechinh = GetComponent<Health_phechinh>();
         Khogark_animatior = GetComponentInChildren<Animator>();
         if (vungBoxPhongThu != null)
         {
@@ -44,6 +46,8 @@ public class NhanVat1Controller : MonoBehaviour
 
     void Update()
     {
+        if (phechinh.Dear) return;
+
         if (ThayDich == null || !ThayDich.gameObject.activeInHierarchy)
         {
             ThayDich = null;

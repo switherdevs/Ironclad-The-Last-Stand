@@ -1,5 +1,5 @@
 using UnityEngine;
-using System.Collections.Generic;
+
 public class Dannv2 : MonoBehaviour
 {
     public khodanan cauHinhDan;
@@ -7,18 +7,34 @@ public class Dannv2 : MonoBehaviour
 
     private float demThoiGian;
     private bool daKichHoat = false;
+    private TrailRenderer line;
 
-    public void KichHoatVienDan()
+    // SỬA: Đổi từ Start sang Awake để lấy linh kiện trước khi OnEnable chạy
+    private void Awake()
     {
+        line = GetComponent<TrailRenderer>();
+    }
+
+    // ĐÃ CHUYỂN ĐỔI: Tự động reset và kích hoạt đạn mỗi khi lôi từ Kho ra (Chuẩn Pooling)
+    private void OnEnable()
+    {
+        // 1. Bật lại vệt đuôi đạn, bảo đảm an toàn không bị lỗi Null
+        if (line != null)
+        {
+            line.enabled = true;
+        }
+
+        // 2. Tự động đặt lại thời gian sống từ file cấu hình
         if (cauHinhDan != null)
         {
             demThoiGian = cauHinhDan.Duytri;
         }
         else
         {
-            demThoiGian = 3f; // Thời gian tự hủy dự phòng nếu thiếu cấu hình
+            demThoiGian = 3f;
         }
-        daKichHoat = true;
+
+        daKichHoat = true; // Cho phép đạn bay ngay lập tức
     }
 
     void Update()
@@ -52,7 +68,7 @@ public class Dannv2 : MonoBehaviour
 
             if (mauQuai != null)
             {
-                // Gây sát thương đơn mục tiêu (lượng sát thương lớn từ Nhân Vật 4 truyền sang)
+                // Gây sát thương đơn mục tiêu
                 mauQuai.TakeDamage(satThuong);
                 Debug.Log($"🎯 Đạn đánh trúng {collision.name}, gây {satThuong} sát thương đơn!");
             }
@@ -64,7 +80,22 @@ public class Dannv2 : MonoBehaviour
 
     void ThanhCongTraDan()
     {
+        if (line != null) line.enabled = false; // Tắt vệt đuôi trước khi ẩn để tránh bị loang dòng chữ trên màn hình
         daKichHoat = false;
-        gameObject.SetActive(false);
+        gameObject.SetActive(false); // Trả về kho đạn ẩn
+    }
+
+    // Giữ lại hàm cũ để không bị báo lỗi ở các script Súng đang gọi nó
+    public void KichHoatVienDan()
+    {
+        if (cauHinhDan != null)
+        {
+            demThoiGian = cauHinhDan.Duytri;
+        }
+        else
+        {
+            demThoiGian = 3f;
+        }
+        daKichHoat = true;
     }
 }

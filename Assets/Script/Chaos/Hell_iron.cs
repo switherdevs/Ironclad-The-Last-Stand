@@ -28,308 +28,182 @@ public class EnemyCharger : MonoBehaviour
     [SerializeField] private int explosionDamage = 40;
     [SerializeField] private float explosionDuration = 0.5f;
 
-    [Header("--- PHASE 2: MELEE ---")]
+    [Header("--- PHASE 2: MELEE ATTACK ---")]
     [SerializeField] private float meleeMoveSpeed = 5f;
-    [SerializeField] private float meleeAttackRange = 1.3f;
-    [SerializeField] private int meleeDamage = 15;
-    [SerializeField] private float meleeAttackCooldown = 1.2f;
+    [SerializeField] private float meleeAttackRange = 1.5f;
+    //[SerializeField] private int meleeDamage = 15;
+    [SerializeField] private float meleeAttackCooldown = 1.5f;
+    [SerializeField] private float hitboxActiveDuration = 0.2f;
     [SerializeField] private GameObject meleeHitboxObject;
-    [SerializeField] private float meleeHitboxDuration = 0.2f;
 
     private int currentHP;
-    private bool hasExploded = false;
     private float nextAttackTime;
     private float nextMeleeAttackTime;
-
     private Rigidbody2D rb;
-    private Collider2D monsterCollider;
     private Transform targetTransform;
-    private Vector2 lastLookDirection = Vector2.left;
-
-    private const string TAG_PHE_CHINH = "Phechinh";
-    private const string TAG_SAN_NHA = "Sannha";
-
-    // ── [ANIMATION] Khai báo Animator ───────────────────────────────────────
+    private SpriteRenderer spriteRenderer;
     private Animator HellIron_animator;
-    private Vector3 viTriKhungHinhTruoc;
-    // ────────────────────────────────────────────────────────────────────────
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
-        monsterCollider = GetComponent<Collider2D>();
-        ConfigurePhysics();
-
-        // ── [ANIMATION] Lấy Animator từ children ────────────────────────────
+        spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         HellIron_animator = GetComponentInChildren<Animator>();
-        // ────────────────────────────────────────────────────────────────────
     }
 
     private void Start()
     {
         currentHP = normalHP;
         if (meleeHitboxObject != null) meleeHitboxObject.SetActive(false);
-        nextAttackTime = Time.time;
+        FindTarget();
     }
 
     private void Update()
     {
-        if (deads.Deadre) return;
-
         if (currentChargerState == ChargerState.Dead) return;
 
-        HandleCoreLogicTransitions();
-        HandleRangedShooting();
-
-        // ── [ANIMATION] Cập nhật isRunning theo vị trí thực tế ──────────────
-        // Dùng chung isRunning cho cả phase 1 (FastRangedRun) và phase 2 (MeleeChasing)
-        if (HellIron_animator != null)
+        if (targetTransform == null)
         {
-            bool dangDiChuyen = transform.position != viTriKhungHinhTruoc;
-            bool dangChay = dangDiChuyen &&
-                (currentChargerState == ChargerState.FastRangedRun ||
-                 currentChargerState == ChargerState.MeleeChasing);
-
-            HellIron_animator.SetBool("HellIron_isRunning", dangChay);
-        }
-        viTriKhungHinhTruoc = transform.position;
-        // ────────────────────────────────────────────────────────────────────
-    }
-
-    private void FixedUpdate()
-    {
-        if (deads.Deadre) return;
-
-        if (currentChargerState == ChargerState.Dead || rb == null) return;
-
-        if (rb.IsSleeping()) rb.WakeUp();
-
-        if (currentChargerState == ChargerState.FastRangedRun || currentChargerState == ChargerState.MeleeChasing)
-        {
-            FindClosestPriorityTarget();
-        }
-
-        HandlePhysicsMovement();
-    }
-
-    private void ConfigurePhysics()
-    {
-        if (rb != null)
-        {
-            rb.bodyType = RigidbodyType2D.Dynamic;
-            rb.gravityScale = 0f;
-            rb.freezeRotation = true;
-            rb.sleepMode = RigidbodySleepMode2D.NeverSleep;
-            rb.linearDamping = 0f;
-        }
-    }
-
-    private void FindClosestPriorityTarget()
-    {
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, detectionRange);
-        Transform nearestSannha = null;
-        Transform nearestPhechinh = null;
-        float minDistSannha = Mathf.Infinity;
-        float minDistPhechinh = Mathf.Infinity;
-
-        foreach (var col in colliders)
-        {
-            if (col == null) continue;
-            float dist = Vector2.Distance(transform.position, col.transform.position);
-
-            if (col.CompareTag(TAG_SAN_NHA) && dist < minDistSannha)
+            FindTarget();
+            if (targetTransform == null)
             {
-                minDistSannha = dist;
-                nearestSannha = col.transform;
-            }
-            else if (col.CompareTag(TAG_PHE_CHINH) && dist < minDistPhechinh)
-            {
-                minDistPhechinh = dist;
-                nearestPhechinh = col.transform;
+                rb.linearVelocity = Vector2.zero;
+                // SỬA: Gọi trạng thái đứng yên
+                if (HellIron_animator != null) HellIron_animator.CrossFade("HellIron_idle", 0.1f);
+                return;
             }
         }
-        targetTransform = (nearestSannha != null) ? nearestSannha : nearestPhechinh;
+
+        FlipSprite();
+
+        switch (currentChargerState)
+        {
+            case ChargerState.FastRangedRun:
+                HandleFastRangedRun();
+                break;
+            case ChargerState.MeleeChasing:
+                HandleMeleeChasing();
+                break;
+            case ChargerState.MeleeAttacking:
+                break;
+        }
     }
 
-    private void HandleRangedShooting()
+    private void FindTarget()
     {
-        if (currentChargerState != ChargerState.FastRangedRun || hasExploded || targetTransform == null) return;
+        GameObject target = GameObject.FindWithTag("Phechinh");
+        if (target != null) targetTransform = target.transform;
+    }
 
-        if (Time.time >= nextAttackTime)
+    private void FlipSprite()
+    {
+        if (targetTransform == null || spriteRenderer == null) return;
+        if (targetTransform.position.x < transform.position.x)
+            spriteRenderer.transform.localScale = new Vector3(-1f, 1f, 1f);
+        else
+            spriteRenderer.transform.localScale = new Vector3(1f, 1f, 1f);
+    }
+
+    private void HandleFastRangedRun()
+    {
+        // SỬA: Ép chạy hoạt ảnh lao lên siêu tốc bằng CrossFade
+        if (HellIron_animator != null) HellIron_animator.CrossFade("HellIron_run", 0.1f);
+
+        float distance = Vector2.Distance(transform.position, targetTransform.position);
+
+        if (distance <= chargeHitboxRadius + 0.5f)
         {
-            if (projectilePrefab != null)
-            {
-                GameObject proj = Instantiate(projectilePrefab, transform.position, Quaternion.identity);
-                Rigidbody2D projRb = proj.GetComponent<Rigidbody2D>();
-                if (projRb != null)
-                {
-                    Vector2 shootDir = (targetTransform.position - transform.position).normalized;
-                    projRb.linearVelocity = shootDir * projectileSpeed;
+            StartCoroutine(DetonateRoutine());
+            return;
+        }
 
-                    float angle = Mathf.Atan2(shootDir.y, shootDir.x) * Mathf.Rad2Deg;
-                    proj.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
-                }
-            }
+        Vector2 direction = ((Vector2)targetTransform.position - (Vector2)transform.position).normalized;
+        direction.y += (targetTransform.position.y > transform.position.y) ? leftMoveBias : -leftMoveBias;
+        direction = direction.normalized;
+
+        rb.linearVelocity = direction * fastMoveSpeed;
+
+        if (Time.time >= nextAttackTime && distance <= detectionRange)
+        {
+            FireRangedProjectile();
             nextAttackTime = Time.time + attackCooldown;
         }
     }
 
-    private void HandleCoreLogicTransitions()
+    private void FireRangedProjectile()
     {
-        switch (currentChargerState)
+        if (projectilePrefab == null) return;
+        Vector2 dir = ((Vector2)targetTransform.position - (Vector2)transform.position).normalized;
+        float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+        Vector3 spawnPos = transform.position + (Vector3)(dir * 1.2f);
+
+        GameObject proj = Instantiate(projectilePrefab, spawnPos, Quaternion.Euler(0f, 0f, angle));
+        Rigidbody2D projRb = proj.GetComponent<Rigidbody2D>();
+        if (projRb != null)
         {
-            case ChargerState.Exploding:
-                hasExploded = true;
-                if (rb != null) rb.simulated = true;
-                if (monsterCollider != null) monsterCollider.enabled = true;
-
-                currentChargerState = ChargerState.MeleeChasing;
-                break;
-
-            case ChargerState.MeleeChasing:
-                if (targetTransform != null)
-                {
-                    float dist = Vector2.Distance(transform.position, targetTransform.position);
-                    if (dist <= meleeAttackRange && Time.time >= nextMeleeAttackTime)
-                    {
-                        currentChargerState = ChargerState.MeleeAttacking;
-                        StartCoroutine(MeleeAttackRoutine());
-                    }
-                }
-                break;
+            projRb.bodyType = RigidbodyType2D.Dynamic;
+            projRb.gravityScale = 0f;
+            projRb.linearVelocity = dir * projectileSpeed;
         }
     }
 
-    private void HandlePhysicsMovement()
-    {
-        switch (currentChargerState)
-        {
-            case ChargerState.FastRangedRun:
-                if (targetTransform != null)
-                {
-                    Vector2 moveDir = (targetTransform.position - transform.position).normalized;
-                    lastLookDirection = moveDir;
-
-                    Vector2 checkCenter = CalculateHitboxCenter(moveDir);
-                    Collider2D[] cols = Physics2D.OverlapCircleAll(checkCenter, chargeHitboxRadius);
-                    bool hitTarget = false;
-
-                    foreach (var c in cols)
-                    {
-                        if (c != null && c.gameObject != this.gameObject)
-                        {
-                            if (c.CompareTag(TAG_PHE_CHINH) || c.CompareTag(TAG_SAN_NHA))
-                            {
-                                hitTarget = true;
-                                break;
-                            }
-                        }
-                    }
-
-                    if (hitTarget)
-                    {
-                        if (rb != null) rb.simulated = false;
-                        if (monsterCollider != null) monsterCollider.enabled = false;
-                        ExecuteAoEExplosion();
-                    }
-                    else
-                    {
-                        rb.linearVelocity = moveDir * fastMoveSpeed;
-                    }
-                }
-                else
-                {
-                    lastLookDirection = Vector2.left;
-                    rb.linearVelocity = Vector2.left * fastMoveSpeed * leftMoveBias;
-                }
-                break;
-
-            case ChargerState.Exploding:
-            case ChargerState.MeleeAttacking:
-                rb.linearVelocity = Vector2.zero;
-                break;
-
-            case ChargerState.MeleeChasing:
-                if (targetTransform != null)
-                {
-                    float dist = Vector2.Distance(transform.position, targetTransform.position);
-                    if (dist <= meleeAttackRange)
-                    {
-                        rb.linearVelocity = Vector2.zero;
-                    }
-                    else
-                    {
-                        Vector2 dir = (targetTransform.position - transform.position).normalized;
-                        rb.linearVelocity = dir * meleeMoveSpeed;
-                    }
-                }
-                else
-                {
-                    rb.linearVelocity = Vector2.left * meleeMoveSpeed * leftMoveBias;
-                }
-
-                RotateMeleeHitbox();
-                break;
-        }
-    }
-
-    private Vector2 CalculateHitboxCenter(Vector2 moveDir)
-    {
-        Vector2 forward = moveDir.normalized;
-        Vector2 up = new Vector2(-forward.y, forward.x);
-        return (Vector2)transform.position + (forward * hitboxOffset.x) + (up * hitboxOffset.y);
-    }
-
-    private void ExecuteAoEExplosion()
+    private IEnumerator DetonateRoutine()
     {
         currentChargerState = ChargerState.Exploding;
-
-        // ── [ANIMATION] Kích hoạt animation tấn công khi nổ ────────────────
-        if (HellIron_animator != null)
-            HellIron_animator.SetTrigger("HellIron_doAttack");
-        // ────────────────────────────────────────────────────────────────────
+        rb.linearVelocity = Vector2.zero;
 
         if (explosionPrefab != null)
         {
-            GameObject expGo = Instantiate(explosionPrefab, transform.position, Quaternion.identity);
-            ChargerExplosion expScript = expGo.GetComponent<ChargerExplosion>();
-            if (expScript != null)
+            GameObject exp = Instantiate(explosionPrefab, transform.position, Quaternion.identity);
+            Destroy(exp, explosionDuration);
+        }
+
+        Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, explosionRadius);
+        foreach (Collider2D hit in hits)
+        {
+            if (hit.CompareTag("Phechinh"))
             {
-                expScript.Initialize(explosionDamage, explosionRadius, explosionDuration);
+                Health_phechinh hp = hit.GetComponent<Health_phechinh>();
+                if (hp != null) hp.TakeDamage(explosionDamage);
             }
         }
 
-        HandleCoreLogicTransitions();
+        yield return new WaitForSeconds(0.1f);
+        currentChargerState = ChargerState.MeleeChasing;
+    }
+
+    private void HandleMeleeChasing()
+    {
+        // SỬA: Khi đổi sang cận chiến đi bộ, gọi hoạt ảnh di chuyển bộ (tận dụng lại run hoặc walk tùy bạn cấu hình, ở đây giữ đi bộ/chạy mượt)
+        if (HellIron_animator != null) HellIron_animator.CrossFade("HellIron_run", 0.1f);
+
+        float distance = Vector2.Distance(transform.position, targetTransform.position);
+
+        if (distance <= meleeAttackRange)
+        {
+            rb.linearVelocity = Vector2.zero;
+            if (Time.time >= nextMeleeAttackTime)
+            {
+                StartCoroutine(MeleeAttackRoutine());
+            }
+            return;
+        }
+
+        Vector2 direction = ((Vector2)targetTransform.position - (Vector2)transform.position).normalized;
+        rb.linearVelocity = direction * meleeMoveSpeed;
     }
 
     private IEnumerator MeleeAttackRoutine()
     {
-        rb.linearVelocity = Vector2.zero;
+        currentChargerState = ChargerState.MeleeAttacking;
 
-        // ── [ANIMATION] Kích hoạt animation tấn công cận chiến ──────────────
-        if (HellIron_animator != null)
-            HellIron_animator.SetTrigger("HellIron_doAttack");
-        // ────────────────────────────────────────────────────────────────────
+        // SỬA: Đập búa cận chiến mượt mà
+        if (HellIron_animator != null) HellIron_animator.CrossFade("HellIron_Attack", 0.05f);
 
-        if (meleeHitboxObject != null)
-        {
-            meleeHitboxObject.SetActive(true);
+        RotateMeleeHitbox();
+        if (meleeHitboxObject != null) meleeHitboxObject.SetActive(true);
 
-            Collider2D[] hitTargets = Physics2D.OverlapBoxAll(meleeHitboxObject.transform.position, new Vector2(1.5f, 1.5f), 0f);
-            foreach (var col in hitTargets)
-            {
-                if (col != null && (col.CompareTag(TAG_PHE_CHINH) || col.CompareTag(TAG_SAN_NHA)))
-                {
-                    var health = col.GetComponent<Health_phechinh>();
-                    if (health != null)
-                    {
-                        health.TakeDamage(meleeDamage);
-                    }
-                }
-            }
-        }
-
-        yield return new WaitForSeconds(meleeHitboxDuration);
+        yield return new WaitForSeconds(hitboxActiveDuration);
 
         if (meleeHitboxObject != null) meleeHitboxObject.SetActive(false);
 
@@ -356,20 +230,10 @@ public class EnemyCharger : MonoBehaviour
     {
         currentChargerState = ChargerState.Dead;
 
-        // ── [ANIMATION] Reset animation khi chết ────────────────────────────
+        // KHÔNG ĐỤNG ĐẾN ĐOẠN ANIMATION CHẾT THEO YÊU CẦU
         if (HellIron_animator != null)
             HellIron_animator.SetBool("HellIron_isRunning", false);
-        // ────────────────────────────────────────────────────────────────────
 
         Destroy(gameObject);
-    }
-
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.red;
-        Vector2 dir = (targetTransform != null) ? (Vector2)(targetTransform.position - transform.position).normalized : lastLookDirection;
-        Vector2 debugCenter = CalculateHitboxCenter(dir);
-
-        Gizmos.DrawWireSphere(debugCenter, chargeHitboxRadius);
     }
 }

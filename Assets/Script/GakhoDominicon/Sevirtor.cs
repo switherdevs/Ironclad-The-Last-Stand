@@ -20,9 +20,11 @@ public class Sevirtor : MonoBehaviour
 
     private GoldMine moDangDao = null;
     private int indexSlotCuaTho = -1;
+    private Animator servitor_ani;
 
     void Start()
     {
+        servitor_ani = GetComponentInChildren<Animator>();
         // SỬA TẠI ĐÂY: Loại bỏ điều kiện kiểm tra null cũ, ép buộc mọi con lính khi spawn ra phải tự tìm tag "Home" hiện tại của Map
         GameObject nhaChinhmOnMap = GameObject.FindWithTag("Home");
         if (nhaChinhmOnMap != null)
@@ -124,6 +126,8 @@ public class Sevirtor : MonoBehaviour
     {
         if (DiemNhaChinh == null) return;
 
+        servitor_ani.SetBool("daovang", false);
+
         XoayMat(DiemNhaChinh.position.x);
         transform.position = Vector3.MoveTowards(
             transform.position, DiemNhaChinh.position, tocDoDiChuyen * Time.deltaTime);
@@ -146,6 +150,7 @@ public class Sevirtor : MonoBehaviour
     {
         if (trangThaiHienTai == MinerState.DiToiBaiVang)
         {
+            servitor_ani.SetBool("daovang", true);
             trangThaiHienTai = MinerState.DangDaoVang;
             demThoiGianDao = thoiGianDaoVang;
         }

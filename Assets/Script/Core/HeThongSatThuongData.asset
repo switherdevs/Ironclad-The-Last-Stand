@@ -20,7 +20,7 @@ MonoBehaviour:
     satThuongGoc: 15
     heSoBoTro: 1
   - tenChungLinh: Terminator
-    satThuongGoc: 20
+    satThuongGoc: 35
     heSoBoTro: 1
   - tenChungLinh: Dead Iron walk
     satThuongGoc: 50
