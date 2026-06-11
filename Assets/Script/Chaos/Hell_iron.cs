@@ -69,7 +69,7 @@ public class EnemyCharger : MonoBehaviour
             {
                 rb.linearVelocity = Vector2.zero;
                 // SỬA: Gọi trạng thái đứng yên
-                if (HellIron_animator != null) HellIron_animator.CrossFade("HellIron_idle", 0.1f);
+                if (HellIron_animator != null) HellIron_animator.CrossFade("Chaos_dead_idle", 0.1f);
                 return;
             }
         }
@@ -107,7 +107,7 @@ public class EnemyCharger : MonoBehaviour
     private void HandleFastRangedRun()
     {
         // SỬA: Ép chạy hoạt ảnh lao lên siêu tốc bằng CrossFade
-        if (HellIron_animator != null) HellIron_animator.CrossFade("HellIron_run", 0.1f);
+        if (HellIron_animator != null) HellIron_animator.SetBool("Chaos_dead_run", true);
 
         float distance = Vector2.Distance(transform.position, targetTransform.position);
 
@@ -150,6 +150,7 @@ public class EnemyCharger : MonoBehaviour
     private IEnumerator DetonateRoutine()
     {
         currentChargerState = ChargerState.Exploding;
+
         rb.linearVelocity = Vector2.zero;
 
         if (explosionPrefab != null)
@@ -175,7 +176,7 @@ public class EnemyCharger : MonoBehaviour
     private void HandleMeleeChasing()
     {
         // SỬA: Khi đổi sang cận chiến đi bộ, gọi hoạt ảnh di chuyển bộ (tận dụng lại run hoặc walk tùy bạn cấu hình, ở đây giữ đi bộ/chạy mượt)
-        if (HellIron_animator != null) HellIron_animator.CrossFade("HellIron_run", 0.1f);
+        if (HellIron_animator != null) HellIron_animator.SetBool("Chaos_dead_run", true);
 
         float distance = Vector2.Distance(transform.position, targetTransform.position);
 
@@ -196,9 +197,10 @@ public class EnemyCharger : MonoBehaviour
     private IEnumerator MeleeAttackRoutine()
     {
         currentChargerState = ChargerState.MeleeAttacking;
+        if (HellIron_animator != null) HellIron_animator.SetBool("Chaos_dead_run", false);
 
         // SỬA: Đập búa cận chiến mượt mà
-        if (HellIron_animator != null) HellIron_animator.CrossFade("HellIron_Attack", 0.05f);
+        if (HellIron_animator != null) HellIron_animator.SetBool("chao_dead_attack", true);
 
         RotateMeleeHitbox();
         if (meleeHitboxObject != null) meleeHitboxObject.SetActive(true);
@@ -209,6 +211,8 @@ public class EnemyCharger : MonoBehaviour
 
         nextMeleeAttackTime = Time.time + meleeAttackCooldown;
         currentChargerState = ChargerState.MeleeChasing;
+        if (HellIron_animator != null) HellIron_animator.SetBool("chao_dead_attack", false);
+
     }
 
     private void RotateMeleeHitbox()
@@ -232,8 +236,26 @@ public class EnemyCharger : MonoBehaviour
 
         // KHÔNG ĐỤNG ĐẾN ĐOẠN ANIMATION CHẾT THEO YÊU CẦU
         if (HellIron_animator != null)
-            HellIron_animator.SetBool("HellIron_isRunning", false);
-
-        Destroy(gameObject);
+            HellIron_animator.SetBool("Chaos_dead_run", false);
     }
+    // ── [DEBUG] Hiển thị phạm vi nổ đi theo Offset trong cửa sổ Scene ───────
+    private void OnDrawGizmosSelected()
+    {
+        // Tính toán vị trí tâm nổ thực tế dựa trên Offset
+        // Cần nhân với localScale.x để offset quay hướng theo quái
+        Vector3 pointOffset = transform.position + new Vector3(hitboxOffset.x * transform.localScale.x, hitboxOffset.y, 0);
+
+        // Vẽ vòng tròn phạm vi nổ (Màu đỏ)
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(pointOffset, explosionRadius);
+
+        // Vẽ tâm nổ (Màu vàng)
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawSphere(pointOffset, 0.1f);
+
+        // Vẽ đường nối từ tâm quái đến tâm nổ để dễ quan sát (Màu trắng)
+        Gizmos.color = Color.white;
+        Gizmos.DrawLine(transform.position, pointOffset);
+    }
+    // ────────────────────────────────────────────────────────────────────────
 }

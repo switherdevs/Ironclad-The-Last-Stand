@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -22,12 +23,14 @@ public class ChaosDirector : MonoBehaviour
     public CauHinhQuai soLuongQuaiTheoDoKho = new CauHinhQuai { ez = 3, nm = 5, hr = 7 };
 
     [Header("--- CẤU HÌNH CHỐNG TRÙNG VỊ TRÍ ---")]
-    [Tooltip("Khoảng cách lệch ngẫu nhiên sang trái/phải so với điểm gốc để quái không đè lên nhau")]
     public float doLechSpawnX = 1.5f;
 
     [Header("--- KẾT NỐI UI MÀN HÌNH ---")]
     public TextMeshProUGUI textDongHo;
     public Slider thanhTienTrinhGame;
+
+    [Header("--- KẾT NỐI HỆ THỐNG SAVE ---")]
+    public SaveSystem boQuanLySave;
 
     [Header("--- DANH SÁCH VỊ TRÍ SPAWN QUÁI ---")]
     public Transform[] danhSachDiemSpawn;
@@ -41,7 +44,6 @@ public class ChaosDirector : MonoBehaviour
     public GameObject prefabDemonPrince;
 
     [Header("--- KHUÔN ĐÚC MINI-BOSS ---")]
-    [Tooltip("Kéo thả chủng quái muốn làm Mini-Boss vào đây (Ví dụ: HellBrute hoặc DemonPrince)")]
     public GameObject prefabMiniBoss;
 
     [Header("--- Thời gian và số lượng quái ---")]
@@ -50,10 +52,9 @@ public class ChaosDirector : MonoBehaviour
     public int ThoiGianSpawn_gd3 = 3;
 
     private float dongHoDem = -20f;
-    private float tongThoiGian = 600f;
+    private float tongThoiGian = 600f; // 10 phút
     public bool WinGame = false;
 
-    // Cờ hiệu kiểm soát chỉ sinh Mini-Boss đúng 1 lần duy nhất
     private bool daSpawnMiniBoss = false;
 
     private void Awake()
@@ -63,6 +64,15 @@ public class ChaosDirector : MonoBehaviour
 
     void Start()
     {
+        if (boQuanLySave == null) boQuanLySave = FindFirstObjectByType<SaveSystem>();
+
+        if (boQuanLySave != null)
+        {
+            int indexLuu = boQuanLySave.DocDoKhoGame();
+            doKhoHienTai = (DoKho)indexLuu;
+            Debug.Log($"[ChaosDirector] Đã áp dụng độ khó từ file save: {doKhoHienTai}");
+        }
+
         if (thanhTienTrinhGame != null)
         {
             thanhTienTrinhGame.minValue = 0f;
@@ -79,21 +89,53 @@ public class ChaosDirector : MonoBehaviour
 
         if (Tayperer.skibidi != null && Tayperer.skibidi.GameOver) return;
 
-        // CẬP NHẬT LOGIC WIN GAME: Hết thời gian VÀ đồng thời trên bản đồ không còn quái
+        // ĐIỀU KIỆN WIN GAME: Đủ 10 phút (tongThoiGian)
         if (dongHoDem >= tongThoiGian)
         {
+            // Và giết sạch sẽ quái vật trên bản đồ
             if (KiemTraKhongConQuaiTrenBanDo())
             {
                 WinGame = true;
                 Debug.Log("[CHIẾN THẮNG] Toàn bộ quái vật đã bị tiêu diệt sạch sẽ sau khi hết giờ!");
+
+                // KÍCH HOẠT TỰ ĐỘNG SAVE TIỀN KIẾM ĐƯỢC TỪ HỆ THỐNG KINH TẾ
+                TuDongSaveTienKhiWinGame();
                 return;
             }
         }
         else
         {
-            // Chỉ chạy đồng hồ đếm ngược khi chưa hết thời gian quy định
             dongHoDem += Time.deltaTime;
             ChayGiaoDienUI();
+        }
+    }
+
+    // ─── [HÀM TỰ ĐỘNG SAVE] KẾT NỐI HETHONGKINHTE ĐỂ LẤY TIỀN THỰC TẾ ───
+    private void TuDongSaveTienKhiWinGame()
+    {
+        // Tìm script HeThongKinhTe đang có trong trận đấu
+        HeThongKinhTe kinhTe = FindFirstObjectByType<HeThongKinhTe>();
+
+        if (kinhTe != null && boQuanLySave != null)
+        {
+            // 1. Lấy số tiền người chơi ĐÃ KIẾM ĐƯỢC TỪ GIẾT QUÁI nãy giờ trong trận
+            // LƯU Ý: Bạn hãy đổi chữ "TienTrongTran" thành tên biến chứa tiền thực tế trong script HeThongKinhTe của bạn nhé!
+            int tienKiemDuoc = kinhTe.tienNangCapLinh;
+
+            // 2. Đọc số tiền tích lũy cũ đã có trong file savegame.txt từ trước
+            int tienSaveCu = boQuanLySave.DocThongTinGame();
+
+            // 3. Cộng dồn lại thành tổng tài sản mới
+            int tongTienMoi = tienSaveCu + tienKiemDuoc;
+
+            // 4. Ghi đè vào file savegame.txt
+            boQuanLySave.LuuThongTinGame(tongTienMoi);
+
+            Debug.Log($"[AUTO SAVE SUCCESS] Thắng trận! Tiền cũ: {tienSaveCu} | Tiền cày được từ giết quái: {tienKiemDuoc} | Tổng tiền mới đã lưu: {tongTienMoi}");
+        }
+        else
+        {
+            Debug.LogError("[SAVE ERROR] Thiếu HeThongKinhTe hoặc SaveSystem trong Scene, không thể auto save tiền!");
         }
     }
 
@@ -130,7 +172,6 @@ public class ChaosDirector : MonoBehaviour
             }
             else if (tienTrinh >= 70f)
             {
-                // KIỂM TRA MINI-BOSS: Spawn chuẩn xác 1 lần độc nhất khi vừa bước vào giai đoạn cuối
                 if (!daSpawnMiniBoss && prefabMiniBoss != null)
                 {
                     daSpawnMiniBoss = true;
@@ -150,7 +191,6 @@ public class ChaosDirector : MonoBehaviour
             yield return null;
         }
 
-        // ĐÈ LOGIC PHÒNG BỊ: Nếu hết thời gian mà vì lý do gì đó Mini-Boss chưa kịp ra, ép xuất hiện luôn ở giây cuối cùng
         if (!daSpawnMiniBoss && prefabMiniBoss != null)
         {
             daSpawnMiniBoss = true;
@@ -214,18 +254,10 @@ public class ChaosDirector : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Hàm bổ sung quét hệ thống: Kiểm tra xem còn thực thể quái nào còn hoạt động hay không.
-    /// </summary>
     private bool KiemTraKhongConQuaiTrenBanDo()
     {
-        // Quét tìm tất cả các Object thừa kế từ lớp quái gốc BaseEnemy
         BaseEnemy[] danhSachQuaiThongThuong = FindObjectsByType<BaseEnemy>(FindObjectsSortMode.None);
-
-        // Quét bổ sung lớp quái đặc biệt Charger (Hell Iron) nếu nó không kế thừa từ BaseEnemy
         EnemyCharger[] danhSachQuaiCharger = FindObjectsByType<EnemyCharger>(FindObjectsSortMode.None);
-
-        // Nếu cả 2 danh sách quét đều trống rỗng (bằng 0) -> Trả về true (Bản đồ sạch bóng quân thù)
         return (danhSachQuaiThongThuong.Length == 0 && danhSachQuaiCharger.Length == 0);
     }
 }

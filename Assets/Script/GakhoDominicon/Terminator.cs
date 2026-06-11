@@ -30,11 +30,14 @@ public class Terminator : MonoBehaviour
 
     // ── [ANIMATION] Khai báo Animator ───────────────────────────────────────
     private Animator Terminator_animator;
+    private AudioSource AmthanhTer;
     private Vector3 viTriKhungHinhTruoc;
     // ────────────────────────────────────────────────────────────────────────
-
+    [SerializeField]
+    private AudioClip TiengSung;
     void Start()
     {
+        AmthanhTer = GetComponent<AudioSource>();
         phechinh = GetComponent<Health_phechinh>();
         // ── [ANIMATION] Lấy Animator từ children ────────────────────────────
         Terminator_animator = GetComponentInChildren<Animator>();
@@ -110,7 +113,7 @@ public class Terminator : MonoBehaviour
         if (Terminator_animator != null)
             Terminator_animator.SetBool("Terminator_isShooting", true);
         // ────────────────────────────────────────────────────────────────────
-
+        AmthanhTer.PlayOneShot(TiengSung);
         for (int i = 0; i < soLuongDanTrongLoat; i++)
         {
             TanCong();

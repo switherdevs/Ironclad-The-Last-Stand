@@ -116,6 +116,7 @@ GameObject:
   - component: {fileID: 7225955509085386557}
   - component: {fileID: 6395516811327084429}
   - component: {fileID: 6666461874724065263}
+  - component: {fileID: 6959728528857877375}
   m_Layer: 0
   m_Name: IronStorm
   m_TagString: Phechinh
@@ -225,7 +226,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 828003418e8417d4ba0ca276cd6c49fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TamBan: 100
+  TamBan: 175
   soDanBan: 3
   satThuong: 10
   DiemBan: {fileID: 1309856065696408062}
@@ -236,6 +237,7 @@ MonoBehaviour:
   tocDoHanhQuan: 15
   soVienLoatNay: 1
   phechinh: {fileID: 0}
+  TiengSung: {fileID: 8300000, guid: abe34c469c9751546a265075f9f65897, type: 3}
 --- !u!114 &6395516811327084429
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -250,7 +252,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bangSatThuongChung: {fileID: 11400000, guid: a60a65e6a8b057b4ea1e9fc841c3d9bc, type: 2}
   ThanhMau: {fileID: 6238817487069980567}
-  maxHP: 150
+  maxHP: 200
   Dead_ani: 5
   tenAnimationChet: die_iron
   prefabPopupSatThuong: {fileID: 3638261266717980917, guid: 3b6786f6b44be624c8cc3efc99707eaa, type: 3}
@@ -282,6 +284,103 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!82 &6959728528857877375
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 650091318245065535}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 8300000, guid: abe34c469c9751546a265075f9f65897, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 30
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &1365019382132518764
 GameObject:
   m_ObjectHideFlags: 0

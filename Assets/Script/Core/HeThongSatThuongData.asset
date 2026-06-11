@@ -35,8 +35,8 @@ MonoBehaviour:
     satThuongGoc: 12
     heSoBoTro: 1
   - tenChungLinh: Warp Marine
-    satThuongGoc: 20
+    satThuongGoc: 15
     heSoBoTro: 1
   - tenChungLinh: Terminator
-    satThuongGoc: 30
+    satThuongGoc: 25
     heSoBoTro: 1

@@ -70,6 +70,7 @@ public class ChargerExplosion : MonoBehaviour
             // Nếu sau này Sân Nhà của bạn có script máu riêng (ví dụ: Health_sannha), hãy sửa tương tự như Phechinh ở đây
             Debug.Log($"💥 Sân nhà [{other.name}] bị dính đòn nổ! Gây {damage} sát thương.");
         }
+        Destroy(gameObject);
     }
 
     // ĐÃ THÊM: Khi quả nổ bị hủy hoàn toàn khỏi game, ta mới dọn dẹp sạch sẽ danh sách tránh rác bộ nhớ

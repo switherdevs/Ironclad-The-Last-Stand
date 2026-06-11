@@ -62,7 +62,7 @@ AnimationClip:
         outWeight: {x: 0.33333334, y: 0.33333334, z: 0.33333334}
       - serializedVersion: 3
         time: 0.5
-        value: {x: 0, y: 0, z: -76.807}
+        value: {x: 0, y: 0, z: -59.573}
         inSlope: {x: 0, y: 0, z: 0}
         outSlope: {x: 0, y: 0, z: 0}
         tangentMode: 0
@@ -689,7 +689,7 @@ AnimationClip:
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 0.5
-        value: -76.807
+        value: -59.573
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -1820,7 +1820,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.z
-    path: Than duoi/than/Canh tay phai/Sung_1
+    path: Than duoi/than/Dau_1
     classID: 4
     script: {fileID: 0}
     flags: 0
@@ -1832,7 +1832,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.y
-    path: Than duoi/than/Canh tay phai/Sung_1
+    path: Than duoi/than/Dau_1
     classID: 4
     script: {fileID: 0}
     flags: 0
@@ -1844,7 +1844,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.x
-    path: Than duoi/than/Canh tay phai/Sung_1
+    path: Than duoi/than/Dau_1
     classID: 4
     script: {fileID: 0}
     flags: 0
@@ -1892,7 +1892,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.x
-    path: Than duoi/than/Dau_1
+    path: Than duoi/than/Canh tay phai/Sung_1
     classID: 4
     script: {fileID: 0}
     flags: 0
@@ -1904,7 +1904,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.y
-    path: Than duoi/than/Dau_1
+    path: Than duoi/than/Canh tay phai/Sung_1
     classID: 4
     script: {fileID: 0}
     flags: 0
@@ -1916,7 +1916,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.z
-    path: Than duoi/than/Dau_1
+    path: Than duoi/than/Canh tay phai/Sung_1
     classID: 4
     script: {fileID: 0}
     flags: 0

@@ -29,8 +29,13 @@ public class NhanVat1Controller : MonoBehaviour
     private Vector3 viTriKhungHinhTruoc;
     public Health_phechinh phechinh;
 
+    private AudioSource AmthanhLinh;
+    [SerializeField]
+    private AudioClip TiengSung;
+
     void Start()
     {
+        AmthanhLinh = GetComponent<AudioSource>();
         phechinh = GetComponent<Health_phechinh>();
         Khogark_animatior = GetComponentInChildren<Animator>();
         if (vungBoxPhongThu != null)
@@ -196,6 +201,7 @@ public class NhanVat1Controller : MonoBehaviour
     {
         if (ThayDich == null || DiemBan == null || QuanLyDan.Instance == null || prefabDanNho == null) yield break;
 
+        AmthanhLinh.PlayOneShot(TiengSung);
         // ── [ANIMATION] Bật trạng thái bắn ─────────────────────────────────
         if (Khogark_animatior != null)
             Khogark_animatior.SetBool("Khogark_isShooting", true);

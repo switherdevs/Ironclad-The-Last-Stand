@@ -1,6 +1,5 @@
 using System.Collections;
 using UnityEngine;
-using static UnityEngine.RuleTile.TilingRuleOutput;
 
 public class EnemyHolding : BaseEnemy
 {
@@ -11,46 +10,44 @@ public class EnemyHolding : BaseEnemy
     [SerializeField] private float maxScaleTime = 5f;
     [SerializeField] private int holdingHPMultiplier = 2;
     [SerializeField] private float spawnOffsetDistance = 1.2f;
+    [SerializeField] private GameObject Light2;
 
     private GameObject spawnedHoldingObj;
-
-    // ── [ANIMATION] Khai báo Animator ───────────────────────────────────────
     private Animator WarpMarine_animator;
     private Vector3 viTriKhungHinhTruoc;
-    // ────────────────────────────────────────────────────────────────────────
+
+    protected override void Awake()
+    {
+        base.Awake();
+        WarpMarine_animator = GetComponentInChildren<Animator>();
+    }
 
     protected override void Start()
     {
         base.Start();
-
-        // ── [ANIMATION] Lấy Animator từ children ────────────────────────────
-        WarpMarine_animator = GetComponentInChildren<Animator>();
-        // ────────────────────────────────────────────────────────────────────
+        Light2.SetActive(false);
     }
 
     protected override void HandleMovement()
     {
         base.HandleMovement();
 
-        // ── [ANIMATION] SỬA: Thay đổi hoàn toàn hệ thống SetBool di chuyển bằng CrossFade ──
-        if (WarpMarine_animator != null)
+        if (currentState == EnemyState.Attacking || currentState == EnemyState.Cooldown)
+        {
+            viTriKhungHinhTruoc = transform.position;
+            return;
+        }
+
+        if (WarpMarine_animator != null && WarpMarine_animator.gameObject.activeInHierarchy)
         {
             bool dangDiChuyen = transform.position != viTriKhungHinhTruoc;
             if (dangDiChuyen)
-            {
-                WarpMarine_animator.CrossFade("WarpMarine_walk", 0.1f);
-            }
+                WarpMarine_animator.CrossFade("Move_warpmarine", 0.1f, 0);
             else
-            {
-                // Ngăn chặn việc đè trạng thái đứng yên khi đang gồng hoặc đang bắn
-                if (currentState != EnemyState.Attacking && currentState != EnemyState.Cooldown)
-                {
-                    WarpMarine_animator.CrossFade("WarpMarine_idle", 0.1f);
-                }
-            }
+                WarpMarine_animator.CrossFade("idle_warpmarine", 0.1f, 0);
         }
+
         viTriKhungHinhTruoc = transform.position;
-        // ────────────────────────────────────────────────────────────────────
     }
 
     protected override void ExecuteAttackPattern()
@@ -75,17 +72,11 @@ public class EnemyHolding : BaseEnemy
 
         float timer = 0f;
 
-        // ── [ANIMATION] SỬA GIAI ĐOẠN 1: Bắt đầu nén năng lượng tụ đạn ──
-        if (WarpMarine_animator != null)
-            WarpMarine_animator.CrossFade("WarpMarine_holding", 0.1f);
-        // ────────────────────────────────────────────────────────────────────
-
         while (timer < holdingDuration)
         {
             if (spawnedHoldingObj != null && timer < maxScaleTime)
-            {
                 spawnedHoldingObj.transform.localScale += Vector3.one * (scalePerSecond * Time.deltaTime);
-            }
+
             timer += Time.deltaTime;
             yield return null;
         }
@@ -94,10 +85,9 @@ public class EnemyHolding : BaseEnemy
 
         if (spawnedHoldingObj != null) Destroy(spawnedHoldingObj);
 
-        // ── [ANIMATION] SỬA GIAI ĐOẠN 2: Ngay lập tức giải phóng đòn bắn (Hòa trộn cực nhanh 0.02s giúp nối tiếp đòn gồng siêu mượt) ──
-        if (WarpMarine_animator != null)
-            WarpMarine_animator.CrossFade("WarpMarine_fire", 0.02f);
-        // ────────────────────────────────────────────────────────────────────
+        if (WarpMarine_animator != null && WarpMarine_animator.gameObject.activeInHierarchy)
+            WarpMarine_animator.CrossFade("Shoot_warp", 0.02f, 0);
+            Light2.SetActive(true);
 
         FireProjectile();
 
@@ -107,8 +97,13 @@ public class EnemyHolding : BaseEnemy
         currentState = EnemyState.Cooldown;
         nextAttackTime = Time.time + attackCooldown;
 
-        // Trả lại trạng thái Chasing sau khi diễn hoạt hoạt ảnh bắn kết thúc mượt mà
         yield return new WaitForSeconds(0.3f);
+        Light2.SetActive(false);
+
+
+        if (WarpMarine_animator != null && WarpMarine_animator.gameObject.activeInHierarchy)
+            WarpMarine_animator.CrossFade("idle_warpmarine", 0.2f, 0);
+
         currentState = EnemyState.Chasing;
     }
 
@@ -117,16 +112,13 @@ public class EnemyHolding : BaseEnemy
         if (projectilePrefab == null || targetTransform == null) return;
 
         Vector2 fireDirection = ((Vector2)targetTransform.position - (Vector2)transform.position).normalized;
-
         Vector3 spawnPosition = transform.position + (Vector3)(fireDirection * spawnOffsetDistance);
 
         GameObject projectile = Instantiate(projectilePrefab, spawnPosition, Quaternion.identity);
         SpriteRenderer projSR = projectile.GetComponent<SpriteRenderer>();
 
         if (projSR != null && spriteRenderer != null)
-        {
             projSR.sortingOrder = spriteRenderer.sortingOrder + 2;
-        }
 
         Rigidbody2D projRb = projectile.GetComponent<Rigidbody2D>();
         if (projRb != null)

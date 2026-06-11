@@ -6,54 +6,41 @@ public class EnemyMelee : BaseEnemy
     [Header("--- MELEE SPECIFIC (CẬN CHIẾN) ---")]
     [SerializeField] private GameObject attackHitboxObject;
     [SerializeField] private float hitboxActiveDuration = 0.2f;
-
-    // ── [ANIMATION] Khai báo Animator ───────────────────────────────────────
-    private Animator ChaoZelos_animator;
-    private Vector3 viTriKhungHinhTruoc;
-    // ────────────────────────────────────────────────────────────────────────
-
+    private Animator Animator;
+    protected override void Awake()
+    {
+        base.Awake();
+        Animator = GetComponentInChildren<Animator>();
+    }
     protected override void Start()
     {
-        base.Start();
+        base.Start(); // Gọi Start của lớp Base để cài đặt máu và vật lý
 
+        // Ẩn hitbox lúc đầu game
         if (attackHitboxObject != null)
+        {
             attackHitboxObject.SetActive(false);
+        }
 
-        attackRange = 1.2f;
-
-        // ── [ANIMATION] Lấy Animator từ children ────────────────────────────
-        ChaoZelos_animator = GetComponentInChildren<Animator>();
-        // ────────────────────────────────────────────────────────────────────
+        // Ép khoảng cách giữ chân của quái cận chiến về sát Player
     }
 
     protected override void HandleMovement()
     {
+        // Chạy logic di chuyển tiếp cận mục tiêu của lớp Base
         base.HandleMovement();
-        RotateHitbox(GetLookDirection());
-
-        // ── [ANIMATION] SỬA: Thay thế SetBool bằng CrossFade gọi tên State di chuyển hoặc đứng yên ──
-        if (ChaoZelos_animator != null)
+        if(Animator != null)
         {
-            bool dangDiChuyen = transform.position != viTriKhungHinhTruoc;
-            if (dangDiChuyen)
-            {
-                ChaoZelos_animator.CrossFade("ChaoZelos_walk", 0.1f);
-            }
-            else
-            {
-                // Nếu quái đang ở trạng thái Attacking thì không ép nó chạy Idle để tránh lỗi ngắt đòn đánh
-                if (currentState != EnemyState.Attacking)
-                {
-                    ChaoZelos_animator.CrossFade("ChaoZelos_idle", 0.1f);
-                }
-            }
+            Animator.SetBool("ChaoZelos_isWalking", true);
+
         }
-        viTriKhungHinhTruoc = transform.position;
-        // ────────────────────────────────────────────────────────────────────
+        // Xoay hướng của Hitbox cận chiến luôn ở phía trước mặt quái dựa theo Sprite đang lật hướng nào
+        RotateHitbox(GetLookDirection());
     }
 
     private void RotateHitbox(float lookDir)
     {
+
         if (attackHitboxObject == null) return;
 
         float currentPosX = Mathf.Abs(attackHitboxObject.transform.localPosition.x);
@@ -68,25 +55,41 @@ public class EnemyMelee : BaseEnemy
 
     protected override void ExecuteAttackPattern()
     {
+        // Chuyển trạng thái để đứng im vung kiếm
+
         currentState = EnemyState.Attacking;
         StartCoroutine(TriggerHitboxRoutine());
     }
 
     private IEnumerator TriggerHitboxRoutine()
     {
-        // ── [ANIMATION] SỬA: Thay thế SetTrigger bằng CrossFade gọi đòn tấn công cận chiến ──
-        if (ChaoZelos_animator != null)
-            ChaoZelos_animator.CrossFade("ChaoZelos_Attack", 0.05f);
-        // ────────────────────────────────────────────────────────────────────
+
+        if (Animator != null)
+        {
+            Animator.SetBool("ChaoZelos_isWalking", false);
+
+        }
 
         if (attackHitboxObject != null)
+        {
             attackHitboxObject.SetActive(true);
+        }
+
+        if(Animator != null) 
+        {
+            Animator.SetBool("ChaoZelos_doAttack", true);
+
+        }
 
         yield return new WaitForSeconds(hitboxActiveDuration);
+        Animator.SetBool("ChaoZelos_doAttack", false);
 
         if (attackHitboxObject != null)
+        {
             attackHitboxObject.SetActive(false);
+        }
 
+        // Kết thúc vung kiếm, đưa vào cooldown và hồi phục di chuyển
         nextAttackTime = Time.time + attackCooldown;
         currentState = EnemyState.Chasing;
     }

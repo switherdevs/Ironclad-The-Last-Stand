@@ -3,46 +3,41 @@ using System.Collections;
 
 public class EnemyBurst : BaseEnemy
 {
-    [Header("--- BURST LINE SETTINGS ---")] // Đã xóa dấu \ thừa ở đây
+    [Header("--- BURST LINE SETTINGS ---")]
     [SerializeField] private float burstDelay = 0.15f;
     [SerializeField] private float spawnOffsetDistance = 1.0f;
 
-    // ── [ANIMATION] Khai báo Animator ───────────────────────────────────────
     private Animator ChaosTerminator_animator;
     private Vector3 viTriKhungHinhTruoc;
-    // ────────────────────────────────────────────────────────────────────────
+    protected override void Awake()
+    {
+        base.Awake();
+        ChaosTerminator_animator = GetComponentInChildren<Animator>();
+
+    }
 
     protected override void Start()
     {
         base.Start();
-
-        // ── [ANIMATION] Lấy Animator từ children ────────────────────────────
-        ChaosTerminator_animator = GetComponentInChildren<Animator>();
-        // ────────────────────────────────────────────────────────────────────
     }
 
     protected override void HandleMovement()
     {
         base.HandleMovement();
 
-        // ── [ANIMATION] SỬA: Thay thế SetBool bằng CrossFade quản lý di chuyển ──
         if (ChaosTerminator_animator != null)
         {
+            // Block toàn bộ animation logic khi đang tấn công
+            if (currentState == EnemyState.Attacking) return;
+
             bool dangDiChuyen = transform.position != viTriKhungHinhTruoc;
             if (dangDiChuyen)
-            {
-                ChaosTerminator_animator.CrossFade("ChaosTerminator_walk", 0.1f);
-            }
+                ChaosTerminator_animator.CrossFade("ter_chaos_move", 0.1f);
             else
-            {
-                if (currentState != EnemyState.Attacking)
-                {
-                    ChaosTerminator_animator.CrossFade("ChaosTerminator_idle", 0.1f);
-                }
-            }
+                ChaosTerminator_animator.CrossFade("idle_ter_chaos", 0.1f);
         }
+
         viTriKhungHinhTruoc = transform.position;
-        // ────────────────────────────────────────────────────────────────────
     }
 
     protected override void ExecuteAttackPattern()
@@ -53,20 +48,19 @@ public class EnemyBurst : BaseEnemy
 
     private IEnumerator BurstFireRoutine()
     {
-        // ── [ANIMATION] SỬA: Ép nhảy vào trạng thái đứng bắn loạt đạn liên tục ──
+        // ── [SỬA ĐỔI] Khi vào trạng thái tấn công: Đứng yên chuẩn bị bắn ──
         if (ChaosTerminator_animator != null)
-            ChaosTerminator_animator.CrossFade("ChaosTerminator_shoot", 0.05f);
-        // ────────────────────────────────────────────────────────────────────
+            ChaosTerminator_animator.CrossFade("idle_ter_chaos", 0.1f);
 
         for (int i = 0; i < 3; i++)
         {
+            // ── [SỬA ĐỔI] Đạn sắp ra: Kích hoạt ngay animation bắn chớp nhoáng ──
+            if (ChaosTerminator_animator != null)
+                ChaosTerminator_animator.CrossFade("shoot_ter_Chaos", 0.02f);
+
             FireSingleLinearProjectile();
             yield return new WaitForSeconds(burstDelay);
         }
-
-        // ── [ANIMATION] XÓA bỏ SetBool("ChaosTerminator_isShooting", false) cũ ──
-        // Hệ thống HandleMovement tự động trả về Idle/Walk khi trạng thái chuyển sang Chasing
-        // ────────────────────────────────────────────────────────────────────
 
         nextAttackTime = Time.time + attackCooldown;
         currentState = EnemyState.Chasing;
