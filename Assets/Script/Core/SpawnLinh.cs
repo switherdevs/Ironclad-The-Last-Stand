@@ -1,3 +1,4 @@
+using NUnit.Framework.Constraints;
 using UnityEngine;
 
 public class SpawnLinh : MonoBehaviour
@@ -6,12 +7,12 @@ public class SpawnLinh : MonoBehaviour
     public Transform spawnPoint;
 
     [Header("--- GIÁ VÀNG CHO TỪNG LOẠI LÍNH ---")]
-    public int giaSevitor = 10;
-    public int giaKhograkGuard = 50;
-    public int giaIronStormMarine = 100;
-    public int giaStormTerminator = 200;
-    public int giaIronDreadWalker = 500;
-    public int giaDominiconTitan = 1000;
+    public int giaSevitor = 75;
+    public int giaKhograkGuard = 75;
+    public int giaIronStormMarine = 200;
+    public int giaStormTerminator = 400;
+    public int giaIronDreadWalker = 750;
+    public int giaDominiconTitan = 1500;
 
     [Header("--- DANH SÁCH PREFABS & SLOT LÍNH ---")]
     public GameObject SevitorPrefab;
@@ -32,40 +33,76 @@ public class SpawnLinh : MonoBehaviour
     public GameObject dominiconTitanPrefab;
     public int slotDominiconTitan = 20;
 
+
     [Header("--- CẤU HÌNH KHÁC ---")]
     public bool speedup = false;
+    [SerializeField]
+    private AudioSource Amthanh;
+    [SerializeField]
+    private AudioClip ser;
+    [SerializeField]
+
+    private AudioClip KhoGrak;
+    [SerializeField]
+
+    private AudioClip IronStom;
+    [SerializeField]
+
+    private AudioClip Ter;
+    [SerializeField]
+
+    private AudioClip DeadIron;
+    [SerializeField]
+
+    private AudioClip Titan;
 
     // --- CÁC HÀM SPAWN ---
+    private void Start()
+    {
+        Amthanh = GetComponent<AudioSource>();
+    }
 
     public void Sevitor()
     {
         // TRUYỀN THAM SỐ TRUE XÁC ĐỊNH ĐÂY LÀ SERVITOR
         XuLyMuaLinh(giaSevitor, slotSevitor, SevitorPrefab, true);
+        Amthanh.PlayOneShot(ser);
     }
 
     public void SpawnKhograkGuard()
     {
         XuLyMuaLinh(giaKhograkGuard, slotKhograkGuard, khograkGuardPrefab);
+        Amthanh.PlayOneShot(KhoGrak);
+
     }
 
     public void SpawnIronStormMarine()
     {
         XuLyMuaLinh(giaIronStormMarine, slotIronStormMarine, ironStormMarinePrefab);
+        Amthanh.PlayOneShot(IronStom);
+
     }
 
     public void SpawnStormTerminator()
     {
         XuLyMuaLinh(giaStormTerminator, slotStormTerminator, stormTerminatorPrefab);
+        Amthanh.PlayOneShot(Ter);
+
+
     }
 
     public void SpawnIronDreadWalker()
     {
         XuLyMuaLinh(giaIronDreadWalker, slotIronDreadWalker, ironDreadWalkerPrefab);
+        Amthanh.PlayOneShot(DeadIron);
+
     }
 
     public void SpawnDominiconTitan()
     {
         XuLyMuaLinh(giaDominiconTitan, slotDominiconTitan, dominiconTitanPrefab);
+        Amthanh.PlayOneShot(Titan);
+
     }
 
     // --- HÀM XỬ LÝ CHUNG (Đã cập nhật tham số isSevitor) ---

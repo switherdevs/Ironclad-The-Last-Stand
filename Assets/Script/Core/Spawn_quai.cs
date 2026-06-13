@@ -57,6 +57,12 @@ public class ChaosDirector : MonoBehaviour
 
     private bool daSpawnMiniBoss = false;
 
+    // ─── COMMENT: THÊM BIẾN MỚI ĐỂ QUẢN LÝ TIẾN TRÌNH KHÓA/MỞ MAP ───
+    [Header("--- CẤU HÌNH TIẾN TRÌNH MÀN HIỆN TẠI ---")]
+    [Tooltip("Điền số màn hiện tại để làm căn cứ tính map mở khóa tiếp theo")]
+    public int indexMapHienTai = 1;
+    // ───────────────────────────────────────────────────────────────
+
     private void Awake()
     {
         instance = this;
@@ -64,7 +70,10 @@ public class ChaosDirector : MonoBehaviour
 
     void Start()
     {
-        if (boQuanLySave == null) boQuanLySave = FindFirstObjectByType<SaveSystem>();
+        if (boQuanLySave == null)
+        {
+            boQuanLySave = FindFirstObjectByType<SaveSystem>();
+        }
 
         if (boQuanLySave != null)
         {
@@ -85,11 +94,17 @@ public class ChaosDirector : MonoBehaviour
 
     void Update()
     {
-        if (WinGame) return;
+        if (WinGame)
+        {
+            return;
+        }
 
-        if (Tayperer.skibidi != null && Tayperer.skibidi.GameOver) return;
+        if (Tayperer.skibidi != null && Tayperer.skibidi.GameOver)
+        {
+            return;
+        }
 
-        // ĐIỀU KIỆN WIN GAME: Đủ 10 phút (tongThoiGian)
+        // ĐIỀU KIỆN WIN GAME: Đủ 10 phút
         if (dongHoDem >= tongThoiGian)
         {
             // Và giết sạch sẽ quái vật trên bản đồ
@@ -98,7 +113,7 @@ public class ChaosDirector : MonoBehaviour
                 WinGame = true;
                 Debug.Log("[CHIẾN THẮNG] Toàn bộ quái vật đã bị tiêu diệt sạch sẽ sau khi hết giờ!");
 
-                // KÍCH HOẠT TỰ ĐỘNG SAVE TIỀN KIẾM ĐƯỢC TỪ HỆ THỐNG KINH TẾ
+                // ─── COMMENT: GỌI HÀM TỰ ĐỘNG LƯU TIỀN VÀ MAP KHI THẮNG TRẬN ───
                 TuDongSaveTienKhiWinGame();
                 return;
             }
@@ -110,34 +125,37 @@ public class ChaosDirector : MonoBehaviour
         }
     }
 
-    // ─── [HÀM TỰ ĐỘNG SAVE] KẾT NỐI HETHONGKINHTE ĐỂ LẤY TIỀN THỰC TẾ ───
+    // ─── COMMENT: THÊM HÀM MỚI ĐỂ TỰ ĐỘNG SAVE KHI ĐẠT ĐIỀU KIỆN WIN ───
     private void TuDongSaveTienKhiWinGame()
     {
-        // Tìm script HeThongKinhTe đang có trong trận đấu
         HeThongKinhTe kinhTe = FindFirstObjectByType<HeThongKinhTe>();
 
         if (kinhTe != null && boQuanLySave != null)
         {
-            // 1. Lấy số tiền người chơi ĐÃ KIẾM ĐƯỢC TỪ GIẾT QUÁI nãy giờ trong trận
-            // LƯU Ý: Bạn hãy đổi chữ "TienTrongTran" thành tên biến chứa tiền thực tế trong script HeThongKinhTe của bạn nhé!
+            // SỬ DỤNG ĐÚNG BIẾN tienNangCapLinh TỪ SCRIPT HETHONGKINHTE THEO YÊU CẦU
             int tienKiemDuoc = kinhTe.tienNangCapLinh;
 
-            // 2. Đọc số tiền tích lũy cũ đã có trong file savegame.txt từ trước
+            // Đọc số tiền tích lũy cũ từ file lưu trước đó
             int tienSaveCu = boQuanLySave.DocThongTinGame();
 
-            // 3. Cộng dồn lại thành tổng tài sản mới
+            // Cộng dồn tiền cũ và tiền mới cày được
             int tongTienMoi = tienSaveCu + tienKiemDuoc;
 
-            // 4. Ghi đè vào file savegame.txt
+            // Ghi lại tổng tiền mới vào file savegame.txt
             boQuanLySave.LuuThongTinGame(tongTienMoi);
 
-            Debug.Log($"[AUTO SAVE SUCCESS] Thắng trận! Tiền cũ: {tienSaveCu} | Tiền cày được từ giết quái: {tienKiemDuoc} | Tổng tiền mới đã lưu: {tongTienMoi}");
+            // Tự động mở khóa Map tiếp theo dựa vào indexMapHienTai + 1
+            int mapDuocMoKhoaTiepTheo = indexMapHienTai + 1;
+            boQuanLySave.LuuTienTrinhMap(mapDuocMoKhoaTiepTheo);
+
+            Debug.Log($"[AUTO SAVE SUCCESS] Đã cộng dồn tiền mới: {tongTienMoi}. Tiến trình Map đã lưu: Mở khóa đến Map {mapDuocMoKhoaTiepTheo}");
         }
         else
         {
-            Debug.LogError("[SAVE ERROR] Thiếu HeThongKinhTe hoặc SaveSystem trong Scene, không thể auto save tiền!");
+            Debug.LogError("[SAVE ERROR] Thiếu HeThongKinhTe hoặc SaveSystem trong Scene, không thể thực hiện lưu!");
         }
     }
+    // ───────────────────────────────────────────────────────────────────
 
     IEnumerator HeThongQuanLySpawnQuaiToiUu()
     {
@@ -200,7 +218,10 @@ public class ChaosDirector : MonoBehaviour
 
     IEnumerator AloloGoiKhoRaQuaiToiUu(GameObject khuonMuonLay)
     {
-        if (khuonMuonLay == null || SimpleObjectPool.Instance == null) yield break;
+        if (khuonMuonLay == null || SimpleObjectPool.Instance == null)
+        {
+            yield break;
+        }
 
         int soLuongQuaiMax = LaySoLuongQuaiToiDaTheoDoKho();
         int soLuongQuaiDotNay = Random.Range(1, soLuongQuaiMax + 1);
@@ -217,16 +238,23 @@ public class ChaosDirector : MonoBehaviour
     {
         switch (doKhoHienTai)
         {
-            case DoKho.Easy: return soLuongQuaiTheoDoKho.ez;
-            case DoKho.Normal: return soLuongQuaiTheoDoKho.nm;
-            case DoKho.Hard: return soLuongQuaiTheoDoKho.hr;
-            default: return soLuongQuaiTheoDoKho.nm;
+            case DoKho.Easy:
+                return soLuongQuaiTheoDoKho.ez;
+            case DoKho.Normal:
+                return soLuongQuaiTheoDoKho.nm;
+            case DoKho.Hard:
+                return soLuongQuaiTheoDoKho.hr;
+            default:
+                return soLuongQuaiTheoDoKho.nm;
         }
     }
 
     Vector3 LayViTriSpawnTandRa()
     {
-        if (danhSachDiemSpawn == null || danhSachDiemSpawn.Length == 0) return transform.position;
+        if (danhSachDiemSpawn == null || danhSachDiemSpawn.Length == 0)
+        {
+            return transform.position;
+        }
 
         int indexNgauNhien = Random.Range(0, danhSachDiemSpawn.Length);
         Vector3 viTriGoc = danhSachDiemSpawn[indexNgauNhien].position;
@@ -237,20 +265,29 @@ public class ChaosDirector : MonoBehaviour
 
     void ChayGiaoDienUI()
     {
-        if (textDongHo == null) return;
+        if (textDongHo == null)
+        {
+            return;
+        }
 
         if (dongHoDem < 0f)
         {
             int giayChuanBi = Mathf.CeilToInt(Mathf.Abs(dongHoDem));
             textDongHo.text = "CHUẨN BỊ: " + giayChuanBi + "s";
-            if (thanhTienTrinhGame != null) thanhTienTrinhGame.value = 0f;
+            if (thanhTienTrinhGame != null)
+            {
+                thanhTienTrinhGame.value = 0f;
+            }
         }
         else
         {
             int phut = Mathf.FloorToInt(dongHoDem / 60f);
             int giay = Mathf.FloorToInt(dongHoDem % 60f);
             textDongHo.text = string.Format("{0:00}:{1:00}", phut, giay);
-            if (thanhTienTrinhGame != null) thanhTienTrinhGame.value = dongHoDem;
+            if (thanhTienTrinhGame != null)
+            {
+                thanhTienTrinhGame.value = dongHoDem;
+            }
         }
     }
 

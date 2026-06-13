@@ -16,6 +16,9 @@ public class EnemyHolding : BaseEnemy
     private Animator WarpMarine_animator;
     private Vector3 viTriKhungHinhTruoc;
 
+    private AudioSource AmThanh;
+    private AudioClip Shoot;
+
     protected override void Awake()
     {
         base.Awake();
@@ -25,6 +28,7 @@ public class EnemyHolding : BaseEnemy
     protected override void Start()
     {
         base.Start();
+        AmThanh = GetComponent<AudioSource>();
         Light2.SetActive(false);
     }
 
@@ -87,6 +91,7 @@ public class EnemyHolding : BaseEnemy
 
         if (WarpMarine_animator != null && WarpMarine_animator.gameObject.activeInHierarchy)
             WarpMarine_animator.CrossFade("Shoot_warp", 0.02f, 0);
+        AmThanh.PlayOneShot(Shoot);
             Light2.SetActive(true);
 
         FireProjectile();

@@ -33,6 +33,10 @@ public class TitanPhe9 : MonoBehaviour
     private float thoiGianBanTiepTheo = 0f;
     public Health_phechinh phechinh;
 
+    private AudioSource Amthanh;
+    [SerializeField]
+    private AudioClip shoot;
+
     private float HoiChieuThucTe => thoiGianHoiChieu / Mathf.Max(heSoTangToc, 0.01f);
 
     // ── [ANIMATION] Khai báo Animator ───────────────────────────────────────
@@ -42,6 +46,7 @@ public class TitanPhe9 : MonoBehaviour
 
     void Start()
     {
+        Amthanh = GetComponent<AudioSource>();
         phechinh = GetComponent<Health_phechinh>();
         // ── [ANIMATION] Lấy Animator từ children ────────────────────────────
         Titan_animator = GetComponentInChildren<Animator>();
@@ -255,12 +260,12 @@ public class TitanPhe9 : MonoBehaviour
             vienDan.transform.rotation = Quaternion.Euler(0, 0, huongBanX);
             vienDan.transform.SetParent(null);
             vienDan.SetActive(true);
-
             Dannv2 scriptDan = vienDan.GetComponent<Dannv2>();
             if (scriptDan != null)
             {
                 scriptDan.satThuong = satThuong;
                 scriptDan.KichHoatVienDan();
+                Amthanh.PlayOneShot(shoot);
             }
         }
     }

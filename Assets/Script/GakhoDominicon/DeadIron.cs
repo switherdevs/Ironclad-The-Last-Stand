@@ -31,9 +31,13 @@ public class NhanVat4 : MonoBehaviour
     private Animator DeadIron_animator;
     private Vector3 viTriKhungHinhTruoc;
     // ────────────────────────────────────────────────────────────────────────
-
+    // Am Thanh
+    private AudioSource Amthanh;
+    [SerializeField]
+    private AudioClip Shoot;
     void Start()
     {
+        Amthanh = GetComponent<AudioSource>();
         phechinh = GetComponent<Health_phechinh>();
         // ── [ANIMATION] Lấy Animator từ children ────────────────────────────
         DeadIron_animator = GetComponentInChildren<Animator>();
@@ -234,6 +238,7 @@ public class NhanVat4 : MonoBehaviour
         if (vienDan == null)
         {
             vienDan = Instantiate(prefabDanMobi, DiemBan.position, rotation);
+            
         }
         else
         {
@@ -241,6 +246,8 @@ public class NhanVat4 : MonoBehaviour
             vienDan.transform.rotation = rotation;
             vienDan.transform.SetParent(null);
             vienDan.SetActive(true);
+            Amthanh.PlayOneShot(Shoot);
+
         }
 
         if (vienDan != null)
