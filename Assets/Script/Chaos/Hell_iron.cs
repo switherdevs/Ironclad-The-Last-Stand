@@ -1,5 +1,6 @@
-using UnityEngine;
+using GLTFast.Schema;
 using System.Collections;
+using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class EnemyCharger : MonoBehaviour
@@ -41,6 +42,7 @@ public class EnemyCharger : MonoBehaviour
     private AudioSource Amthanh;
     [SerializeField]
     private AudioClip Shoot;
+    private Animator animator;
 
     private int currentHP;
     private bool hasExploded = false;
@@ -59,6 +61,8 @@ public class EnemyCharger : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         monsterCollider = GetComponent<Collider2D>();
+        animator = GetComponentInChildren<Animator>();
+        Amthanh = GetComponent<AudioSource>();  
         ConfigurePhysics();
     }
 
@@ -137,10 +141,14 @@ public class EnemyCharger : MonoBehaviour
         {
             if (projectilePrefab != null)
             {
-                // 🛠️ LOGIC MỚI: Nếu kéo ô firePoint thì lấy vị trí của nó, nếu trống thì tự động bắn từ tâm quái làm phương án dự phòng
+                // 1. Tính toán vị trí
                 Vector3 spawnPosition = (firePoint != null) ? firePoint.position : transform.position;
 
+                // 2. Kích hoạt đồng bộ Animation, Âm thanh và Tạo đạn tại cùng 1 thời điểm
+                animator.SetTrigger("Chao_dead_Shoot");
+                Amthanh.PlayOneShot(Shoot);
                 GameObject proj = Instantiate(projectilePrefab, spawnPosition, Quaternion.identity);
+
                 Rigidbody2D projRb = proj.GetComponent<Rigidbody2D>();
                 if (projRb != null)
                 {
@@ -151,7 +159,8 @@ public class EnemyCharger : MonoBehaviour
                     proj.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
                 }
             }
-            Amthanh.PlayOneShot(Shoot);
+
+            // Xóa lệnh Amthanh.PlayOneShot(Shoot) dư thừa ở dưới này
             nextAttackTime = Time.time + attackCooldown;
         }
     }
@@ -253,6 +262,14 @@ public class EnemyCharger : MonoBehaviour
                 RotateMeleeHitbox();
                 break;
         }
+        if (rb.linearVelocity.magnitude > 0.15f)
+        {
+            animator.SetBool("Chaos_dead_run", true);
+        }
+        else
+        {
+            animator.SetBool("Chaos_dead_run", false);
+        }
     }
 
     private Vector2 CalculateHitboxCenter(Vector2 moveDir)
@@ -282,7 +299,7 @@ public class EnemyCharger : MonoBehaviour
     private IEnumerator MeleeAttackRoutine()
     {
         rb.linearVelocity = Vector2.zero;
-
+        animator.SetBool("chao_dead_attack", true);
         if (meleeHitboxObject != null)
         {
             meleeHitboxObject.SetActive(true);
@@ -301,6 +318,7 @@ public class EnemyCharger : MonoBehaviour
                 }
             }
         }
+        animator.SetBool("chao_dead_attack", false);
 
         yield return new WaitForSeconds(meleeHitboxDuration);
 

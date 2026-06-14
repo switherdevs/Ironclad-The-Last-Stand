@@ -25,7 +25,7 @@ public class SaveSystem : MonoBehaviour
         lines.RemoveAll(l => l.StartsWith("TienNangCap:"));
         lines.Add($"TienNangCap:{soTien}");
         GhiToanBoFile(lines);
-        Debug.Log($"[SAVE] Đã lưu tiền nâng cấp: {soTien}");
+        Debug.Log($"[SAVE] Đã lưu tiền nâng cấp mới vào file txt: {soTien}");
     }
 
     public int DocThongTinGame()
@@ -86,6 +86,34 @@ public class SaveSystem : MonoBehaviour
         return 1;
     }
 
+    // ================= KHU VỰC LƯU / ĐỌC THÔNG TIN NÂNG CẤP LÍNH =================
+    public void LuuNangCapLinh(int indexLinh, int capMau, int capSt, int mauGoc, int stGoc)
+    {
+        List<string> lines = DocToanBoFile();
+
+        // Tìm và xóa dòng lưu cũ của con lính này dựa theo số thứ tự (index) tránh trùng lặp dòng
+        lines.RemoveAll(l => l.StartsWith($"NangCapLinh:{indexLinh}|"));
+
+        // Thêm dòng dữ liệu mới cấu trúc mảng vào danh sách txt
+        lines.Add($"NangCapLinh:{indexLinh}|{capMau}|{capSt}|{mauGoc}|{stGoc}");
+
+        GhiToanBoFile(lines);
+    }
+
+    public string DocNangCapLinh(int indexLinh)
+    {
+        List<string> lines = DocToanBoFile();
+        // Tìm đúng dòng bắt đầu bằng index của con lính cần tìm
+        string dongTimThay = lines.FirstOrDefault(l => l.StartsWith($"NangCapLinh:{indexLinh}|"));
+        if (dongTimThay != null)
+        {
+            // Trả về chuỗi chứa toàn bộ thông số sau dấu hai chấm để giải mã
+            return dongTimThay.Split(':').Last();
+        }
+        return null;
+    }
+
+    // ================= HÀM ĐỌC/GHI FILE HỆ THỐNG GỐC =================
     private List<string> DocToanBoFile()
     {
         if (!File.Exists(duongDanFile)) return new List<string>();

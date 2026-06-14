@@ -125,7 +125,10 @@ public class NhanVat4 : MonoBehaviour
         // ── [ANIMATION] Bật isShooting khi bắt đầu nạp năng lượng ──────────
         // (DeadIron dùng animation "charge + fire" gộp chung trong isShooting)
         if (DeadIron_animator != null)
-            DeadIron_animator.SetBool("DeadIron_isShooting", true);
+
+        DeadIron_animator.SetBool("DeadIron_isShooting", true);
+        yield return new WaitForSeconds(2);
+        Amthanh.PlayOneShot(Shoot);
         // ────────────────────────────────────────────────────────────────────
 
         yield return new WaitForSeconds(thoiGianNapNangLuong);
@@ -246,7 +249,6 @@ public class NhanVat4 : MonoBehaviour
             vienDan.transform.rotation = rotation;
             vienDan.transform.SetParent(null);
             vienDan.SetActive(true);
-            Amthanh.PlayOneShot(Shoot);
 
         }
 

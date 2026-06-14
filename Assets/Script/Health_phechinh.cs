@@ -31,7 +31,7 @@ public class Health_phechinh : MonoBehaviour
 
     void Start()
     {
-        currentHp = maxHP;
+        CapNhatMauTheoDataGoc(); // Cập nhật máu nâng cấp từ Data Gốc
 
         if (ThanhMau != null)
         {
@@ -40,6 +40,16 @@ public class Health_phechinh : MonoBehaviour
             ThanhMau.value = currentHp;
             ThanhMau.gameObject.SetActive(false);
         }
+    }
+
+    // Hàm bổ trợ tự động lấy máu đã nâng cấp dựa theo tên của lính (Mới cập nhật)
+    private void CapNhatMauTheoDataGoc()
+    {
+        if (bangSatThuongChung != null)
+        {
+            maxHP = bangSatThuongChung.LayMauTuChung(gameObject.name);
+        }
+        currentHp = maxHP;
     }
 
     public void TakeDamage(int damage)
@@ -178,10 +188,11 @@ public class Health_phechinh : MonoBehaviour
             animator.Rebind(); // Trả toàn bộ tư thế và hoạt ảnh về mặc định từ Object Pool
         }
 
-        currentHp = maxHP;
+        CapNhatMauTheoDataGoc(); // Đảm bảo lấy lính từ Pool ra vẫn nhận đúng máu nâng cấp mới nhất
 
         if (ThanhMau != null)
         {
+            ThanhMau.maxValue = maxHP; // Đồng bộ lại độ dài thanh máu theo HP mới
             ThanhMau.value = maxHP;
             ThanhMau.gameObject.SetActive(false);
         }

@@ -6,6 +6,9 @@ public class EnemyBurst : BaseEnemy
     [Header("--- BURST LINE SETTINGS ---")]
     [SerializeField] private float burstDelay = 0.15f;
     [SerializeField] private float spawnOffsetDistance = 1.0f;
+    private AudioSource Amthanh;
+    [SerializeField]
+    private AudioClip Shoot;
 
     private Animator ChaosTerminator_animator;
     private Vector3 viTriKhungHinhTruoc;
@@ -13,7 +16,7 @@ public class EnemyBurst : BaseEnemy
     {
         base.Awake();
         ChaosTerminator_animator = GetComponentInChildren<Animator>();
-
+        Amthanh = GetComponent<AudioSource>();
     }
 
     protected override void Start()
@@ -32,9 +35,9 @@ public class EnemyBurst : BaseEnemy
 
             bool dangDiChuyen = transform.position != viTriKhungHinhTruoc;
             if (dangDiChuyen)
-                ChaosTerminator_animator.CrossFade("ter_chaos_move", 0.1f);
+                ChaosTerminator_animator.SetBool("ChaosTerminator_isWalking", true);
             else
-                ChaosTerminator_animator.CrossFade("idle_ter_chaos", 0.1f);
+                ChaosTerminator_animator.SetBool("ChaosTerminator_isWalking", false);
         }
 
         viTriKhungHinhTruoc = transform.position;
@@ -50,17 +53,18 @@ public class EnemyBurst : BaseEnemy
     {
         // ── [SỬA ĐỔI] Khi vào trạng thái tấn công: Đứng yên chuẩn bị bắn ──
         if (ChaosTerminator_animator != null)
-            ChaosTerminator_animator.CrossFade("idle_ter_chaos", 0.1f);
+            ChaosTerminator_animator.SetBool("ChaosTerminator_isWalking", false);
 
         for (int i = 0; i < 3; i++)
         {
             // ── [SỬA ĐỔI] Đạn sắp ra: Kích hoạt ngay animation bắn chớp nhoáng ──
             if (ChaosTerminator_animator != null)
-                ChaosTerminator_animator.CrossFade("shoot_ter_Chaos", 0.02f);
-
+                ChaosTerminator_animator.SetBool("ChaosTerminator_isShooting", true);
+            Amthanh.PlayOneShot(Shoot);
             FireSingleLinearProjectile();
             yield return new WaitForSeconds(burstDelay);
         }
+        ChaosTerminator_animator.SetBool("ChaosTerminator_isShooting", false);
 
         nextAttackTime = Time.time + attackCooldown;
         currentState = EnemyState.Chasing;

@@ -395,7 +395,6 @@ GameObject:
   m_Component:
   - component: {fileID: 9137536452782646605}
   - component: {fileID: 8424628660605231447}
-  - component: {fileID: 1287325466421399627}
   - component: {fileID: 6217639446544520229}
   - component: {fileID: 1033369684896819284}
   - component: {fileID: 15355587893971238}
@@ -462,42 +461,6 @@ CapsuleCollider2D:
   m_Offset: {x: -0.026323956, y: -0.4743309}
   m_Size: {x: 4.3434095, y: 8.6555}
   m_Direction: 0
---- !u!58 &1287325466421399627
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8067533523777300197}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_CompositeOperation: 0
-  m_CompositeOrder: 0
-  m_Offset: {x: -0.20285146, y: -3.4227943}
-  m_Radius: 1.607598
 --- !u!50 &6217639446544520229
 Rigidbody2D:
   serializedVersion: 5
@@ -542,13 +505,13 @@ MonoBehaviour:
   DiemBan: {fileID: 5341903135309534571}
   prefabDanMobi: {fileID: 6190148803816918428, guid: b71f4b32123060a40986fbfe2f195db1, type: 3}
   hieuUngNapNangLuong: {fileID: 4429183962028866267}
-  thoiGianNapNangLuong: 5
+  thoiGianNapNangLuong: 2
   tocDoDiChuyenY: 5
   doLechHangY: 0.3
   vungBoxPhongThu: {fileID: 7942286887352987862, guid: 43e938c73a2cad44e9d19025d21e3afb, type: 3}
   tocDoHanhQuan: 10
   phechinh: {fileID: 0}
-  Shoot: {fileID: 8300000, guid: 2317f4e672d10ba4ba316d11b14f51f9, type: 3}
+  Shoot: {fileID: 8300000, guid: 635438a6ee27f714b86c7c0b221dbb47, type: 3}
 --- !u!114 &15355587893971238
 MonoBehaviour:
   m_ObjectHideFlags: 0

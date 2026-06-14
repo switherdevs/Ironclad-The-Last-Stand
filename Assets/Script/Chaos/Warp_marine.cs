@@ -17,6 +17,7 @@ public class EnemyHolding : BaseEnemy
     private Vector3 viTriKhungHinhTruoc;
 
     private AudioSource AmThanh;
+    [SerializeField]
     private AudioClip Shoot;
 
     protected override void Awake()
@@ -46,9 +47,9 @@ public class EnemyHolding : BaseEnemy
         {
             bool dangDiChuyen = transform.position != viTriKhungHinhTruoc;
             if (dangDiChuyen)
-                WarpMarine_animator.CrossFade("Move_warpmarine", 0.1f, 0);
+                WarpMarine_animator.SetBool("WarpMarine_isWalking",true);
             else
-                WarpMarine_animator.CrossFade("idle_warpmarine", 0.1f, 0);
+            WarpMarine_animator.SetBool("WarpMarine_isWalking", false);
         }
 
         viTriKhungHinhTruoc = transform.position;
@@ -62,6 +63,9 @@ public class EnemyHolding : BaseEnemy
 
     private IEnumerator HoldingRoutine()
     {
+        WarpMarine_animator.SetBool("WarpMarine_isWalking", false);
+        WarpMarine_animator.SetBool("WarpMarine_isShoot", true);
+        AmThanh.PlayOneShot(Shoot);
         Vector2 fireDirection = ((Vector2)targetTransform.position - (Vector2)transform.position).normalized;
         Vector3 spawnPosition = transform.position + (Vector3)(fireDirection * spawnOffsetDistance);
 
@@ -90,7 +94,6 @@ public class EnemyHolding : BaseEnemy
         if (spawnedHoldingObj != null) Destroy(spawnedHoldingObj);
 
         if (WarpMarine_animator != null && WarpMarine_animator.gameObject.activeInHierarchy)
-            WarpMarine_animator.CrossFade("Shoot_warp", 0.02f, 0);
         AmThanh.PlayOneShot(Shoot);
             Light2.SetActive(true);
 
@@ -104,10 +107,9 @@ public class EnemyHolding : BaseEnemy
 
         yield return new WaitForSeconds(0.3f);
         Light2.SetActive(false);
-
+        WarpMarine_animator.SetBool("WarpMarine_isShoot", false);
 
         if (WarpMarine_animator != null && WarpMarine_animator.gameObject.activeInHierarchy)
-            WarpMarine_animator.CrossFade("idle_warpmarine", 0.2f, 0);
 
         currentState = EnemyState.Chasing;
     }

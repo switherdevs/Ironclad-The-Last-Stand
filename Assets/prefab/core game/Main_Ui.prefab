@@ -2575,7 +2575,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 50 gold
+  m_text: 75 gold
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -4637,8 +4637,16 @@ MonoBehaviour:
   Wingame: {fileID: 8606538555424027756}
   mainMenuUI: {fileID: 0}
   mainMenuAnimator: {fileID: 0}
-  bangChonMapUI: {fileID: 0}
-  bangMapAnimator: {fileID: 0}
+  nutContinue: {fileID: 0}
+  canvasGroupContinue: {fileID: 0}
+  bangMapStartGameUI: {fileID: 0}
+  bangMapStartAnimator: {fileID: 0}
+  nutChonMap2_StartGame: {fileID: 0}
+  nutChonMap3_StartGame: {fileID: 0}
+  bangMapContinueUI: {fileID: 0}
+  bangMapContinueAnimator: {fileID: 0}
+  nutChonMap2_Continue: {fileID: 0}
+  nutChonMap3_Continue: {fileID: 0}
   thoiGianChoAnMenu: 1.5
   thoiGianChoAnBangMap: 1.5
   animHienMenu: HienMenu
@@ -4652,9 +4660,12 @@ MonoBehaviour:
   UpdateBase: {fileID: 102900000, guid: 0c5b9054125c1cf4681eb49e6839610a, type: 3}
   pauGames: {fileID: 757940030649146540}
   boQuanLySave: {fileID: 0}
-  vienDoKhoDe: {fileID: 0}
-  vienDoKhoBinhThuong: {fileID: 0}
-  vienDoKhoKho: {fileID: 0}
+  vienDoKhoDe_StartGame: {fileID: 0}
+  vienDoKhoBinhThuong_StartGame: {fileID: 0}
+  vienDoKhoKho_StartGame: {fileID: 0}
+  vienDoKhoDe_Continue: {fileID: 0}
+  vienDoKhoBinhThuong_Continue: {fileID: 0}
+  vienDoKhoKho_Continue: {fileID: 0}
   Click: {fileID: 8300000, guid: 757c8459df8494e409c65256d4f85cae, type: 3}
 --- !u!82 &3515061519644071100
 AudioSource:
@@ -4955,7 +4966,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 300 gold
+  m_text: 400 gold
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -6605,7 +6616,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 100 gold
+  m_text: 75 Gold
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
