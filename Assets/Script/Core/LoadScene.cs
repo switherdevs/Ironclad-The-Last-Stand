@@ -353,7 +353,10 @@ public class LoadScene : MonoBehaviour
         if (Tayperer.skibidi != null && Tayperer.skibidi.GameOver)
         {
             BanThuaGame.SetActive(true);
+            Time.timeScale = 1;
+
         }
+
     }
 
     public void WinGame()
@@ -361,7 +364,10 @@ public class LoadScene : MonoBehaviour
         if (ChaosDirector.instance != null && ChaosDirector.instance.WinGame)
         {
             Wingame.SetActive(true);
+            Time.timeScale = 1;
+
         }
+
     }
 
     public void Map2()

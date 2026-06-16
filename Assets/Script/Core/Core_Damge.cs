@@ -1,81 +1,107 @@
-using UnityEngine;
+using System;
 using System.Collections.Generic;
+using UnityEngine;
 
-[CreateAssetMenu(fileName = "HeThongSatThuongData", menuName = "Game/He Thong Sat Thuong")]
+[CreateAssetMenu(fileName = "HeThongSatThuongData", menuName = "Scriptable Objects/HeThongSatThuongData")]
 public class HeThongSatThuongData : ScriptableObject
 {
-    // Cấu trúc thông tin của 1 chủng lính
     [System.Serializable]
-    public struct ThongTinChungLinh
+    public struct ChiSoSatThuongLinh
     {
-        public string tenChungLinh;  // Ghi đúng tên Prefab lính (Ví dụ: Titan, IronStorm...)
-        public int satThuongGoc;     // Lượng đam quy định ở Cấp 0
-        public int mauGoc;           // Lượng máu quy định ở Cấp 0
-        public float heSoBoTro;      // Giữ nguyên biến cũ cho đồ đạc sau này
+        public string tenChungLinh;
 
-        [Header("--- CẤP ĐỘ NÂNG CẤP HIỆN TẠI ---")]
-        public int capDoSatThuong;
+        [Header("--- THÔNG SỐ GỐC ---")]
+        public int mauGoc;
+        public int satThuongGoc;
+        public float heSoBoTro; // Hệ số bổ trợ gốc của bạn
+
+        [Header("--- CẤP ĐỘ HIỆN TẠI ---")]
         public int capDoMau;
+        public int capDoSatThuong;
 
-        [Header("--- CẤU HÌNH MẢNG HỆ SỐ NÂNG CẤP TÙY Ý ---")]
-        [Tooltip("Mảng nhân sát thương. Ví dụ: Cấp 0 điền 1, Cấp 1 điền 1.2, Cấp 2 điền 1.5...")]
+        [Header("--- MẢNG CẤU HÌNH TỶ LỆ NÂNG CẤP ---")]
+        public List<float> mangHeSoMau;
         public List<float> mangHeSoSatThuong;
 
-        [Tooltip("Mảng nhân máu. Ví dụ: Cấp 0 điền 1, Cấp 1 điền 1.3, Cấp 2 điền 1.7...")]
-        public List<float> mangHeSoMau;
-
-        [Header("--- CẤU HÌNH MẢNG GIÁ TIỀN CHO TỪNG CẤP ---")]
-        [Tooltip("Số tiền tốn để nâng lên cấp tiếp theo của SÁT THƯƠNG (Cấp 0 lên 1, Cấp 1 lên 2...)")]
-        public List<int> mangGiaTienSatThuong;
-
-        [Tooltip("Số tiền tốn để nâng lên cấp tiếp theo của MÁU (Cấp 0 lên 1, Cấp 1 lên 2...)")]
+        [Header("--- MẢNG CẤU HÌNH GIÁ TIỀN ---")]
         public List<int> mangGiaTienMau;
+        public List<int> mangGiaTienSatThuong;
     }
 
-    [Header("--- BẢNG TRA CỨU SÁT THƯƠNG TOÀN GAME ---")]
-    public List<ThongTinChungLinh> danhSachSatThuong = new List<ThongTinChungLinh>();
+    [Header("--- DANH SÁCH DỮ LIỆU TẤT CẢ CHỦNG LÍNH ---")]
+    public List<ChiSoSatThuongLinh> danhSachSatThuong = new List<ChiSoSatThuongLinh>();
 
-    // Hàm tự động lọc và lấy ra đúng sát thương dựa vào Tên chủng lính và nhân hệ số nâng cấp
+    // ================= HÀM LẤY SÁT THƯƠNG THỰC TẾ (ĐÃ SỬA LỖI MAX LEVEL) =================
     public int LaySatThuongTuChung(string tenChung)
     {
-        foreach (var chung in danhSachSatThuong)
+        for (int i = 0; i < danhSachSatThuong.Count; i++)
         {
-            // Nếu tên vật va chạm chứa tên chủng lính trong bảng
+            var chung = danhSachSatThuong[i];
             if (tenChung.Contains(chung.tenChungLinh))
             {
                 float heSoNangCap = 1f;
-                // Kiểm tra nếu có điền mảng hệ số nâng cấp và cấp độ hiện tại nằm trong mảng
-                if (chung.mangHeSoSatThuong != null && chung.capDoSatThuong < chung.mangHeSoSatThuong.Count)
+
+                if (chung.mangHeSoSatThuong != null && chung.mangHeSoSatThuong.Count > 0)
                 {
-                    heSoNangCap = chung.mangHeSoSatThuong[chung.capDoSatThuong];
+                    // Nếu cấp độ hiện tại nằm trong phạm vi mảng, lấy bình thường
+                    if (chung.capDoSatThuong < chung.mangHeSoSatThuong.Count)
+                    {
+                        heSoNangCap = chung.mangHeSoSatThuong[chung.capDoSatThuong];
+                    }
+                    // CHỐT CHẶN: Nếu cấp độ bằng hoặc vượt quá độ dài mảng (Max Level), ép lấy phần tử cuối cùng
+                    else
+                    {
+                        heSoNangCap = chung.mangHeSoSatThuong[chung.mangHeSoSatThuong.Count - 1];
+                    }
                 }
 
-                // Tính toán sát thương kèm hệ số bổ trợ đồ đạc VÀ hệ số nâng cấp mảng
                 return Mathf.RoundToInt(chung.satThuongGoc * chung.heSoBoTro * heSoNangCap);
             }
         }
-        return 5;
+        return 5; // Giá trị trả về mặc định nếu không tìm thấy chủng lính
     }
 
-    // Hàm tự động lọc và lấy ra đúng máu tối đa dựa vào Tên chủng lính và nhân hệ số nâng cấp
+    // ================= HÀM LẤY MÁU THỰC TẾ (ĐÃ SỬA LỖI MAX LEVEL) =================
     public int LayMauTuChung(string tenChung)
     {
         string tenChungLower = tenChung.ToLower();
-        foreach (var chung in danhSachSatThuong)
+        for (int i = 0; i < danhSachSatThuong.Count; i++)
         {
+            var chung = danhSachSatThuong[i];
             if (tenChungLower.Contains(chung.tenChungLinh.ToLower()))
             {
                 float heSoNangCap = 1f;
-                // Kiểm tra nếu có điền mảng hệ số nâng cấp và cấp độ hiện tại nằm trong mảng
-                if (chung.mangHeSoMau != null && chung.capDoMau < chung.mangHeSoMau.Count)
+
+                if (chung.mangHeSoMau != null && chung.mangHeSoMau.Count > 0)
                 {
-                    heSoNangCap = chung.mangHeSoMau[chung.capDoMau];
+                    // Nếu cấp độ hiện tại nằm trong phạm vi mảng, lấy bình thường
+                    if (chung.capDoMau < chung.mangHeSoMau.Count)
+                    {
+                        heSoNangCap = chung.mangHeSoMau[chung.capDoMau];
+                    }
+                    // CHỐT CHẶN: Nếu cấp độ bằng hoặc vượt quá độ dài mảng (Max Level), ép lấy phần tử cuối cùng
+                    else
+                    {
+                        heSoNangCap = chung.mangHeSoMau[chung.mangHeSoMau.Count - 1];
+                    }
                 }
 
-                // Tính toán lượng máu tối đa sau khi nhân hệ số nâng cấp mảng
                 return Mathf.RoundToInt(chung.mauGoc * heSoNangCap);
             }
         }
-        return 20; // Máu mặc định dự phòng nếu không tìm thấy trong bảng
+        return 20; // Giá trị trả về mặc định nếu không tìm thấy chủng lính
+    }
+
+    // ================= HÀM RESET CHỈ SỐ VỀ MẶC ĐỊNH (KHI KHÔNG CÓ FILE SAVE) =================
+    public void ResetToanBoChiSoVeMocGoc()
+    {
+        for (int i = 0; i < danhSachSatThuong.Count; i++)
+        {
+            var cl = danhSachSatThuong[i];
+            cl.capDoMau = 0;
+            cl.capDoSatThuong = 0;
+            danhSachSatThuong[i] = cl;
+        }
+        Debug.Log("[Data] Đã reset toàn bộ cấp độ nâng cấp lính về cấp 0.");
     }
 }

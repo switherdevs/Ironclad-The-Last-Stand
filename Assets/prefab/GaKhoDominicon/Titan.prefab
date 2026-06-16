@@ -150,7 +150,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b47c6bcf5d9b56840a6fdc7a89d98557, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TamBan: 175
+  TamBan: 125
   satThuong: 150
   DiemBan: {fileID: 6952550864982342412}
   prefabDanLon: {fileID: 5603226188732681372, guid: 34bac72397804c34998af74a1edaa59f, type: 3}

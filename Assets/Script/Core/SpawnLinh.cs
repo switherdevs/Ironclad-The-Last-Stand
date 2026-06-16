@@ -1,8 +1,11 @@
-using NUnit.Framework.Constraints;
 using UnityEngine;
+using UnityEngine.UI; // BẮT BUỘC có để quản lý Button
 
 public class SpawnLinh : MonoBehaviour
 {
+    // THIẾT KẾ SINGLETON để ResourceManager có thể gọi ngược lại làm mờ nút khi tiền thay đổi
+    public static SpawnLinh Instance { get; private set; }
+
     [Header("--- VỊ TRÍ XUẤT HIỆN ---")]
     public Transform spawnPoint;
 
@@ -13,6 +16,15 @@ public class SpawnLinh : MonoBehaviour
     public int giaStormTerminator = 400;
     public int giaIronDreadWalker = 750;
     public int giaDominiconTitan = 1500;
+
+    [Header("--- NÚT BẤM UI MUA LÍNH ---")]
+    [Tooltip("Kéo thả các thành phần Button tương ứng ngoài Canvas vào đây")]
+    public Button btnSevitor;
+    public Button btnKhograkGuard;
+    public Button btnIronStormMarine;
+    public Button btnStormTerminator;
+    public Button btnIronDreadWalker;
+    public Button btnDominiconTitan;
 
     [Header("--- DANH SÁCH PREFABS & SLOT LÍNH ---")]
     public GameObject SevitorPrefab;
@@ -33,96 +45,107 @@ public class SpawnLinh : MonoBehaviour
     public GameObject dominiconTitanPrefab;
     public int slotDominiconTitan = 20;
 
-
     [Header("--- CẤU HÌNH KHÁC ---")]
     public bool speedup = false;
-    [SerializeField]
-    private AudioSource Amthanh;
-    [SerializeField]
-    private AudioClip ser;
-    [SerializeField]
+    [SerializeField] private AudioSource Amthanh;
+    [SerializeField] private AudioClip ser;
+    [SerializeField] private AudioClip KhoGrak;
+    [SerializeField] private AudioClip IronStom;
+    [SerializeField] private AudioClip Ter;
+    [SerializeField] private AudioClip DeadIron;
+    [SerializeField] private AudioClip Titan;
 
-    private AudioClip KhoGrak;
-    [SerializeField]
+    private void Awake()
+    {
+        if (Instance == null) Instance = this;
+    }
 
-    private AudioClip IronStom;
-    [SerializeField]
-
-    private AudioClip Ter;
-    [SerializeField]
-
-    private AudioClip DeadIron;
-    [SerializeField]
-
-    private AudioClip Titan;
-
-    // --- CÁC HÀM SPAWN ---
     private void Start()
     {
         Amthanh = GetComponent<AudioSource>();
+
+        // Vừa vào game, tự kiểm tra trạng thái mờ/sáng nút dựa theo số tiền ban đầu
+        CapNhatTrangThaiNut();
     }
 
+    // HÀM CHÍNH KHÓA/LÀM MỜ NÚT BẤM THEO SỐ TIỀN HIỆN CÓ
+    public void CapNhatTrangThaiNut()
+    {
+        if (ResourceManager.Instance == null) return;
+
+        int tienHienTai = ResourceManager.Instance.soTienHienTai;
+
+        // Nếu ĐỦ tiền thì nút sáng (true), THIẾU tiền thì nút tự mờ và khóa click (false)
+        if (btnSevitor != null) btnSevitor.interactable = (tienHienTai >= giaSevitor);
+        if (btnKhograkGuard != null) btnKhograkGuard.interactable = (tienHienTai >= giaKhograkGuard);
+        if (btnIronStormMarine != null) btnIronStormMarine.interactable = (tienHienTai >= giaIronStormMarine);
+        if (btnStormTerminator != null) btnStormTerminator.interactable = (tienHienTai >= giaStormTerminator);
+        if (btnIronDreadWalker != null) btnIronDreadWalker.interactable = (tienHienTai >= giaIronDreadWalker);
+        if (btnDominiconTitan != null) btnDominiconTitan.interactable = (tienHienTai >= giaDominiconTitan);
+    }
+
+    // --- CÁC HÀM SPAWN ---
     public void Sevitor()
     {
-        // TRUYỀN THAM SỐ TRUE XÁC ĐỊNH ĐÂY LÀ SERVITOR
         XuLyMuaLinh(giaSevitor, slotSevitor, SevitorPrefab, true);
-        Amthanh.PlayOneShot(ser);
     }
 
     public void SpawnKhograkGuard()
     {
         XuLyMuaLinh(giaKhograkGuard, slotKhograkGuard, khograkGuardPrefab);
-        Amthanh.PlayOneShot(KhoGrak);
-
     }
 
     public void SpawnIronStormMarine()
     {
         XuLyMuaLinh(giaIronStormMarine, slotIronStormMarine, ironStormMarinePrefab);
-        Amthanh.PlayOneShot(IronStom);
-
     }
 
     public void SpawnStormTerminator()
     {
         XuLyMuaLinh(giaStormTerminator, slotStormTerminator, stormTerminatorPrefab);
-        Amthanh.PlayOneShot(Ter);
-
-
     }
 
     public void SpawnIronDreadWalker()
     {
         XuLyMuaLinh(giaIronDreadWalker, slotIronDreadWalker, ironDreadWalkerPrefab);
-        Amthanh.PlayOneShot(DeadIron);
-
     }
 
     public void SpawnDominiconTitan()
     {
         XuLyMuaLinh(giaDominiconTitan, slotDominiconTitan, dominiconTitanPrefab);
-        Amthanh.PlayOneShot(Titan);
-
     }
 
-    // --- HÀM XỬ LÝ CHUNG (Đã cập nhật tham số isSevitor) ---
     private void XuLyMuaLinh(int gia, int slot, GameObject prefab, bool isSevitor = false)
     {
-        // 1. Kiểm tra và trừ tiền trước
         if (ResourceManager.Instance.KiemTraVaTruTien(gia))
         {
-            // 2. Kiểm tra slot (kèm định danh isSevitor)
             if (ResourceManager.Instance.KiemTraVaThemLinh(slot, isSevitor))
             {
-                // Nếu cả hai đều thỏa mãn thì mới spawn
                 SpawnUnit(prefab);
+                PhatAmThanhMuaLinh(prefab); // Phát âm thanh tương ứng khi mua thành công
             }
             else
             {
-                // Nếu hết slot thì hoàn lại tiền đã trừ
+                // Hoàn tiền nếu không đủ slot chứa lính
                 ResourceManager.Instance.TangTien(gia);
             }
         }
+
+        // ĐÃ CẬP NHẬT: Sau mỗi lượt tính toán mua/hoàn tiền, bắt buộc kiểm tra lại ví tiền để cập nhật độ mờ nút bấm
+        CapNhatTrangThaiNut();
+    }
+
+    // Hàm phụ xử lý phát âm thanh gọn gàng hơn
+    private void PhatAmThanhMuaLinh(GameObject prefab)
+    {
+        if (Amthanh == null) return;
+
+        if (prefab == SevitorPrefab) Amthanh.PlayOneShot(ser);
+        else if (prefab == khograkGuardPrefab) Amthanh.PlayOneShot(KhoGrak);
+        else if (prefab == ironStormMarinePrefab) Amthanh.PlayOneShot(IronStom);
+        else if (prefab == stormTerminatorPrefab) Amthanh.PlayOneShot(Ter);
+        else if (prefab == ironDreadWalkerPrefab) Amthanh.PlayOneShot(DeadIron);
+        else if (prefab == dominiconTitanPrefab) Amthanh.PlayOneShot(Titan);
     }
 
     private void SpawnUnit(GameObject unitPrefab)
@@ -133,9 +156,4 @@ public class SpawnLinh : MonoBehaviour
         }
     }
 
-    public void Timeskip()
-    {
-        speedup = !speedup;
-        Time.timeScale = speedup ? 6 : 1;
-    }
 }

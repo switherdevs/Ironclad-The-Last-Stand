@@ -505,7 +505,7 @@ MonoBehaviour:
   DiemBan: {fileID: 5341903135309534571}
   prefabDanMobi: {fileID: 6190148803816918428, guid: b71f4b32123060a40986fbfe2f195db1, type: 3}
   hieuUngNapNangLuong: {fileID: 4429183962028866267}
-  thoiGianNapNangLuong: 2
+  thoiGianNapNangLuong: 1.75
   tocDoDiChuyenY: 5
   doLechHangY: 0.3
   vungBoxPhongThu: {fileID: 7942286887352987862, guid: 43e938c73a2cad44e9d19025d21e3afb, type: 3}
@@ -552,7 +552,7 @@ AudioSource:
   SpatializePostEffects: 0
   Priority: 128
   DopplerLevel: 1
-  MinDistance: 100
+  MinDistance: 25
   MaxDistance: 500
   Pan2D: 0
   rolloffMode: 0

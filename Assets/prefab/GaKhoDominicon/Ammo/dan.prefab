@@ -276,7 +276,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 658f3af7cdeca5e4b980a27a7a957238, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tenChungLinhBan: prefab_KhoGrak_Guand
+  tenChungLinhBan: KhoGrak Gruand
 --- !u!96 &2559620310790538283
 TrailRenderer:
   serializedVersion: 3

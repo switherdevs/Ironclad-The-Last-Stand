@@ -189,7 +189,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 828003418e8417d4ba0ca276cd6c49fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TamBan: 175
+  TamBan: 125
   soDanBan: 3
   satThuong: 10
   DiemBan: {fileID: 1309856065696408062}
@@ -268,7 +268,7 @@ AudioSource:
   SpatializePostEffects: 0
   Priority: 128
   DopplerLevel: 1
-  MinDistance: 20
+  MinDistance: 10
   MaxDistance: 500
   Pan2D: 0
   rolloffMode: 0

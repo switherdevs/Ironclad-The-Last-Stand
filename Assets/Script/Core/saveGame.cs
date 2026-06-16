@@ -18,6 +18,21 @@ public class SaveSystem : MonoBehaviour
         return File.Exists(duongDanFile) && DocToanBoFile().Count > 0;
     }
 
+    // ================= BỔ SUNG: HÀM XÓA FILE SAVE GAME =================
+    // Hàm này được thiết kế ở dạng public để bạn dễ dàng gán vào OnClick của Button UI
+    public void XoaFileSaveGame()
+    {
+        if (File.Exists(duongDanFile))
+        {
+            File.Delete(duongDanFile);
+            Debug.Log("<color=red><b>[SaveSystem]</b> Đã xóa file savegame.txt thành công!</color>");
+        }
+        else
+        {
+            Debug.LogWarning("[SaveSystem] Không tìm thấy file save để xóa hoặc file không tồn tại.");
+        }
+    }
+
     // ================= KHU VỰC LƯU / ĐỌC TIỀN NÂNG CẤP LÍNH =================
     public void LuuThongTinGame(int soTien)
     {
@@ -44,7 +59,6 @@ public class SaveSystem : MonoBehaviour
     {
         List<string> lines = DocToanBoFile();
 
-        // Chỉ nâng cấp tiến trình nếu Map mới vượt qua Map cũ đã lưu
         int mapCu = DocTienTrinhMap();
         if (mapIndex > mapCu)
         {
@@ -63,7 +77,7 @@ public class SaveSystem : MonoBehaviour
         {
             return int.Parse(dongTimThay.Split(':').Last());
         }
-        return 1; // Mặc định mới chơi thì chỉ được chọn Map 1
+        return 1;
     }
 
     // ================= KHU VỰC LƯU / ĐỌC ĐỘ KHÓ =================
@@ -91,10 +105,7 @@ public class SaveSystem : MonoBehaviour
     {
         List<string> lines = DocToanBoFile();
 
-        // Tìm và xóa dòng lưu cũ của con lính này dựa theo số thứ tự (index) tránh trùng lặp dòng
         lines.RemoveAll(l => l.StartsWith($"NangCapLinh:{indexLinh}|"));
-
-        // Thêm dòng dữ liệu mới cấu trúc mảng vào danh sách txt
         lines.Add($"NangCapLinh:{indexLinh}|{capMau}|{capSt}|{mauGoc}|{stGoc}");
 
         GhiToanBoFile(lines);
@@ -103,11 +114,9 @@ public class SaveSystem : MonoBehaviour
     public string DocNangCapLinh(int indexLinh)
     {
         List<string> lines = DocToanBoFile();
-        // Tìm đúng dòng bắt đầu bằng index của con lính cần tìm
         string dongTimThay = lines.FirstOrDefault(l => l.StartsWith($"NangCapLinh:{indexLinh}|"));
         if (dongTimThay != null)
         {
-            // Trả về chuỗi chứa toàn bộ thông số sau dấu hai chấm để giải mã
             return dongTimThay.Split(':').Last();
         }
         return null;

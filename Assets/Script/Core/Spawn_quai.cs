@@ -46,6 +46,12 @@ public class ChaosDirector : MonoBehaviour
     [Header("--- KHUÔN ĐÚC MINI-BOSS ---")]
     public GameObject prefabMiniBoss;
 
+    [Header("--- ÂM THANH XUẤT QUÂN (CHỈ PHÁT 1 LẦN) ---")]
+    [Tooltip("Kéo AudioSource của Object này vào đây")]
+    [SerializeField] private AudioSource nguonAmThanh;
+    [Tooltip("Kéo file âm thanh hú hét/hành quân lúc bắt đầu trận đấu vào đây")]
+    [SerializeField] private AudioClip amThanhBatDauQuaiRa;
+
     [Header("--- Thời gian và số lượng quái ---")]
     public int ThoiGianSpawn_gd1 = 6;
     public int ThoiGianSpawn_gd2 = 4;
@@ -56,6 +62,8 @@ public class ChaosDirector : MonoBehaviour
     public bool WinGame = false;
 
     private bool daSpawnMiniBoss = false;
+    private bool daSpawnBossCuoi = false; // Khóa chống trùng spawn nhiều Boss
+    private bool daPhatSoundBatDau = false; // Khóa chống trùng lặp âm thanh gầm hú mở màn
 
     // ─── COMMENT: THÊM BIẾN MỚI ĐỂ QUẢN LÝ TIẾN TRÌNH KHÓA/MỞ MAP ───
     [Header("--- CẤU HÌNH TIẾN TRÌNH MÀN HIỆN TẠI ---")]
@@ -89,6 +97,12 @@ public class ChaosDirector : MonoBehaviour
             thanhTienTrinhGame.value = 0f;
         }
 
+        // Tự động lấy AudioSource nếu quên không kéo thả trong Inspector
+        if (nguonAmThanh == null)
+        {
+            nguonAmThanh = GetComponent<AudioSource>();
+        }
+
         StartCoroutine(HeThongQuanLySpawnQuaiToiUu());
     }
 
@@ -104,14 +118,33 @@ public class ChaosDirector : MonoBehaviour
             return;
         }
 
-        // ĐIỀU KIỆN WIN GAME: Đủ 10 phút
+        // KIỂM TRA PHÁT SOUND EFFECT ĐÚNG 1 LẦN KHI HẾT GIỜ CHUẨN BỊ (QUÁI BẮT ĐẦU RA)
+        if (dongHoDem >= 0f && !daPhatSoundBatDau)
+        {
+            daPhatSoundBatDau = true;
+            if (nguonAmThanh != null && amThanhBatDauQuaiRa != null)
+            {
+                nguonAmThanh.PlayOneShot(amThanhBatDauQuaiRa);
+                Debug.Log("[SOUND] Đã phát âm thanh hiệu lệnh xuất quân của phe Chaos!");
+            }
+        }
+
+        // ĐIỀU KIỆN KÍCH HOẠT VÀ WIN GAME
         if (dongHoDem >= tongThoiGian)
         {
-            // Và giết sạch sẽ quái vật trên bản đồ
+            // BƯỚC 1: Hết giờ 10 phút -> Tự động gọi Boss lớn ra trận (Nếu chưa gọi)
+            if (!daSpawnBossCuoi && prefabDemonPrince != null)
+            {
+                daSpawnBossCuoi = true;
+                SimpleObjectPool.Instance.LayQuaiRa(prefabDemonPrince, LayViTriSpawnTandRa());
+                Debug.Log("[CẢNH BÁO BOSS TRÙM] Thời gian kết thúc! Demon Prince đã giáng trần hạ lệnh tiêu diệt phe ta!");
+            }
+
+            // BƯỚC 2: Người chơi chỉ thắng khi hết 10 phút ĐỒNG THỜI diệt sạch quái bao gồm cả Boss vừa ra
             if (KiemTraKhongConQuaiTrenBanDo())
             {
                 WinGame = true;
-                Debug.Log("[CHIẾN THẮNG] Toàn bộ quái vật đã bị tiêu diệt sạch sẽ sau khi hết giờ!");
+                Debug.Log("[CHIẾN THẮNG] Toàn bộ quái vật và Boss Trùm đã bị tiêu diệt sạch sẽ sau khi hết giờ!");
 
                 // ─── COMMENT: GỌI HÀM TỰ ĐỘNG LƯU TIỀN VÀ MAP KHI THẮNG TRẬN ───
                 TuDongSaveTienKhiWinGame();

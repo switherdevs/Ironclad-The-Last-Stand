@@ -1,0 +1,171 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &6586124624548711824
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4533223056217654191}
+  - component: {fileID: 7932048368006585064}
+  - component: {fileID: 8346067153233895861}
+  m_Layer: 0
+  m_Name: SpawnLinh
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4533223056217654191
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6586124624548711824}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -99.548386, y: -9.699292, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7932048368006585064
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6586124624548711824}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1897067e5cfeaee4ca00ea9677550ab4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spawnPoint: {fileID: 4533223056217654191}
+  giaSevitor: 75
+  giaKhograkGuard: 75
+  giaIronStormMarine: 200
+  giaStormTerminator: 400
+  giaIronDreadWalker: 750
+  giaDominiconTitan: 1500
+  SevitorPrefab: {fileID: 4302893310042436796, guid: ad241cf354421e448b2979e08724d9f3, type: 3}
+  slotSevitor: 0
+  khograkGuardPrefab: {fileID: 192116931154184763, guid: 815194771d0403c45902975be3441bb4, type: 3}
+  slotKhograkGuard: 1
+  ironStormMarinePrefab: {fileID: 650091318245065535, guid: 2832e12abdbe74b4db7a690913ecef6b, type: 3}
+  slotIronStormMarine: 2
+  stormTerminatorPrefab: {fileID: 3998876897299777512, guid: 7d754602d7c30dc438d7e29efd754c46, type: 3}
+  slotStormTerminator: 5
+  ironDreadWalkerPrefab: {fileID: 8067533523777300197, guid: 035fc219a64d5d4459797a2f92216a80, type: 3}
+  slotIronDreadWalker: 10
+  dominiconTitanPrefab: {fileID: 1044933436625295600, guid: 260f358ea6f39f34ba0826f084dd1a25, type: 3}
+  slotDominiconTitan: 20
+  speedup: 0
+  Amthanh: {fileID: 0}
+  ser: {fileID: 8300000, guid: 88ce0627c28746c4d939b85ed4b00bf9, type: 3}
+  KhoGrak: {fileID: 8300000, guid: b83f52b4b846de946ac1e87cd6611649, type: 3}
+  IronStom: {fileID: 8300000, guid: faf301ec318facd4baa0027f6948927a, type: 3}
+  Ter: {fileID: 8300000, guid: 85aaad4b7d26f154ba4155977ce86a34, type: 3}
+  DeadIron: {fileID: 8300000, guid: 927ebe5ae48d09f4098b4ce417b3623e, type: 3}
+  Titan: {fileID: 8300000, guid: 20c23b6128f3c9d4a808bd2a5083d79e, type: 3}
+--- !u!82 &8346067153233895861
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6586124624548711824}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 8300000, guid: a1123140c2c1a664f881bdccc9226d49, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4

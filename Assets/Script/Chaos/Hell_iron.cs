@@ -53,16 +53,18 @@ public class EnemyCharger : MonoBehaviour
     private Collider2D monsterCollider;
     private Transform targetTransform;
     private Vector2 lastLookDirection = Vector2.left;
+    private Health_chaos mauChaos;
 
     private const string TAG_PHE_CHINH = "Phechinh";
     private const string TAG_SAN_NHA = "Sannha";
 
     private void Awake()
     {
+        mauChaos = GetComponent<Health_chaos>();
         rb = GetComponent<Rigidbody2D>();
         monsterCollider = GetComponent<Collider2D>();
         animator = GetComponentInChildren<Animator>();
-        Amthanh = GetComponent<AudioSource>();  
+        Amthanh = GetComponent<AudioSource>();
         ConfigurePhysics();
     }
 
@@ -75,6 +77,11 @@ public class EnemyCharger : MonoBehaviour
 
     private void Update()
     {
+        if (mauChaos.Deadre)
+        {
+            return;
+        }
+
         if (currentChargerState == ChargerState.Dead) return;
 
         HandleCoreLogicTransitions();
@@ -83,7 +90,14 @@ public class EnemyCharger : MonoBehaviour
 
     private void FixedUpdate()
     {
+        // CHỖ SỬA YÊU CẦU: Triệt tiêu vận tốc ngay khi hết máu để ngăn hành vi trượt đi vô tận
+        if (mauChaos.Deadre)
+        {
+            if (rb != null) rb.linearVelocity = Vector2.zero;
+            return;
+        }
         if (currentChargerState == ChargerState.Dead || rb == null) return;
+
 
         if (rb.IsSleeping()) rb.WakeUp();
         if (currentChargerState == ChargerState.FastRangedRun || currentChargerState == ChargerState.MeleeChasing)
@@ -135,6 +149,10 @@ public class EnemyCharger : MonoBehaviour
 
     private void HandleRangedShooting()
     {
+        if (mauChaos.Deadre)
+        {
+            return;
+        }
         if (currentChargerState != ChargerState.FastRangedRun || hasExploded || targetTransform == null) return;
 
         if (Time.time >= nextAttackTime)
@@ -167,6 +185,10 @@ public class EnemyCharger : MonoBehaviour
 
     private void HandleCoreLogicTransitions()
     {
+        if (mauChaos.Deadre)
+        {
+            return;
+        }
         switch (currentChargerState)
         {
             case ChargerState.Exploding:

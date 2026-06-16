@@ -13,137 +13,149 @@ MonoBehaviour:
   m_Name: HeThongSatThuongData
   m_EditorClassIdentifier: 
   danhSachSatThuong:
-  - tenChungLinh: prefab_KhoGrak_Guand
-    satThuongGoc: 5
+  - tenChungLinh: KhoGrak Gruand
     mauGoc: 20
+    satThuongGoc: 5
     heSoBoTro: 1
-    capDoSatThuong: 1
-    capDoMau: 1
-    mangHeSoSatThuong:
-    - 1
-    - 1.3
-    - 1.65
-    - 2
+    capDoMau: 4
+    capDoSatThuong: 4
     mangHeSoMau:
     - 1
     - 1.3
     - 1.65
     - 2
-    mangGiaTienSatThuong: 010000002c010000f4010000e8030000
-    mangGiaTienMau: 01000000c8000000c201000020030000
+    mangHeSoSatThuong:
+    - 1
+    - 1.3
+    - 1.65
+    - 2
+    mangGiaTienMau: 50000000c8000000c201000020030000
+    mangGiaTienSatThuong: 640000002c010000f4010000e8030000
   - tenChungLinh: IronStorm
-    satThuongGoc: 15
     mauGoc: 200
-    heSoBoTro: 1
-    capDoSatThuong: 1
-    capDoMau: 1
-    mangHeSoSatThuong:
-    - 1
-    - 1.3
-    - 1.65
-    - 2
-    mangHeSoMau:
-    - 1
-    - 1.3
-    - 1.65
-    - 2
-    mangGiaTienSatThuong: 0000000058020000b0040000d0070000
-    mangGiaTienMau: 00000000f4010000e8030000dc050000
-  - tenChungLinh: Terminator
-    satThuongGoc: 35
-    mauGoc: 500
-    heSoBoTro: 1
-    capDoSatThuong: 1
-    capDoMau: 1
-    mangHeSoSatThuong:
-    - 1
-    - 1.3
-    - 1.65
-    - 2
-    mangHeSoMau:
-    - 1
-    - 1.3
-    - 1.65
-    - 2
-    mangGiaTienSatThuong: 00000000dc050000b80b000094110000
-    mangGiaTienMau: 00000000b0040000ca080000b80b0000
-  - tenChungLinh: Dead Iron walk
-    satThuongGoc: 50
-    mauGoc: 1000
-    heSoBoTro: 1
-    capDoSatThuong: 1
-    capDoMau: 1
-    mangHeSoSatThuong:
-    - 1
-    - 1.3
-    - 1.65
-    - 2
-    mangHeSoMau:
-    - 1
-    - 1.3
-    - 1.65
-    - 2
-    mangGiaTienSatThuong: 00000000881300004c1d0000f82a0000
-    mangGiaTienMau: 00000000a00f00007017000028230000
-  - tenChungLinh: Titan
-    satThuongGoc: 75
-    mauGoc: 3000
-    heSoBoTro: 1
-    capDoSatThuong: 1
-    capDoMau: 1
-    mangHeSoSatThuong:
-    - 1
-    - 1.3
-    - 1.65
-    - 2
-    mangHeSoMau:
-    - 1
-    - 1.3
-    - 1.65
-    - 2
-    mangGiaTienSatThuong: 0000000010270000983a0000204e0000
-    mangGiaTienMau: 00000000401f0000e02e0000983a0000
-  - tenChungLinh: Chaos zelos
-    satThuongGoc: 9
-    mauGoc: 0
-    heSoBoTro: 1
-    capDoSatThuong: 1
-    capDoMau: 1
-    mangHeSoSatThuong: []
-    mangHeSoMau: []
-    mangGiaTienSatThuong: 
-    mangGiaTienMau: 
-  - tenChungLinh: Warp Marine Sword
-    satThuongGoc: 12
-    mauGoc: 0
-    heSoBoTro: 1
-    capDoSatThuong: 1
-    capDoMau: 1
-    mangHeSoSatThuong: []
-    mangHeSoMau: []
-    mangGiaTienSatThuong: 
-    mangGiaTienMau: 
-  - tenChungLinh: Warp Marine
     satThuongGoc: 15
-    mauGoc: 0
     heSoBoTro: 1
-    capDoSatThuong: 1
-    capDoMau: 1
-    mangHeSoSatThuong:
-    - 0
+    capDoMau: 4
+    capDoSatThuong: 4
     mangHeSoMau:
-    - 0
-    mangGiaTienSatThuong: 
-    mangGiaTienMau: 
+    - 1
+    - 1.3
+    - 1.65
+    - 2
+    mangHeSoSatThuong:
+    - 1
+    - 1.3
+    - 1.65
+    - 2
+    mangGiaTienMau: 5e010000f4010000e8030000dc050000
+    mangGiaTienSatThuong: 9001000058020000b0040000d0070000
   - tenChungLinh: Terminator
-    satThuongGoc: 25
-    mauGoc: 0
+    mauGoc: 500
+    satThuongGoc: 40
     heSoBoTro: 1
-    capDoSatThuong: 1
-    capDoMau: 1
-    mangHeSoSatThuong:
-    - 1
+    capDoMau: 4
+    capDoSatThuong: 4
     mangHeSoMau:
     - 1
-    mangGiaTienSatThuong: 
+    - 1.3
+    - 1.65
+    - 2
+    mangHeSoSatThuong:
+    - 1
+    - 1.3
+    - 1.65
+    - 2
+    mangGiaTienMau: 8a020000b0040000ca080000b80b0000
+    mangGiaTienSatThuong: bc020000dc050000b80b000094110000
+  - tenChungLinh: Dead Iron walk
+    mauGoc: 1000
+    satThuongGoc: 55
+    heSoBoTro: 1
+    capDoMau: 4
+    capDoSatThuong: 4
+    mangHeSoMau:
+    - 1
+    - 1.3
+    - 1.65
+    - 2
+    mangHeSoSatThuong:
+    - 1
+    - 1.3
+    - 1.65
+    - 2
+    mangGiaTienMau: e8030000a00f00007017000028230000
+    mangGiaTienSatThuong: b0040000881300004c1d0000f82a0000
+  - tenChungLinh: Titan
+    mauGoc: 3000
+    satThuongGoc: 80
+    heSoBoTro: 1
+    capDoMau: 2
+    capDoSatThuong: 3
+    mangHeSoMau:
+    - 1
+    - 1.3
+    - 1.65
+    - 2
+    mangHeSoSatThuong:
+    - 1
+    - 1.3
+    - 1.65
+    - 2
+    mangGiaTienMau: a00f0000401f0000e02e0000983a0000
+    mangGiaTienSatThuong: 8813000010270000983a0000204e0000
+  - tenChungLinh: Chaos zelos
+    mauGoc: 40
+    satThuongGoc: 4
+    heSoBoTro: 1
+    capDoMau: 0
+    capDoSatThuong: 0
+    mangHeSoMau: []
+    mangHeSoSatThuong: []
     mangGiaTienMau: 
+    mangGiaTienSatThuong: 
+  - tenChungLinh: Warp Marine Sword
+    mauGoc: 300
+    satThuongGoc: 12
+    heSoBoTro: 1
+    capDoMau: 0
+    capDoSatThuong: 0
+    mangHeSoMau: []
+    mangHeSoSatThuong: []
+    mangGiaTienMau: 
+    mangGiaTienSatThuong: 
+  - tenChungLinh: Warp Marine
+    mauGoc: 450
+    satThuongGoc: 20
+    heSoBoTro: 1
+    capDoMau: 0
+    capDoSatThuong: 0
+    mangHeSoMau:
+    - 0
+    mangHeSoSatThuong:
+    - 0
+    mangGiaTienMau: 
+    mangGiaTienSatThuong: 
+  - tenChungLinh: Terminator
+    mauGoc: 750
+    satThuongGoc: 35
+    heSoBoTro: 1
+    capDoMau: 0
+    capDoSatThuong: 0
+    mangHeSoMau:
+    - 1
+    mangHeSoSatThuong:
+    - 1
+    mangGiaTienMau: 
+    mangGiaTienSatThuong: 
+  - tenChungLinh: Chaos DeadIron Walk
+    mauGoc: 3000
+    satThuongGoc: 50
+    heSoBoTro: 1
+    capDoMau: 0
+    capDoSatThuong: 0
+    mangHeSoMau:
+    - 1
+    mangHeSoSatThuong:
+    - 1
+    mangGiaTienMau: 
+    mangGiaTienSatThuong: 
