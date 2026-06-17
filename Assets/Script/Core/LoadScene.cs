@@ -55,7 +55,6 @@ public class LoadScene : MonoBehaviour
     [Header("Kết nối Hệ thống Save để lưu độ khó")]
     [SerializeField] public SaveSystem boQuanLySave;
 
-    // ─── COMMENT: THÊM HỆ THỐNG VIỀN RIÊNG BIỆT CHO CẢ 2 BẢNG ĐỂ KHÔNG BỊ MẤT VIỀN ───
     [Header("--- VIỀN ĐỘ KHÓ CỦA BẢNG START GAME ---")]
     [SerializeField] private GameObject vienDoKhoDe_StartGame;
     [SerializeField] private GameObject vienDoKhoBinhThuong_StartGame;
@@ -65,11 +64,6 @@ public class LoadScene : MonoBehaviour
     [SerializeField] private GameObject vienDoKhoDe_Continue;
     [SerializeField] private GameObject vienDoKhoBinhThuong_Continue;
     [SerializeField] private GameObject vienDoKhoKho_Continue;
-    // ────────────────────────────────────────────────────────────────────────────────
-
-    // ─── COMMENT: LOẠI BỎ CÁC BIẾN VIỀN ĐƠN LẺ CŨ ───
-    // Lý do xóa: Đã thay bằng các biến viền riêng cho từng bảng ở trên để hiển thị đồng thời cả 2 bảng.
-    // ──────────────────────────────────────────────────
 
     private AudioSource Amthanh;
     [SerializeField] private AudioClip Click;
@@ -172,6 +166,11 @@ public class LoadScene : MonoBehaviour
     public void MoBangMapContinue()
     {
         Amthanh.PlayOneShot(Click);
+        if (boQuanLySave == null)
+        {
+            boQuanLySave = FindFirstObjectByType<SaveSystem>();
+        }
+
         if (boQuanLySave != null && boQuanLySave.KiemTraCoFileSave())
         {
             if (mainMenuUI != null && bangMapContinueUI != null && mainMenuAnimator != null && bangMapContinueAnimator != null)
@@ -234,35 +233,14 @@ public class LoadScene : MonoBehaviour
 
     private void KichHoatVienDuyNhat(int indexDoKho)
     {
-        // 1. Tắt toàn bộ viền của bảng Start Game
-        if (vienDoKhoDe_StartGame != null)
-        {
-            vienDoKhoDe_StartGame.SetActive(false);
-        }
-        if (vienDoKhoBinhThuong_StartGame != null)
-        {
-            vienDoKhoBinhThuong_StartGame.SetActive(false);
-        }
-        if (vienDoKhoKho_StartGame != null)
-        {
-            vienDoKhoKho_StartGame.SetActive(false);
-        }
+        if (vienDoKhoDe_StartGame != null) vienDoKhoDe_StartGame.SetActive(false);
+        if (vienDoKhoBinhThuong_StartGame != null) vienDoKhoBinhThuong_StartGame.SetActive(false);
+        if (vienDoKhoKho_StartGame != null) vienDoKhoKho_StartGame.SetActive(false);
 
-        // 2. Tắt toàn bộ viền của bảng Continue
-        if (vienDoKhoDe_Continue != null)
-        {
-            vienDoKhoDe_Continue.SetActive(false);
-        }
-        if (vienDoKhoBinhThuong_Continue != null)
-        {
-            vienDoKhoBinhThuong_Continue.SetActive(false);
-        }
-        if (vienDoKhoKho_Continue != null)
-        {
-            vienDoKhoKho_Continue.SetActive(false);
-        }
+        if (vienDoKhoDe_Continue != null) vienDoKhoDe_Continue.SetActive(false);
+        if (vienDoKhoBinhThuong_Continue != null) vienDoKhoBinhThuong_Continue.SetActive(false);
+        if (vienDoKhoKho_Continue != null) vienDoKhoKho_Continue.SetActive(false);
 
-        // 3. Bật đúng viền được chọn cho CẢ HAI bảng cùng lúc
         if (indexDoKho == 0)
         {
             if (vienDoKhoDe_StartGame != null) vienDoKhoDe_StartGame.SetActive(true);
@@ -283,42 +261,21 @@ public class LoadScene : MonoBehaviour
     public void ChonDoKhoDe()
     {
         Amthanh.PlayOneShot(Click);
-        if (boQuanLySave == null)
-        {
-            boQuanLySave = FindFirstObjectByType<SaveSystem>();
-        }
-        if (boQuanLySave != null)
-        {
-            boQuanLySave.LuuDoKhoGame(0);
-        }
+        if (boQuanLySave != null) boQuanLySave.LuuDoKhoGame(0);
         KichHoatVienDuyNhat(0);
     }
 
     public void ChonDoKhoBinhThuong()
     {
         Amthanh.PlayOneShot(Click);
-        if (boQuanLySave == null)
-        {
-            boQuanLySave = FindFirstObjectByType<SaveSystem>();
-        }
-        if (boQuanLySave != null)
-        {
-            boQuanLySave.LuuDoKhoGame(1);
-        }
+        if (boQuanLySave != null) boQuanLySave.LuuDoKhoGame(1);
         KichHoatVienDuyNhat(1);
     }
 
     public void ChonDoKhoKho()
     {
         Amthanh.PlayOneShot(Click);
-        if (boQuanLySave == null)
-        {
-            boQuanLySave = FindFirstObjectByType<SaveSystem>();
-        }
-        if (boQuanLySave != null)
-        {
-            boQuanLySave.LuuDoKhoGame(2);
-        }
+        if (boQuanLySave != null) boQuanLySave.LuuDoKhoGame(2);
         KichHoatVienDuyNhat(2);
     }
 
@@ -331,7 +288,8 @@ public class LoadScene : MonoBehaviour
     public void TryAgain()
     {
         Amthanh.PlayOneShot(Click);
-        SceneManager.LoadScene(scene1.name);
+        string currentSceneName = SceneManager.GetActiveScene().name;
+        SceneManager.LoadScene(currentSceneName);
         Time.timeScale = 1;
     }
 
@@ -354,20 +312,38 @@ public class LoadScene : MonoBehaviour
         {
             BanThuaGame.SetActive(true);
             Time.timeScale = 1;
-
         }
-
     }
 
+    // ⭐ ĐÃ SỬA: Tự động phát hiện Map hiện tại để lưu mở khóa Map tiếp theo khi thắng
     public void WinGame()
     {
         if (ChaosDirector.instance != null && ChaosDirector.instance.WinGame)
         {
-            Wingame.SetActive(true);
-            Time.timeScale = 1;
+            // Nếu bảng Win chưa hiện lên (nghĩa là khoảnh khắc vừa mới thắng xong)
+            if (!Wingame.activeSelf)
+            {
+                Wingame.SetActive(true);
+                Time.timeScale = 1;
 
+                // Tự động kiểm tra xem đang thắng ở Scene nào để ra lệnh Save mở Map tiếp theo
+                string tenSceneHienTai = SceneManager.GetActiveScene().name;
+
+                if (boQuanLySave == null) boQuanLySave = FindFirstObjectByType<SaveSystem>();
+
+                if (boQuanLySave != null)
+                {
+                    if (tenSceneHienTai == scene1.name)
+                    {
+                        boQuanLySave.LuuTienTrinhMap(2); // Thắng Map 1 -> Mở Map 2
+                    }
+                    else if (tenSceneHienTai == scene2.name)
+                    {
+                        boQuanLySave.LuuTienTrinhMap(3); // Thắng Map 2 -> Mở Map 3
+                    }
+                }
+            }
         }
-
     }
 
     public void Map2()
@@ -402,13 +378,9 @@ public class LoadScene : MonoBehaviour
     public void pausegame()
     {
         Amthanh.PlayOneShot(Click);
-        if (!pauGames.activeInHierarchy)
+        if (pauGames != null)
         {
-            pauGames.SetActive(true);
-        }
-        else
-        {
-            pauGames.SetActive(false);
+            pauGames.SetActive(!pauGames.activeInHierarchy);
         }
     }
 

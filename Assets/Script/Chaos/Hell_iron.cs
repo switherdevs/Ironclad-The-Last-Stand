@@ -14,7 +14,6 @@ public class EnemyCharger : MonoBehaviour
     [SerializeField] private float fastMoveSpeed = 12f;
     [SerializeField] private float leftMoveBias = 0.6f;
     [SerializeField] private float detectionRange = 16f;
-    [SerializeField] private int normalHP = 20;
     [SerializeField] private float attackCooldown = 2f;
     [SerializeField] private float projectileSpeed = 25f;
     [SerializeField] private GameObject projectilePrefab;
@@ -44,7 +43,6 @@ public class EnemyCharger : MonoBehaviour
     private AudioClip Shoot;
     private Animator animator;
 
-    private int currentHP;
     private bool hasExploded = false;
     private float nextAttackTime;
     private float nextMeleeAttackTime;
@@ -70,7 +68,6 @@ public class EnemyCharger : MonoBehaviour
 
     private void Start()
     {
-        currentHP = normalHP;
         if (meleeHitboxObject != null) meleeHitboxObject.SetActive(false);
         nextAttackTime = Time.time;
     }
@@ -140,6 +137,7 @@ public class EnemyCharger : MonoBehaviour
             }
             else if (col.CompareTag(TAG_PHE_CHINH) && dist < minDistPhechinh)
             {
+                minDistPhechinh = dist;
                 minDistPhechinh = dist;
                 nearestPhechinh = col.transform;
             }
@@ -356,19 +354,6 @@ public class EnemyCharger : MonoBehaviour
         float lookDir = (targetTransform != null && targetTransform.position.x < transform.position.x) ? -1f : 1f;
         float currentPosX = Mathf.Abs(meleeHitboxObject.transform.localPosition.x);
         meleeHitboxObject.transform.localPosition = new Vector3(currentPosX * lookDir, meleeHitboxObject.transform.localPosition.y, meleeHitboxObject.transform.localPosition.z);
-    }
-
-    public void TakeDamage(int damage)
-    {
-        currentHP -= damage;
-        currentHP = Mathf.Clamp(currentHP, 0, normalHP);
-        if (currentHP <= 0) Die();
-    }
-
-    private void Die()
-    {
-        currentChargerState = ChargerState.Dead;
-        Destroy(gameObject);
     }
 
     private void OnDrawGizmosSelected()

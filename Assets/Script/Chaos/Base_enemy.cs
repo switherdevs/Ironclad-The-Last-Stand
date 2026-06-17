@@ -380,13 +380,9 @@ public abstract class BaseEnemy : MonoBehaviour
 
         currentHP = Mathf.Clamp(currentHP, 0, currentMaxHP);
 
-        if (currentHP <= 0) Die();
-
     }
 
 
-
-    protected virtual void Die() => Destroy(gameObject);
 
 
 

@@ -86,7 +86,7 @@ GameObject:
   - component: {fileID: 3865974651163827626}
   - component: {fileID: 8511642701959316636}
   m_Layer: 0
-  m_Name: ThanhMau
+  m_Name: ThanhMau_tay
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -240,7 +240,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 80
+  m_SortingOrder: 155
   m_Sprite: {fileID: -5909984572565836660, guid: b0b7e33eed76c1346b4adf236a11004c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -376,7 +376,7 @@ GameObject:
   - component: {fileID: 5244785524054203344}
   - component: {fileID: 3557063761660249690}
   m_Layer: 0
-  m_Name: Canvas
+  m_Name: Tay_health
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -478,6 +478,7 @@ GameObject:
   - component: {fileID: 343675940913593138}
   - component: {fileID: 4617217117900085222}
   - component: {fileID: 7678146785442531038}
+  - component: {fileID: 8271481549249990752}
   m_Layer: 0
   m_Name: Tayperer
   m_TagString: Phechinh
@@ -544,7 +545,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 100
+  m_SortingOrder: 30
   m_Sprite: {fileID: 3832756445817090078, guid: 38ea4451fa4ded949854e89ee96a54f5, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -614,8 +615,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c3060c1c8d34cc44a5c19c76bebbe05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ThanhMau: {fileID: 0}
-  maxHP: 500
+  ThanhMau: {fileID: 8511642701959316636}
+  maxHP: 1000
+  spriteRenderer: {fileID: 0}
+  spriteGiaiDoan1_750: {fileID: 2606288834641805968, guid: 375453045e7c14b4e8febe22821a1cff, type: 3}
+  spriteGiaiDoan2_500: {fileID: -4703503160979223883, guid: 375453045e7c14b4e8febe22821a1cff, type: 3}
+  spriteGiaiDoan3_250: {fileID: -2109809190214997959, guid: 375453045e7c14b4e8febe22821a1cff, type: 3}
+  prefabPopupSatThuong: {fileID: 3638261266717980917, guid: 3b6786f6b44be624c8cc3efc99707eaa, type: 3}
   GameOver: 0
 --- !u!114 &7678146785442531038
 MonoBehaviour:
@@ -630,7 +636,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_ShadowGroup: 0
-  m_Priority: 150
+  m_Priority: 30
   m_ComponentVersion: 5
   m_HasRenderer: 1
   m_UseRendererSilhouette: 1
@@ -639,18 +645,42 @@ MonoBehaviour:
   m_AlphaCutoff: 0.1
   m_ApplyToSortingLayers: 00000000
   m_ShapePath:
-  - {x: -4.973697, y: -3.1072998, z: -0.0000000012609664}
-  - {x: -5.3328686, y: 0.47564965, z: -0.00000033902063}
-  - {x: -4.2201533, y: 3.1551507, z: -0.0000000012609664}
-  - {x: -0.85006255, y: 3.9703994, z: -0.00000033902063}
-  - {x: 1.6620644, y: 3.82685, z: -0.00000033902063}
-  - {x: 4.7225747, y: 2.580951, z: -0.0000000012609664}
-  - {x: 5.2249994, y: -1.8153512, z: -0.0000000012609664}
-  - {x: 3.719613, y: -2.5371962, z: -0.00000033902063}
-  - {x: 3.5282118, y: -4.140171, z: -0.00000033902063}
-  - {x: -2.644434, y: -4.211948, z: -0.00000033902063}
-  - {x: -2.9554589, y: -2.5611224, z: -0.00000033902063}
-  m_ShapePathHash: -336172143
+  - {x: -5.0008273, y: -2.5104637, z: -0.0000000012609664}
+  - {x: -4.9067593, y: 0.7029074, z: -0.00000033902063}
+  - {x: -3.3830547, y: 2.9188042, z: -0.000000021129182}
+  - {x: -2.2802079, y: 3.3238416, z: -0.0000000012609664}
+  - {x: -1.9804311, y: 3.2057757, z: -0.000000021129182}
+  - {x: -1.893718, y: 2.0706246, z: -0.000000021129182}
+  - {x: -1.6908231, y: 2.594849, z: -0.000000021129182}
+  - {x: -1.1720166, y: 2.6518717, z: -0.000000021129182}
+  - {x: -1.7254084, y: 3.2865593, z: -0.000000021129182}
+  - {x: -0.9087288, y: 3.0323534, z: -0.000000021129182}
+  - {x: -1.1028701, y: 3.507906, z: -0.000000021129182}
+  - {x: -0.64953786, y: 3.2693286, z: -0.000000021129182}
+  - {x: -0.77085036, y: 3.7776723, z: -0.000000021129182}
+  - {x: -0.33480498, y: 3.421141, z: -0.000000021129182}
+  - {x: -0.35582396, y: 4.088942, z: -0.000000021129182}
+  - {x: 0.076199405, y: 3.5174122, z: -0.000000021129182}
+  - {x: 0.34235847, y: 4.1259327, z: -0.00000033902063}
+  - {x: 0.5853254, y: 3.5340743, z: -0.000000021129182}
+  - {x: 0.9153565, y: 3.9552891, z: -0.000000021129182}
+  - {x: 0.9630059, y: 3.3859649, z: -0.000000021129182}
+  - {x: 1.3332795, y: 3.6932921, z: -0.000000021129182}
+  - {x: 1.2666291, y: 3.2341528, z: -0.000000021129182}
+  - {x: 1.8872868, y: 3.5752842, z: -0.00000033902063}
+  - {x: 1.511623, y: 2.891516, z: -0.000000021129182}
+  - {x: 1.8238585, y: 2.8963435, z: -0.000000021129182}
+  - {x: 2.0026724, y: 3.2301304, z: -0.000000021129182}
+  - {x: 2.3430567, y: 3.3226314, z: -0.000000021129182}
+  - {x: 3.2850657, y: 2.949076, z: -0.000000021129182}
+  - {x: 4.0237956, y: 2.03516, z: -0.0000000012609664}
+  - {x: 4.956634, y: -0.9177905, z: -0.0000000012609664}
+  - {x: 4.704016, y: -2.0464153, z: 0.00000029676227}
+  - {x: 3.4149778, y: -2.503348, z: -0.00000033902063}
+  - {x: 3.2912734, y: -4.09504, z: -0.00000033902063}
+  - {x: -2.4680982, y: -4.157691, z: -0.00000033902063}
+  - {x: -2.5756536, y: -2.5475574, z: -0.00000033902063}
+  m_ShapePathHash: 1011502713
   m_InstanceId: 0
   m_ShadowShape2DComponent: {fileID: 0}
   m_ShadowShape2DProvider:
@@ -659,8 +689,8 @@ MonoBehaviour:
   m_ShadowMesh:
     m_Mesh: {fileID: 0}
     m_LocalBounds:
-      m_Center: {x: -0.053934574, y: -0.12077427, z: 0}
-      m_Extent: {x: 5.278934, y: 4.0911736, z: 0}
+      m_Center: {x: -0.022096634, y: -0.015879154, z: 0}
+      m_Extent: {x: 4.9787307, y: 4.141812, z: 0}
     m_EdgeProcessing: 1
     m_TrimEdge: 1
     m_FlipX: 0
@@ -676,3 +706,25 @@ MonoBehaviour:
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
+--- !u!95 &8271481549249990752
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9039909186378433268}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 57543edaca1f50240aaa748e39deef16, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

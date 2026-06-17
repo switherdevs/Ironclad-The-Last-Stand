@@ -505,7 +505,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 10
-  attackRange: 90
+  attackRange: 170
   leftMoveBias: 0.6
   detectionRange: 100
   normalHP: 20

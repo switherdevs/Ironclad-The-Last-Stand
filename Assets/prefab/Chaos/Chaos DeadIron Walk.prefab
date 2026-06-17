@@ -118,7 +118,6 @@ MonoBehaviour:
   fastMoveSpeed: 10
   leftMoveBias: 0.6
   detectionRange: 150
-  normalHP: 20
   attackCooldown: 2
   projectileSpeed: 50
   projectilePrefab: {fileID: 6190148803816918428, guid: a5d4ea2ce304a784fbbafdc794b7264f, type: 3}
@@ -150,7 +149,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bangSatThuongChung: {fileID: 11400000, guid: a60a65e6a8b057b4ea1e9fc841c3d9bc, type: 2}
   ThanhMau: {fileID: 2104992899749952239}
-  maxHP: 5000
+  maxHP: 3000
   Animationdead: 3
   tenAnimationChet: chao_dead_die
   prefabPopupSatThuong: {fileID: 3638261266717980917, guid: 3b6786f6b44be624c8cc3efc99707eaa, type: 3}

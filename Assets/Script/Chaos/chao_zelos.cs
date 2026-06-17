@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class EnemyMelee : Test_base
+public class EnemyMelee : BaseEnemy
 {
     [Header("--- MELEE SPECIFIC (CẬN CHIẾN) ---")]
     [SerializeField] private GameObject attackHitboxObject;
