@@ -52,6 +52,12 @@ MonoBehaviour:
   giaStormTerminator: 400
   giaIronDreadWalker: 750
   giaDominiconTitan: 1500
+  btnSevitor: {fileID: 0}
+  btnKhograkGuard: {fileID: 0}
+  btnIronStormMarine: {fileID: 0}
+  btnStormTerminator: {fileID: 0}
+  btnIronDreadWalker: {fileID: 0}
+  btnDominiconTitan: {fileID: 0}
   SevitorPrefab: {fileID: 4302893310042436796, guid: ad241cf354421e448b2979e08724d9f3, type: 3}
   slotSevitor: 0
   khograkGuardPrefab: {fileID: 192116931154184763, guid: 815194771d0403c45902975be3441bb4, type: 3}

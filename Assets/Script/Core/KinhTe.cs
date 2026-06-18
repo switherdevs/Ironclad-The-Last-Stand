@@ -5,8 +5,11 @@ public class HeThongKinhTe : MonoBehaviour
 {
     public static HeThongKinhTe Instance { get; private set; }
 
+    [Header("--- KẾT NỐI DATA THƯỢNG TIỀN (SCRIPTABLE OBJECT) ---")]
+    [SerializeField] private ThuongTienQuaiData dataThuongTienQuai;
+
     [Header("--- CÁC LOẠI TIỀN ---")]
-    public int tongTienHienTai; // Tiền vàng trong trận đấu 
+    public int tongTienHienTai; // Tiền vàng trong trận đấu
     public int tienNangCapLinh; // Tiền dùng để nâng cấp lính ngoài Menu (Được lưu bằng file .txt)
 
     [Header("--- KẾT NỐI UI TEXTMESH PRO ---")]
@@ -30,10 +33,8 @@ public class HeThongKinhTe : MonoBehaviour
 
     void Start()
     {
-        // Tự động tìm hệ thống save nếu quên kéo thả
         if (boQuanLySave == null) boQuanLySave = FindFirstObjectByType<SaveSystem>();
 
-        // Đọc tiền từ file .txt lúc mới vào game
         if (boQuanLySave != null)
         {
             tienNangCapLinh = boQuanLySave.DocThongTinGame();
@@ -43,7 +44,6 @@ public class HeThongKinhTe : MonoBehaviour
             tienNangCapLinh = 0;
         }
 
-        // Cập nhật giao diện chữ ngay khi vừa vào game để hiện số tiền đọc từ file save
         CapNhatGiaoDienTien();
     }
 
@@ -51,21 +51,26 @@ public class HeThongKinhTe : MonoBehaviour
     {
         if (boQuanLySave != null)
         {
-            // Lấy chính xác biến tienNangCapLinh đem đi lưu vào file
             boQuanLySave.LuuThongTinGame(tienNangCapLinh);
         }
     }
 
-    // ĐÃ SỬA TẠI ĐÂY: Quái chết thì tiền lập tức được cộng vào quỹ nâng cấp
+    // ĐÃ CHỈNH SỬA: Tiền diệt quái CHỈ cộng vào quỹ Nâng Cấp ngoài trận
     public void NhanTienKhiQuaiChet(string tenQuai)
     {
-        tongTienHienTai += 30; // Vẫn giữ nguyên logic cũ của bạn
+        int tienThuongThucTe = 30; // Mặc định nếu không tìm thấy cấu hình phù hợp
 
-        // Dòng này giúp tiền chảy vào quỹ nâng cấp và cập nhật lên UI ngay lập tức
-        ThayDoiTienNangCapLinh(30);
+        if (dataThuongTienQuai != null)
+        {
+            tienThuongThucTe = dataThuongTienQuai.LayTienThuongTuTenQuai(tenQuai);
+        }
+
+        // CHỈ cộng vào tiền nâng cấp lính (.txt) và cập nhật UI text hiển thị
+        ThayDoiTienNangCapLinh(tienThuongThucTe);
+
+        Debug.Log($"[KINH TẾ] Quái '{tenQuai}' chết -> Nhận {tienThuongThucTe} Tiền Nâng Cấp tích lũy!");
     }
 
-    // Hàm cập nhật chữ lên màn hình UI
     public void CapNhatGiaoDienTien()
     {
         if (textTienNangCap != null)
@@ -74,10 +79,9 @@ public class HeThongKinhTe : MonoBehaviour
         }
     }
 
-    // HÀM CHÍNH ĐỂ BẠN GỌI KHI MUA/NÂNG CẤP LÍNH:
     public void ThayDoiTienNangCapLinh(int soLuongThayDoi)
     {
         tienNangCapLinh += soLuongThayDoi;
-        CapNhatGiaoDienTien(); // Ép UI vẽ lại số mới ngay lập tức
+        CapNhatGiaoDienTien();
     }
 }

@@ -220,6 +220,7 @@ MonoBehaviour:
   tenAnimationChet: die_iron
   prefabPopupSatThuong: {fileID: 3638261266717980917, guid: 3b6786f6b44be624c8cc3efc99707eaa, type: 3}
   Dear: 0
+  Dead: {fileID: 8300000, guid: 2ce31a73c895e904cbe423ff640af5b6, type: 3}
 --- !u!50 &6666461874724065263
 Rigidbody2D:
   serializedVersion: 5
@@ -260,7 +261,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: abe34c469c9751546a265075f9f65897, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.5
+  m_Volume: 1
   m_Pitch: 1
   Loop: 0
   Mute: 0

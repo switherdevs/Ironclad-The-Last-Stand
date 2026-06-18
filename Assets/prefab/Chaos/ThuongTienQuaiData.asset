@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5fe219acda2a8e4a973d95b27ee1c33, type: 3}
+  m_Name: ThuongTienQuaiData
+  m_EditorClassIdentifier: 
+  danhSachThuongQuai:
+  - tuKhoaTenQuai: Chaos zelos
+    soTienThuong: 5
+  - tuKhoaTenQuai: Warp Marine Sword
+    soTienThuong: 15
+  - tuKhoaTenQuai: Warp Marine
+    soTienThuong: 10
+  - tuKhoaTenQuai: Terminator
+    soTienThuong: 30
+  - tuKhoaTenQuai: Chaos DeadIron Walk
+    soTienThuong: 250

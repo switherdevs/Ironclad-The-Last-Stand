@@ -258,7 +258,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 7932048368006585064, guid: fb48637ac264e48468e2c25b4497955a, type: 3}
         m_TargetAssemblyTypeName: SpawnLinh, Assembly-CSharp
         m_MethodName: SpawnStormTerminator
         m_Mode: 1
@@ -1297,6 +1297,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd100122ee9bfc74691de7ca7037b9c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dataThuongTienQuai: {fileID: 11400000, guid: 39fe199e4b610584896761bc06e3fc3c, type: 2}
   tongTienHienTai: 0
   tienNangCapLinh: 0
   textTienNangCap: {fileID: 5187566511811899033}
@@ -2009,7 +2010,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 7932048368006585064, guid: fb48637ac264e48468e2c25b4497955a, type: 3}
         m_TargetAssemblyTypeName: SpawnLinh, Assembly-CSharp
         m_MethodName: SpawnKhograkGuard
         m_Mode: 1
@@ -2611,7 +2612,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 7932048368006585064, guid: fb48637ac264e48468e2c25b4497955a, type: 3}
         m_TargetAssemblyTypeName: SpawnLinh, Assembly-CSharp
         m_MethodName: SpawnDominiconTitan
         m_Mode: 1
@@ -4541,7 +4542,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 7932048368006585064, guid: fb48637ac264e48468e2c25b4497955a, type: 3}
         m_TargetAssemblyTypeName: SpawnLinh, Assembly-CSharp
         m_MethodName: SpawnIronStormMarine
         m_Mode: 1
@@ -4760,6 +4761,8 @@ MonoBehaviour:
   bangMapContinueAnimator: {fileID: 0}
   nutChonMap2_Continue: {fileID: 0}
   nutChonMap3_Continue: {fileID: 0}
+  bangChonTuongUI: {fileID: 0}
+  thoiGianActiveBangTuong: 3
   thoiGianChoAnMenu: 1.5
   thoiGianChoAnBangMap: 1.5
   animHienMenu: HienMenu
@@ -5766,7 +5769,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 7932048368006585064, guid: fb48637ac264e48468e2c25b4497955a, type: 3}
         m_TargetAssemblyTypeName: SpawnLinh, Assembly-CSharp
         m_MethodName: Sevitor
         m_Mode: 1
@@ -7737,9 +7740,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 7932048368006585064, guid: fb48637ac264e48468e2c25b4497955a, type: 3}
         m_TargetAssemblyTypeName: SpawnLinh, Assembly-CSharp
-        m_MethodName: SpawnIronDreadWalker
+        m_MethodName: SpawnStormTerminator
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

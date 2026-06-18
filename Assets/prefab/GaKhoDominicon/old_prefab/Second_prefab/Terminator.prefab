@@ -239,6 +239,7 @@ MonoBehaviour:
   tenAnimationChet: dead_ter
   prefabPopupSatThuong: {fileID: 3638261266717980917, guid: 3b6786f6b44be624c8cc3efc99707eaa, type: 3}
   Dear: 0
+  Dead: {fileID: 0}
 --- !u!114 &6948116839990098772
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -277,7 +278,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: 66b66ec3c2bfbe14085e7c9454f56fb5, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.75
+  m_Volume: 1
   m_Pitch: 1
   Loop: 0
   Mute: 0

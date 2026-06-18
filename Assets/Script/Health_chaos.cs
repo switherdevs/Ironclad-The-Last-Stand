@@ -26,8 +26,12 @@ public class Health_chaos : MonoBehaviour
     private GameObject spritel;
     public bool Deadre = false;
 
+    private AudioSource Amthanh;
+    [SerializeField]
+    private AudioClip Dead;
     private void Awake()
     {
+        Amthanh = GetComponent<AudioSource>();
         animator = GetComponentInChildren<Animator>();
     }
 
@@ -80,7 +84,11 @@ public class Health_chaos : MonoBehaviour
 
     void Die()
     {
-        gameObject.tag = "Untagged";
+        if(Dead != null)
+        {
+            Amthanh.PlayOneShot(Dead);
+        }
+    gameObject.tag = "Untagged";
         Deadre = true;
 
         if (HeThongKinhTe.Instance != null)

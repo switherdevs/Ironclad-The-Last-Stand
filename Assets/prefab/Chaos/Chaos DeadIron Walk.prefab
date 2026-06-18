@@ -155,6 +155,7 @@ MonoBehaviour:
   prefabPopupSatThuong: {fileID: 3638261266717980917, guid: 3b6786f6b44be624c8cc3efc99707eaa, type: 3}
   spritel: {fileID: 2170042348629646210}
   Deadre: 0
+  Dead: {fileID: 8300000, guid: c8afcac33773304458db1c73443dff99, type: 3}
 --- !u!82 &3049665483089345969
 AudioSource:
   m_ObjectHideFlags: 0
@@ -164,7 +165,7 @@ AudioSource:
   m_GameObject: {fileID: 171143329520715242}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 9120607623054430816, guid: 79eb42bb6092979409f8e371476274cf, type: 2}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: 2317f4e672d10ba4ba316d11b14f51f9, type: 3}
   m_PlayOnAwake: 0

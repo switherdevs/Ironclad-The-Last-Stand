@@ -133,4 +133,24 @@ public class SaveSystem : MonoBehaviour
     {
         File.WriteAllLines(duongDanFile, lines);
     }
+    // ================= KHU VỰC LƯU / ĐỌC TƯỚNG CHỌN (MỚI) =================
+    public void LuuTuongDaChon(int idTuong)
+    {
+        List<string> lines = DocToanBoFile();
+        lines.RemoveAll(l => l.StartsWith("TuongDaChon:"));
+        lines.Add($"TuongDaChon:{idTuong}");
+        GhiToanBoFile(lines);
+        Debug.Log($"[SAVE HERO] Đã lưu ID tướng đã chọn vào file: {idTuong}");
+    }
+
+    public int DocTuongDaChon()
+    {
+        List<string> lines = DocToanBoFile();
+        string dongTimThay = lines.FirstOrDefault(l => l.StartsWith("TuongDaChon:"));
+        if (dongTimThay != null)
+        {
+            return int.Parse(dongTimThay.Split(':').Last());
+        }
+        return 0; // Mặc định trả về ID 0 nếu chưa chọn tướng nào
+    }
 }

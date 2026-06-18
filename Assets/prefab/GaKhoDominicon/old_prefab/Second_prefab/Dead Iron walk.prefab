@@ -531,6 +531,7 @@ MonoBehaviour:
   tenAnimationChet: dead_iron_die
   prefabPopupSatThuong: {fileID: 3638261266717980917, guid: 3b6786f6b44be624c8cc3efc99707eaa, type: 3}
   Dear: 0
+  Dead: {fileID: 8300000, guid: 53c0fed2389c2f24ea835fbd0015c191, type: 3}
 --- !u!82 &1427061721547773445
 AudioSource:
   m_ObjectHideFlags: 0
@@ -552,7 +553,7 @@ AudioSource:
   SpatializePostEffects: 0
   Priority: 128
   DopplerLevel: 1
-  MinDistance: 25
+  MinDistance: 10
   MaxDistance: 500
   Pan2D: 0
   rolloffMode: 0

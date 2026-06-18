@@ -424,5 +424,14 @@ public abstract class BaseEnemy : MonoBehaviour
 
     }
 
+    void OnEnable()
+    {
+        if (EnemyManager.Instance != null) EnemyManager.Instance.RegisterEnemy(this.gameObject);
+    }
+
+    void OnDisable()
+    {
+        if (EnemyManager.Instance != null) EnemyManager.Instance.UnregisterEnemy(this.gameObject);
+    }
 }
 

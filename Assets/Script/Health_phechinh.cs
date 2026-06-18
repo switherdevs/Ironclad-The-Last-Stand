@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using UnityEngine.Rendering;
 
 public class Health_phechinh : MonoBehaviour
 {
@@ -21,11 +22,14 @@ public class Health_phechinh : MonoBehaviour
     [Header("--- PREFAB POPUP SÁT THƯƠNG (TEXT MESH PRO) ---")]
     public GameObject prefabPopupSatThuong;
     public bool Dear = false;
-
+    private AudioSource Amthanh;
+    [SerializeField]
+    private AudioClip Dead;
     private Animator animator;
 
     private void Awake()
     {
+        Amthanh = GetComponent<AudioSource>();
         animator = GetComponentInChildren<Animator>();
     }
 
@@ -88,6 +92,11 @@ public class Health_phechinh : MonoBehaviour
 
     void Die()
     {
+        if(Dead != null)
+        {
+            Amthanh.PlayOneShot(Dead);
+
+        }
         Dear = true;
         gameObject.tag = "Untagged";
 

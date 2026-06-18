@@ -33,6 +33,12 @@ public class LoadScene : MonoBehaviour
     [SerializeField] private Button nutChonMap2_Continue;
     [SerializeField] private Button nutChonMap3_Continue;
 
+    [Header("--- HỆ THỐNG CHỌN TƯỚNG (MỚI BỔ SUNG) ---")]
+    [Tooltip("Bảng chứa các nút bấm để người chơi click chọn Tướng")]
+    [SerializeField] private GameObject bangChonTuongUI;
+    [Tooltip("Thời gian (giây) bảng tướng hiển thị hoạt ảnh trước khi tự tắt để hiện bảng Map")]
+    [SerializeField] private float thoiGianActiveBangTuong = 3.0f;
+
     [Header("Tự quy định thời gian chờ (giây)")]
     [SerializeField] public float thoiGianChoAnMenu = 1.5f;
     [SerializeField] public float thoiGianChoAnBangMap = 1.5f;
@@ -71,31 +77,19 @@ public class LoadScene : MonoBehaviour
     void Start()
     {
         Amthanh = GetComponent<AudioSource>();
-        if (pauGames != null)
-        {
-            pauGames.SetActive(false);
-        }
+        if (pauGames != null) pauGames.SetActive(false);
+
         BanThuaGame.SetActive(false);
         Wingame.SetActive(false);
 
-        if (mainMenuUI != null)
-        {
-            mainMenuUI.SetActive(true);
-        }
+        if (mainMenuUI != null) mainMenuUI.SetActive(true);
+        if (bangMapStartGameUI != null) bangMapStartGameUI.SetActive(false);
+        if (bangMapContinueUI != null) bangMapContinueUI.SetActive(false);
 
-        if (bangMapStartGameUI != null)
-        {
-            bangMapStartGameUI.SetActive(false);
-        }
-        if (bangMapContinueUI != null)
-        {
-            bangMapContinueUI.SetActive(false);
-        }
+        // Ẩn bảng tướng lúc vừa vào Menu đầu game
+        if (bangChonTuongUI != null) bangChonTuongUI.SetActive(false);
 
-        if (boQuanLySave == null)
-        {
-            boQuanLySave = FindFirstObjectByType<SaveSystem>();
-        }
+        if (boQuanLySave == null) boQuanLySave = FindFirstObjectByType<SaveSystem>();
 
         CapNhatHienThiVienTheoSave();
         KiemTraTrangThaiNutContinue();
@@ -106,16 +100,8 @@ public class LoadScene : MonoBehaviour
         if (boQuanLySave != null)
         {
             bool coFileSave = boQuanLySave.KiemTraCoFileSave();
-
-            if (nutContinue != null)
-            {
-                nutContinue.interactable = coFileSave;
-            }
-
-            if (canvasGroupContinue != null)
-            {
-                canvasGroupContinue.alpha = coFileSave ? 1.0f : 0.4f;
-            }
+            if (nutContinue != null) nutContinue.interactable = coFileSave;
+            if (canvasGroupContinue != null) canvasGroupContinue.alpha = coFileSave ? 1.0f : 0.4f;
         }
     }
 
@@ -125,14 +111,8 @@ public class LoadScene : MonoBehaviour
         Amthanh.PlayOneShot(Click);
         if (mainMenuUI != null && bangMapStartGameUI != null && mainMenuAnimator != null && bangMapStartAnimator != null)
         {
-            if (nutChonMap2_StartGame != null)
-            {
-                nutChonMap2_StartGame.interactable = false;
-            }
-            if (nutChonMap3_StartGame != null)
-            {
-                nutChonMap3_StartGame.interactable = false;
-            }
+            if (nutChonMap2_StartGame != null) nutChonMap2_StartGame.interactable = false;
+            if (nutChonMap3_StartGame != null) nutChonMap3_StartGame.interactable = false;
 
             StartCoroutine(LuongMoBangMapStart());
         }
@@ -143,6 +123,15 @@ public class LoadScene : MonoBehaviour
         mainMenuAnimator.Play(animAnMenu);
         yield return new WaitForSeconds(thoiGianChoAnMenu);
         mainMenuUI.SetActive(false);
+
+        // ⭐ NÂNG CẤP: Hiện bảng chọn tướng trước
+        if (bangChonTuongUI != null)
+        {
+            bangChonTuongUI.SetActive(true);
+            yield return new WaitForSeconds(thoiGianActiveBangTuong); // Chờ người chơi thao tác bấm chọn tướng
+            bangChonTuongUI.SetActive(false);
+        }
+
         bangMapStartGameUI.SetActive(true);
         bangMapStartAnimator.Play(animHienBangMap);
     }
@@ -166,10 +155,7 @@ public class LoadScene : MonoBehaviour
     public void MoBangMapContinue()
     {
         Amthanh.PlayOneShot(Click);
-        if (boQuanLySave == null)
-        {
-            boQuanLySave = FindFirstObjectByType<SaveSystem>();
-        }
+        if (boQuanLySave == null) boQuanLySave = FindFirstObjectByType<SaveSystem>();
 
         if (boQuanLySave != null && boQuanLySave.KiemTraCoFileSave())
         {
@@ -177,14 +163,8 @@ public class LoadScene : MonoBehaviour
             {
                 int maxMapMoKhoa = boQuanLySave.DocTienTrinhMap();
 
-                if (nutChonMap2_Continue != null)
-                {
-                    nutChonMap2_Continue.interactable = (maxMapMoKhoa >= 2);
-                }
-                if (nutChonMap3_Continue != null)
-                {
-                    nutChonMap3_Continue.interactable = (maxMapMoKhoa >= 3);
-                }
+                if (nutChonMap2_Continue != null) nutChonMap2_Continue.interactable = (maxMapMoKhoa >= 2);
+                if (nutChonMap3_Continue != null) nutChonMap3_Continue.interactable = (maxMapMoKhoa >= 3);
 
                 StartCoroutine(LuongMoBangMapContinue());
             }
@@ -196,8 +176,29 @@ public class LoadScene : MonoBehaviour
         mainMenuAnimator.Play(animAnMenu);
         yield return new WaitForSeconds(thoiGianChoAnMenu);
         mainMenuUI.SetActive(false);
+
+        // ⭐ NÂNG CẤP: Hiện bảng chọn tướng trước khi vào bảng Continue Map
+        if (bangChonTuongUI != null)
+        {
+            bangChonTuongUI.SetActive(true);
+            yield return new WaitForSeconds(thoiGianActiveBangTuong);
+            bangChonTuongUI.SetActive(false);
+        }
+
         bangMapContinueUI.SetActive(true);
         bangMapContinueAnimator.Play(animHienBangMap);
+    }
+
+    // Hàm public này dùng để gán trực tiếp vào sự kiện OnClick của từng nút bấm Avatar Tướng ngoài Menu
+    public void HanhDongChonTuongButton(int idTuong)
+    {
+        Amthanh.PlayOneShot(Click);
+        if (boQuanLySave == null) boQuanLySave = FindFirstObjectByType<SaveSystem>();
+
+        if (boQuanLySave != null)
+        {
+            boQuanLySave.LuuTuongDaChon(idTuong);
+        }
     }
 
     public void DongBangMapContinue()
@@ -217,16 +218,10 @@ public class LoadScene : MonoBehaviour
 
     private void CapNhatHienThiVienTheoSave()
     {
-        if (boQuanLySave == null)
-        {
-            boQuanLySave = FindFirstObjectByType<SaveSystem>();
-        }
+        if (boQuanLySave == null) boQuanLySave = FindFirstObjectByType<SaveSystem>();
 
         int doKhoHienTai = 1;
-        if (boQuanLySave != null)
-        {
-            doKhoHienTai = boQuanLySave.DocDoKhoGame();
-        }
+        if (boQuanLySave != null) doKhoHienTai = boQuanLySave.DocDoKhoGame();
 
         KichHoatVienDuyNhat(doKhoHienTai);
     }
@@ -315,32 +310,22 @@ public class LoadScene : MonoBehaviour
         }
     }
 
-    // ⭐ ĐÃ SỬA: Tự động phát hiện Map hiện tại để lưu mở khóa Map tiếp theo khi thắng
     public void WinGame()
     {
         if (ChaosDirector.instance != null && ChaosDirector.instance.WinGame)
         {
-            // Nếu bảng Win chưa hiện lên (nghĩa là khoảnh khắc vừa mới thắng xong)
             if (!Wingame.activeSelf)
             {
                 Wingame.SetActive(true);
                 Time.timeScale = 1;
 
-                // Tự động kiểm tra xem đang thắng ở Scene nào để ra lệnh Save mở Map tiếp theo
                 string tenSceneHienTai = SceneManager.GetActiveScene().name;
-
                 if (boQuanLySave == null) boQuanLySave = FindFirstObjectByType<SaveSystem>();
 
                 if (boQuanLySave != null)
                 {
-                    if (tenSceneHienTai == scene1.name)
-                    {
-                        boQuanLySave.LuuTienTrinhMap(2); // Thắng Map 1 -> Mở Map 2
-                    }
-                    else if (tenSceneHienTai == scene2.name)
-                    {
-                        boQuanLySave.LuuTienTrinhMap(3); // Thắng Map 2 -> Mở Map 3
-                    }
+                    if (tenSceneHienTai == scene1.name) boQuanLySave.LuuTienTrinhMap(2);
+                    else if (tenSceneHienTai == scene2.name) boQuanLySave.LuuTienTrinhMap(3);
                 }
             }
         }
@@ -378,15 +363,46 @@ public class LoadScene : MonoBehaviour
     public void pausegame()
     {
         Amthanh.PlayOneShot(Click);
-        if (pauGames != null)
-        {
-            pauGames.SetActive(!pauGames.activeInHierarchy);
-        }
+        if (pauGames != null) pauGames.SetActive(!pauGames.activeInHierarchy);
     }
 
     public void TogglePauseGame()
     {
         isPaused = !isPaused;
         Time.timeScale = isPaused ? 0f : 1f;
+    }
+    // ================= HỆ THỐNG CLICK CHỌN TƯỚNG TRỰC TIẾP (MỚI) =================
+
+    /// <summary>
+    /// Hàm xử lý khi người chơi click trực tiếp vào Collider của tướng trên màn hình
+    /// </summary>
+    /// <param name="idTuong">ID của tướng được click</param>
+    /// <param name="goTuong">GameObject của con tướng đó để làm hiệu ứng nếu muốn</param>
+    public void HanhDongChonTuongTrucCiep(int idTuong, GameObject goTuong)
+    {
+        // 1. Phát âm thanh click chuột
+        if (Amthanh != null && Click != null)
+        {
+            Amthanh.PlayOneShot(Click);
+        }
+
+        // 2. Tìm hệ thống save nếu chưa có
+        if (boQuanLySave == null) boQuanLySave = FindFirstObjectByType<SaveSystem>();
+
+        // 3. TỰ ĐỘNG LƯU VÀO FILE SAVE NGAY LẬP TỨC
+        if (boQuanLySave != null)
+        {
+            boQuanLySave.LuuTuongDaChon(idTuong);
+        }
+
+        // --- GỢI Ý THÊM HIỆU ỨNG (Tùy chọn) ---
+        // Bạn có thể viết thêm code làm con tướng đó nhún nhảy (Play Animation) 
+        // hoặc sáng lên để người chơi biết là đã bấm trúng thành công ở đây.
+        Animator animTuongMoiClick = goTuong.GetComponentInChildren<Animator>();
+        if (animTuongMoiClick != null)
+        {
+            // Ví dụ phát một animation chào hỏi khi được chọn
+            // animTuongMoiClick.SetTrigger("OnSelected"); 
+        }
     }
 }

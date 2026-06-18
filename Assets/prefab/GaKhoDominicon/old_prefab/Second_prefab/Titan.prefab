@@ -183,6 +183,7 @@ MonoBehaviour:
   tenAnimationChet: die_titan
   prefabPopupSatThuong: {fileID: 3638261266717980917, guid: 3b6786f6b44be624c8cc3efc99707eaa, type: 3}
   Dear: 0
+  Dead: {fileID: 8300000, guid: 317129b8bf1dcc743ae2a2a27c1411f1, type: 3}
 --- !u!82 &137496903060910580
 AudioSource:
   m_ObjectHideFlags: 0
