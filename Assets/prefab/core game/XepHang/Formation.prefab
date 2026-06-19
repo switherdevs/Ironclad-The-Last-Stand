@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &2805113411232405996
+--- !u!1 &2056344317760555724
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,40 +8,66 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4226083452111505054}
-  - component: {fileID: 213982093334655070}
+  - component: {fileID: 6303650530896726982}
+  - component: {fileID: 3082323956142732912}
   m_Layer: 0
-  m_Name: QuanLiquai
+  m_Name: Formation
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4226083452111505054
+--- !u!4 &6303650530896726982
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2805113411232405996}
+  m_GameObject: {fileID: 2056344317760555724}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 9.561073, y: -15.16744, z: -4.7296934}
+  m_LocalPosition: {x: 43, y: -15.16744, z: -4.7296934}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &213982093334655070
+--- !u!114 &3082323956142732912
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2805113411232405996}
+  m_GameObject: {fileID: 2056344317760555724}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b38e45fa1261ff747b50af81140f04a1, type: 3}
+  m_Script: {fileID: 11500000, guid: 5c38a5c49d3f4374d889e4c82daf76ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  danhSachDich: []
+  rankConfigs:
+  - tenLoai: Titan
+    rank: 4
+    maxPerColumn: 2
+    xOffset: 0
+  - tenLoai: KhoGrak
+    rank: 0
+    maxPerColumn: 5
+    xOffset: -3.5
+  - tenLoai: IronStorm
+    rank: 1
+    maxPerColumn: 5
+    xOffset: -7
+  - tenLoai: Terminator
+    rank: 2
+    maxPerColumn: 5
+    xOffset: -10.5
+  - tenLoai: DeadIron
+    rank: 3
+    maxPerColumn: 4
+    xOffset: -14
+  baseX: 0
+  centerY: -5
+  spacingY: 7
+  columnDepthSpacing: 10
+  snapSpeed: 7
+  arrivalThreshold: 0.15

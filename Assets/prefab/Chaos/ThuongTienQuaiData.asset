@@ -23,3 +23,5 @@ MonoBehaviour:
     soTienThuong: 30
   - tuKhoaTenQuai: Chaos DeadIron Walk
     soTienThuong: 250
+  - tuKhoaTenQuai: Chao_boss
+    soTienThuong: 500

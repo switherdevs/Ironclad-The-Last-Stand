@@ -152,11 +152,23 @@ MonoBehaviour:
     mangGiaTienMau: 
     mangGiaTienSatThuong: 
   - tenChungLinh: Chaos DeadIron Walk
-    mauGoc: 3000
+    mauGoc: 7000
     satThuongGoc: 50
     heSoBoTro: 1
-    capDoMau: 0
-    capDoSatThuong: 0
+    capDoMau: 1
+    capDoSatThuong: 1
+    mangHeSoMau:
+    - 1
+    mangHeSoSatThuong:
+    - 1
+    mangGiaTienMau: 
+    mangGiaTienSatThuong: 
+  - tenChungLinh: Sniper
+    mauGoc: 0
+    satThuongGoc: 100
+    heSoBoTro: 1
+    capDoMau: 1
+    capDoSatThuong: 1
     mangHeSoMau:
     - 1
     mangHeSoSatThuong:

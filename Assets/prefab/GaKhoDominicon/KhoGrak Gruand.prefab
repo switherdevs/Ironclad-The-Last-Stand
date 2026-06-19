@@ -48,7 +48,7 @@ CapsuleCollider2D:
   m_Enabled: 1
   serializedVersion: 3
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 310c5f65e8a386e47893bd41687e066b, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -121,6 +121,7 @@ MonoBehaviour:
   tenAnimationChet: die_khograk
   prefabPopupSatThuong: {fileID: 3638261266717980917, guid: 3b6786f6b44be624c8cc3efc99707eaa, type: 3}
   Dear: 0
+  Dead: {fileID: 0}
 --- !u!82 &6515236219651498613
 AudioSource:
   m_ObjectHideFlags: 0

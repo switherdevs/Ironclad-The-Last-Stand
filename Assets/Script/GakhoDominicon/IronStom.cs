@@ -85,7 +85,7 @@ public class NhanVat2 : MonoBehaviour
         if (anim != null)
         {
             bool isMoving = rb.linearVelocity.magnitude > 0.6f;
-            anim.SetBool("NhanVat2_isMoving", isMoving);
+            anim.SetBool("Khogark_isMoving", isMoving);
         }
     }
 
@@ -179,7 +179,7 @@ public class NhanVat2 : MonoBehaviour
     private IEnumerator CoroutineBanLoat()
     {
         isShooting = true;
-        if (anim != null) anim.SetBool("NhanVat2_isShooting", true);
+        if (anim != null) anim.SetBool("Khogark_isShooting", true);
         if (AmthanhLinh != null && TiengSung != null)
         {
             AmthanhLinh.PlayOneShot(TiengSung);
@@ -219,7 +219,7 @@ public class NhanVat2 : MonoBehaviour
             if (soVienLoatNay > 1) yield return new WaitForSeconds(0.1f);
         }
 
-        if (anim != null) anim.SetBool("NhanVat2_isShooting", false);
+        if (anim != null) anim.SetBool("Khogark_isShooting", false);
         HoiChieu = Time.time + (1f / soDanBan);
         isShooting = false;
     }
@@ -301,8 +301,8 @@ public class NhanVat2 : MonoBehaviour
 
         if (anim != null)
         {
-            anim.SetBool("NhanVat2_isMoving", false);
-            anim.SetBool("NhanVat2_isShooting", false);
+            anim.SetBool("Khogark_isMoving", false);
+            anim.SetBool("Khogark_isShooting", false);
         }
     }
 }

@@ -13,6 +13,13 @@ public class LoadScene : MonoBehaviour
     [SerializeField] public GameObject mainMenuUI;
     [SerializeField] public Animator mainMenuAnimator;
 
+    [Header("--- HỆ THỐNG SETTING UI (MỚI NÂNG CẤP) ---")]
+    [SerializeField] public GameObject settingUI;
+    [SerializeField] public Animator settingAnimator;
+    [SerializeField] public float thoiGianChoAnSetting = 1.5f;
+    [SerializeField] public string animHienSetting = "HienSetting";
+    [SerializeField] public string animAnSetting = "AnSetting";
+
     [Header("--- HỆ THỐNG QUẢN LÝ CONTINUE & START GAME ---")]
     [SerializeField] private Button nutContinue;
     [SerializeField] private CanvasGroup canvasGroupContinue;
@@ -33,7 +40,7 @@ public class LoadScene : MonoBehaviour
     [SerializeField] private Button nutChonMap2_Continue;
     [SerializeField] private Button nutChonMap3_Continue;
 
-    [Header("--- HỆ THỐNG CHỌN TƯỚNG (MỚI BỔ SUNG) ---")]
+    [Header("--- HỆ THỐNG CHỌN TƯỚNG ---")]
     [Tooltip("Bảng chứa các nút bấm để người chơi click chọn Tướng")]
     [SerializeField] private GameObject bangChonTuongUI;
     [Tooltip("Thời gian (giây) bảng tướng hiển thị hoạt ảnh trước khi tự tắt để hiện bảng Map")]
@@ -85,6 +92,7 @@ public class LoadScene : MonoBehaviour
         if (mainMenuUI != null) mainMenuUI.SetActive(true);
         if (bangMapStartGameUI != null) bangMapStartGameUI.SetActive(false);
         if (bangMapContinueUI != null) bangMapContinueUI.SetActive(false);
+        if (settingUI != null) settingUI.SetActive(false);
 
         // Ẩn bảng tướng lúc vừa vào Menu đầu game
         if (bangChonTuongUI != null) bangChonTuongUI.SetActive(false);
@@ -105,10 +113,51 @@ public class LoadScene : MonoBehaviour
         }
     }
 
+    // ================= LOGIC ĐIỀU KHIỂN BẢNG SETTING (MỚI NÂNG CẤP) =================
+    public void MoBangSetting()
+    {
+        if (Amthanh != null && Click != null) Amthanh.PlayOneShot(Click);
+
+        if (mainMenuUI != null && settingUI != null && mainMenuAnimator != null && settingAnimator != null)
+        {
+            StartCoroutine(LuongMoBangSetting());
+        }
+    }
+
+    private System.Collections.IEnumerator LuongMoBangSetting()
+    {
+        mainMenuAnimator.Play(animAnMenu);
+        yield return new WaitForSeconds(thoiGianChoAnMenu);
+        mainMenuUI.SetActive(false);
+
+        settingUI.SetActive(true);
+        settingAnimator.Play(animHienSetting);
+    }
+
+    public void DongBangSetting()
+    {
+        if (Amthanh != null && Click != null) Amthanh.PlayOneShot(Click);
+
+        if (mainMenuUI != null && settingUI != null && mainMenuAnimator != null && settingAnimator != null)
+        {
+            StartCoroutine(LuongDongBangSetting());
+        }
+    }
+
+    private System.Collections.IEnumerator LuongDongBangSetting()
+    {
+        settingAnimator.Play(animAnSetting);
+        yield return new WaitForSeconds(thoiGianChoAnSetting);
+        settingUI.SetActive(false);
+
+        mainMenuUI.SetActive(true);
+        mainMenuAnimator.Play(animHienMenu);
+    }
+
     // ================= CLICK CHỌN START GAME (BẢNG 1) =================
     public void MoBangMapStartGame()
     {
-        Amthanh.PlayOneShot(Click);
+        if (Amthanh != null && Click != null) Amthanh.PlayOneShot(Click);
         if (mainMenuUI != null && bangMapStartGameUI != null && mainMenuAnimator != null && bangMapStartAnimator != null)
         {
             if (nutChonMap2_StartGame != null) nutChonMap2_StartGame.interactable = false;
@@ -138,7 +187,7 @@ public class LoadScene : MonoBehaviour
 
     public void DongBangMapStartGame()
     {
-        Amthanh.PlayOneShot(Click);
+        if (Amthanh != null && Click != null) Amthanh.PlayOneShot(Click);
         StartCoroutine(LuongDongBangMapStart());
     }
 
@@ -154,7 +203,7 @@ public class LoadScene : MonoBehaviour
     // ================= CLICK CHỌN CONTINUE (BẢNG 2) =================
     public void MoBangMapContinue()
     {
-        Amthanh.PlayOneShot(Click);
+        if (Amthanh != null && Click != null) Amthanh.PlayOneShot(Click);
         if (boQuanLySave == null) boQuanLySave = FindFirstObjectByType<SaveSystem>();
 
         if (boQuanLySave != null && boQuanLySave.KiemTraCoFileSave())
@@ -189,10 +238,9 @@ public class LoadScene : MonoBehaviour
         bangMapContinueAnimator.Play(animHienBangMap);
     }
 
-    // Hàm public này dùng để gán trực tiếp vào sự kiện OnClick của từng nút bấm Avatar Tướng ngoài Menu
     public void HanhDongChonTuongButton(int idTuong)
     {
-        Amthanh.PlayOneShot(Click);
+        if (Amthanh != null && Click != null) Amthanh.PlayOneShot(Click);
         if (boQuanLySave == null) boQuanLySave = FindFirstObjectByType<SaveSystem>();
 
         if (boQuanLySave != null)
@@ -203,7 +251,7 @@ public class LoadScene : MonoBehaviour
 
     public void DongBangMapContinue()
     {
-        Amthanh.PlayOneShot(Click);
+        if (Amthanh != null && Click != null) Amthanh.PlayOneShot(Click);
         StartCoroutine(LuongDongBangMapContinue());
     }
 
@@ -255,34 +303,34 @@ public class LoadScene : MonoBehaviour
 
     public void ChonDoKhoDe()
     {
-        Amthanh.PlayOneShot(Click);
+        if (Amthanh != null && Click != null) Amthanh.PlayOneShot(Click);
         if (boQuanLySave != null) boQuanLySave.LuuDoKhoGame(0);
         KichHoatVienDuyNhat(0);
     }
 
     public void ChonDoKhoBinhThuong()
     {
-        Amthanh.PlayOneShot(Click);
+        if (Amthanh != null && Click != null) Amthanh.PlayOneShot(Click);
         if (boQuanLySave != null) boQuanLySave.LuuDoKhoGame(1);
         KichHoatVienDuyNhat(1);
     }
 
     public void ChonDoKhoKho()
     {
-        Amthanh.PlayOneShot(Click);
+        if (Amthanh != null && Click != null) Amthanh.PlayOneShot(Click);
         if (boQuanLySave != null) boQuanLySave.LuuDoKhoGame(2);
         KichHoatVienDuyNhat(2);
     }
 
     public void VaoGame()
     {
-        Amthanh.PlayOneShot(Click);
+        if (Amthanh != null && Click != null) Amthanh.PlayOneShot(Click);
         SceneManager.LoadScene(scene1.name);
     }
 
     public void TryAgain()
     {
-        Amthanh.PlayOneShot(Click);
+        if (Amthanh != null && Click != null) Amthanh.PlayOneShot(Click);
         string currentSceneName = SceneManager.GetActiveScene().name;
         SceneManager.LoadScene(currentSceneName);
         Time.timeScale = 1;
@@ -290,7 +338,7 @@ public class LoadScene : MonoBehaviour
 
     public void VeMenu()
     {
-        Amthanh.PlayOneShot(Click);
+        if (Amthanh != null && Click != null) Amthanh.PlayOneShot(Click);
         SceneManager.LoadScene(Menu.name);
         Time.timeScale = 1;
     }
@@ -298,7 +346,7 @@ public class LoadScene : MonoBehaviour
     private void FixedUpdate()
     {
         ThuaGame();
-        WinGame();
+        KiemTraWinGame();
     }
 
     private void ThuaGame()
@@ -310,7 +358,7 @@ public class LoadScene : MonoBehaviour
         }
     }
 
-    public void WinGame()
+    public void KiemTraWinGame()
     {
         if (ChaosDirector.instance != null && ChaosDirector.instance.WinGame)
         {
@@ -333,28 +381,28 @@ public class LoadScene : MonoBehaviour
 
     public void Map2()
     {
-        Amthanh.PlayOneShot(Click);
+        if (Amthanh != null && Click != null) Amthanh.PlayOneShot(Click);
         SceneManager.LoadScene(scene2.name);
         Time.timeScale = 1;
     }
 
     public void Map3()
     {
-        Amthanh.PlayOneShot(Click);
+        if (Amthanh != null && Click != null) Amthanh.PlayOneShot(Click);
         SceneManager.LoadScene(scene3.name);
         Time.timeScale = 1;
     }
 
     public void Updates()
     {
-        Amthanh.PlayOneShot(Click);
+        if (Amthanh != null && Click != null) Amthanh.PlayOneShot(Click);
         SceneManager.LoadScene(UpdateBase.name);
         Time.timeScale = 1;
     }
 
     public void Resume()
     {
-        Amthanh.PlayOneShot(Click);
+        if (Amthanh != null && Click != null) Amthanh.PlayOneShot(Click);
         pauGames.SetActive(false);
         Time.timeScale = 1;
         isPaused = false;
@@ -362,7 +410,7 @@ public class LoadScene : MonoBehaviour
 
     public void pausegame()
     {
-        Amthanh.PlayOneShot(Click);
+        if (Amthanh != null && Click != null) Amthanh.PlayOneShot(Click);
         if (pauGames != null) pauGames.SetActive(!pauGames.activeInHierarchy);
     }
 
@@ -371,38 +419,21 @@ public class LoadScene : MonoBehaviour
         isPaused = !isPaused;
         Time.timeScale = isPaused ? 0f : 1f;
     }
-    // ================= HỆ THỐNG CLICK CHỌN TƯỚNG TRỰC TIẾP (MỚI) =================
 
-    /// <summary>
-    /// Hàm xử lý khi người chơi click trực tiếp vào Collider của tướng trên màn hình
-    /// </summary>
-    /// <param name="idTuong">ID của tướng được click</param>
-    /// <param name="goTuong">GameObject của con tướng đó để làm hiệu ứng nếu muốn</param>
     public void HanhDongChonTuongTrucCiep(int idTuong, GameObject goTuong)
     {
-        // 1. Phát âm thanh click chuột
-        if (Amthanh != null && Click != null)
-        {
-            Amthanh.PlayOneShot(Click);
-        }
-
-        // 2. Tìm hệ thống save nếu chưa có
+        if (Amthanh != null && Click != null) Amthanh.PlayOneShot(Click);
         if (boQuanLySave == null) boQuanLySave = FindFirstObjectByType<SaveSystem>();
 
-        // 3. TỰ ĐỘNG LƯU VÀO FILE SAVE NGAY LẬP TỨC
         if (boQuanLySave != null)
         {
             boQuanLySave.LuuTuongDaChon(idTuong);
         }
 
-        // --- GỢI Ý THÊM HIỆU ỨNG (Tùy chọn) ---
-        // Bạn có thể viết thêm code làm con tướng đó nhún nhảy (Play Animation) 
-        // hoặc sáng lên để người chơi biết là đã bấm trúng thành công ở đây.
         Animator animTuongMoiClick = goTuong.GetComponentInChildren<Animator>();
         if (animTuongMoiClick != null)
         {
-            // Ví dụ phát một animation chào hỏi khi được chọn
-            // animTuongMoiClick.SetTrigger("OnSelected"); 
+            // Điền lệnh kích hoạt nếu cần
         }
     }
 }

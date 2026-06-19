@@ -50,7 +50,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentState: 0
-  skillCooldown: 3
+  skillCooldown: 60
   maxConsecutiveUse: 10
   availableSkills:
   - {fileID: 11400000, guid: 62c495bc26705e7469f24736ca1d5cd3, type: 2}
@@ -133,13 +133,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bangSatThuongChung: {fileID: 11400000, guid: a60a65e6a8b057b4ea1e9fc841c3d9bc, type: 2}
   ThanhMau: {fileID: 6231448359198395928}
-  maxHP: 50000000
-  Animationdead: 2
+  maxHP: 50000
+  Animationdead: 99999
   tenAnimationChet: die_ter_chaos
   prefabPopupSatThuong: {fileID: 3638261266717980917, guid: 3b6786f6b44be624c8cc3efc99707eaa, type: 3}
-  spritel: {fileID: 0}
+  spritel: {fileID: 3638261266717980917, guid: 3b6786f6b44be624c8cc3efc99707eaa, type: 3}
   Deadre: 0
-  Dead: {fileID: 0}
+  Dead: {fileID: 8300000, guid: c8afcac33773304458db1c73443dff99, type: 3}
 --- !u!1 &2108976215336679307
 GameObject:
   m_ObjectHideFlags: 0

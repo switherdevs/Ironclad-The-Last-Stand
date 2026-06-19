@@ -60,11 +60,11 @@ MonoBehaviour:
   btnDominiconTitan: {fileID: 0}
   SevitorPrefab: {fileID: 4302893310042436796, guid: ad241cf354421e448b2979e08724d9f3, type: 3}
   slotSevitor: 0
-  khograkGuardPrefab: {fileID: 192116931154184763, guid: 815194771d0403c45902975be3441bb4, type: 3}
+  khograkGuardPrefab: {fileID: 192116931154184763, guid: cce99de2319aa4144836ef85d5174fc8, type: 3}
   slotKhograkGuard: 1
-  ironStormMarinePrefab: {fileID: 650091318245065535, guid: 2832e12abdbe74b4db7a690913ecef6b, type: 3}
+  ironStormMarinePrefab: {fileID: 650091318245065535, guid: ceaa299c0c3f3c84aa338d1db6b565fb, type: 3}
   slotIronStormMarine: 2
-  stormTerminatorPrefab: {fileID: 3998876897299777512, guid: 7d754602d7c30dc438d7e29efd754c46, type: 3}
+  stormTerminatorPrefab: {fileID: 3998876897299777512, guid: 06646f5b4db6f964cb61ef691d9ad500, type: 3}
   slotStormTerminator: 5
   ironDreadWalkerPrefab: {fileID: 8067533523777300197, guid: 035fc219a64d5d4459797a2f92216a80, type: 3}
   slotIronDreadWalker: 10
