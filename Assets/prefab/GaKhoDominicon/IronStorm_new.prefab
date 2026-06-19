@@ -335,7 +335,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lenhHienTai: 0
   loaiHinhDonVi: 2
-  TamBan: 100
+  TamBan: 110
   soDanBan: 1.2
   satThuong: 15
   soVienLoatNay: 1

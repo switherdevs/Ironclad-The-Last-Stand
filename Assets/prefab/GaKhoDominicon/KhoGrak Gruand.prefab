@@ -233,7 +233,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lenhHienTai: 0
   loaiHinhDonVi: 1
-  TamBan: 150
+  TamBan: 125
   soDanBan: 1
   satThuong: 10
   soVienLoatNay: 1
@@ -855,7 +855,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8089108032486474258, guid: 5762fe66509a7644695fe62b1e25eea4, type: 3}
       propertyPath: m_SortingOrder
-      value: 20
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: -8065550675819560793, guid: 5762fe66509a7644695fe62b1e25eea4, type: 3}
       propertyPath: m_LocalPosition.x
@@ -887,7 +887,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -7880768541145892991, guid: 5762fe66509a7644695fe62b1e25eea4, type: 3}
       propertyPath: m_SortingOrder
-      value: 25
+      value: 24
       objectReference: {fileID: 0}
     - target: {fileID: -7686851655733061358, guid: 5762fe66509a7644695fe62b1e25eea4, type: 3}
       propertyPath: m_Layer
@@ -943,7 +943,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -6620500905086637709, guid: 5762fe66509a7644695fe62b1e25eea4, type: 3}
       propertyPath: m_SortingOrder
-      value: 24
+      value: 19
       objectReference: {fileID: 0}
     - target: {fileID: -6368986203072339713, guid: 5762fe66509a7644695fe62b1e25eea4, type: 3}
       propertyPath: m_Layer
@@ -955,7 +955,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -5152711103449417321, guid: 5762fe66509a7644695fe62b1e25eea4, type: 3}
       propertyPath: m_SortingOrder
-      value: 24
+      value: 19
       objectReference: {fileID: 0}
     - target: {fileID: -4914143147712577875, guid: 5762fe66509a7644695fe62b1e25eea4, type: 3}
       propertyPath: m_Layer
@@ -1155,7 +1155,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2285546339139895257, guid: 5762fe66509a7644695fe62b1e25eea4, type: 3}
       propertyPath: m_SortingOrder
-      value: 25
+      value: 24
       objectReference: {fileID: 0}
     - target: {fileID: 2555649094294136195, guid: 5762fe66509a7644695fe62b1e25eea4, type: 3}
       propertyPath: m_SortingOrder
@@ -1263,7 +1263,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8567469889307049261, guid: 5762fe66509a7644695fe62b1e25eea4, type: 3}
       propertyPath: m_SortingOrder
-      value: 26
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 9089696665922693603, guid: 5762fe66509a7644695fe62b1e25eea4, type: 3}
       propertyPath: m_LocalPosition.x

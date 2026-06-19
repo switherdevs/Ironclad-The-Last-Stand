@@ -152,7 +152,7 @@ MonoBehaviour:
   trangThaiHienTai: 0
   tocDoDiChuyen: 7
   thoiGianDaoVang: 5
-  luongVangMangTheo: 75
+  luongVangMangTheo: 50
 --- !u!114 &3536162725100961749
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -172,6 +172,7 @@ MonoBehaviour:
   tenAnimationChet: ser_die
   prefabPopupSatThuong: {fileID: 3638261266717980917, guid: 3b6786f6b44be624c8cc3efc99707eaa, type: 3}
   Dear: 0
+  Dead: {fileID: 0}
 --- !u!1 &4649563182233616097
 GameObject:
   m_ObjectHideFlags: 0

@@ -46,7 +46,6 @@ public class Health_phechinh : MonoBehaviour
         }
     }
 
-    // Hàm bổ trợ tự động lấy máu đã nâng cấp dựa theo tên của lính (Mới cập nhật)
     private void CapNhatMauTheoDataGoc()
     {
         if (bangSatThuongChung != null)
@@ -61,15 +60,11 @@ public class Health_phechinh : MonoBehaviour
         currentHp -= damage;
         currentHp = Mathf.Clamp(currentHp, 0, maxHP);
 
-        // KÍCH HOẠT POPUP CHỮ CHO PHE CHÍNH:
         if (prefabPopupSatThuong != null)
         {
             GameObject popup = Instantiate(prefabPopupSatThuong);
-
-            // Tạo độ lệch ngẫu nhiên trục X để chữ nổi liên tiếp đẹp mắt
             float doLechNgauNhienX = Random.Range(-0.5f, 0.5f);
             Vector3 viTriXuatHien = transform.position + new Vector3(doLechNgauNhienX, 1.5f, 0f);
-
             popup.transform.position = viTriXuatHien;
 
             DamagePopup scriptPopup = popup.GetComponent<DamagePopup>();
@@ -92,10 +87,9 @@ public class Health_phechinh : MonoBehaviour
 
     void Die()
     {
-        if(Dead != null)
+        if (Dead != null)
         {
             Amthanh.PlayOneShot(Dead);
-
         }
         Dear = true;
         gameObject.tag = "Untagged";
@@ -104,7 +98,14 @@ public class Health_phechinh : MonoBehaviour
         {
             string tenLinhQuetDuoc = gameObject.name.ToLower();
 
-            if (tenLinhQuetDuoc.Contains("khograk"))
+            // ⭐ ĐÃ NÂNG CẤP: Nhận diện Servitor tử trận
+            if (tenLinhQuetDuoc.Contains("servitor"))
+            {
+                // Giả định Servitor tốn 1 slot lính chung, và truyền 'true' để trừ số lượng Servitor hiển thị
+                ResourceManager.Instance.TruLinh(1, true);
+                Debug.Log($"[TỰ ĐỘNG] Servitor làm việc tử trận. Thu hồi 1 slot lính và giảm 1 Servitor.");
+            }
+            else if (tenLinhQuetDuoc.Contains("khograk"))
             {
                 ResourceManager.Instance.TruLinh(1);
                 Debug.Log($"[TỰ ĐỘNG] Chủng KhoGrak Guard tử trận. Thu hồi 1 slot.");
@@ -135,7 +136,6 @@ public class Health_phechinh : MonoBehaviour
             }
         }
 
-        // Thay vì SetBool, ép chạy trực tiếp bằng CrossFade dựa trên tên nhập ở Inspector
         if (animator != null && !string.IsNullOrEmpty(tenAnimationChet))
         {
             animator.CrossFade(tenAnimationChet, 0.1f);
@@ -194,14 +194,14 @@ public class Health_phechinh : MonoBehaviour
 
         if (animator != null)
         {
-            animator.Rebind(); // Trả toàn bộ tư thế và hoạt ảnh về mặc định từ Object Pool
+            animator.Rebind();
         }
 
-        CapNhatMauTheoDataGoc(); // Đảm bảo lấy lính từ Pool ra vẫn nhận đúng máu nâng cấp mới nhất
+        CapNhatMauTheoDataGoc();
 
         if (ThanhMau != null)
         {
-            ThanhMau.maxValue = maxHP; // Đồng bộ lại độ dài thanh máu theo HP mới
+            ThanhMau.maxValue = maxHP;
             ThanhMau.value = maxHP;
             ThanhMau.gameObject.SetActive(false);
         }

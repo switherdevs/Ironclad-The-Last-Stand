@@ -4,10 +4,15 @@ using System.Collections.Generic;
 
 public class BossController : MonoBehaviour
 {
-    public enum BossState { Idle, UsingSkill, Cooldown, Dead }
+    private Animator animator; // Đổi tên biến viết thường cho đúng chuẩn C#
+    public enum BossState { Spawn, Idle, UsingSkill, Cooldown, Dead }
 
     [Header("--- BOSS STATE ---")]
-    [SerializeField] private BossState currentState = BossState.Idle;
+    [SerializeField] private BossState currentState = BossState.Spawn;
+
+    [Header("--- ANIMATION TIMING ---")]
+    [Tooltip("Thời gian diễn ra của Animation Spawn (giây) trước khi Boss vào trạng thái hoạt động")]
+    [SerializeField] private float spawnAnimationDuration = 2.0f;
 
     [Header("--- SKILL SYSTEM CONFIG ---")]
     [SerializeField] private float skillCooldown = 3f;
@@ -32,13 +37,14 @@ public class BossController : MonoBehaviour
 
     private void Awake()
     {
+        animator = GetComponentInChildren<Animator>();
         rb = GetComponent<Rigidbody2D>();
         ConfigurePhysics();
     }
 
     private void Start()
     {
-        currentState = BossState.Cooldown;
+        // Khởi động vòng lặp AI chính của Boss
         StartCoroutine(BossAILoop());
     }
 
@@ -71,15 +77,7 @@ public class BossController : MonoBehaviour
     {
         Vector2 currentPosition = transform.position;
 
-        // Ưu tiên 1: Tìm Sannha
-        GameObject[] sannhaTargets = GameObject.FindGameObjectsWithTag("Sannha");
-        if (sannhaTargets != null && sannhaTargets.Length > 0)
-        {
-            TargetTransform = GetNearest(sannhaTargets, currentPosition);
-            if (TargetTransform != null) return;
-        }
-
-        // Ưu tiên 2: Tìm Phechinh
+        // Ưu tiên: Tìm Phechinh
         GameObject[] phechinhTargets = GameObject.FindGameObjectsWithTag("Phechinh");
         if (phechinhTargets != null && phechinhTargets.Length > 0)
         {
@@ -110,21 +108,46 @@ public class BossController : MonoBehaviour
 
     private IEnumerator BossAILoop()
     {
-        // Chờ cooldown ban đầu khi vừa vào game
+        // 1. GIAI ĐOẠN XUẤT HIỆN (SPAWN): Diễn 1 lần duy nhất khi vừa sinh ra
+        currentState = BossState.Spawn;
+        if (animator != null)
+        {
+            animator.SetTrigger("Spawn");
+        }
+        // Đóng băng AI, chờ Animation Spawn hoàn thành 100%
+        yield return new WaitForSeconds(spawnAnimationDuration);
+
+        // 2. GIAI ĐOẠN COOLDOWN ĐẦU TRẬN: Nghỉ ngơi một chút trước khi bắt đầu quét mục tiêu
+        currentState = BossState.Cooldown;
+        if (animator != null)
+        {
+            animator.SetBool("idle", true);
+            animator.SetBool("Skill_1", false);
+        }
         yield return new WaitForSeconds(skillCooldown);
 
+        // VÒNG LẶP AI CHÍNH
         while (currentState != BossState.Dead)
         {
-            currentState = BossState.Idle;
+            // Thiết lập trạng thái Idle khi ở ngoài tầm đánh hoặc đang tìm kiếm
+            if (currentState != BossState.Idle && currentState != BossState.Cooldown)
+            {
+                currentState = BossState.Idle;
+                if (animator != null)
+                {
+                    animator.SetBool("idle", true);
+                    animator.SetBool("Skill_1", false);
+                }
+            }
 
-            // Lấy thông số tầm đánh của Skill 1 để làm điều kiện kích hoạt đòn đánh
+            // Lấy thông số tầm đánh của Skill 1
             float attackRange = 8f;
             if (availableSkills != null && availableSkills.Count > 0 && availableSkills[0] is Skill1_MeteorShower meteor)
             {
                 attackRange = meteor.GetDetectionRange();
             }
 
-            // ĐIỀU KIỆN KÍCH HOẠT: Có mục tiêu và mục tiêu lọt vào tầm đánh vòng tròn đỏ
+            // ĐIỀU KIỆN KÍCH HOẠT: Có mục tiêu và mục tiêu lọt vào tầm đánh
             if (TargetTransform != null && Vector2.Distance(transform.position, TargetTransform.position) <= attackRange)
             {
                 BossSkill selectedSkill = SelectValidRandomSkill();
@@ -132,24 +155,38 @@ public class BossController : MonoBehaviour
                 if (selectedSkill != null)
                 {
                     currentState = BossState.UsingSkill;
+
+                    // Cập nhật Animator: Tắt Idle, Bật trạng thái tấn công
+                    if (animator != null)
+                    {
+                        animator.SetBool("idle", false);
+                        animator.SetBool("Skill_1", true);
+                    }
+
                     currentActiveSkill = selectedSkill;
 
                     // Xử lý logic Anti-Repeat chống lặp đòn
                     if (selectedSkill.SkillID == lastSkillID) consecutiveCount++;
                     else { lastSkillID = selectedSkill.SkillID; consecutiveCount = 1; }
 
-                    // Chạy Skill và đợi cho tới khi thiên thạch rơi xong 100%
+                    // Chạy Skill và đợi cho tới khi chiêu thức kết thúc hoàn toàn
                     yield return StartCoroutine(selectedSkill.ExecuteSkillRoutine(this));
 
                     currentActiveSkill = null;
                 }
 
-                // Đổi trạng thái sang Cooldown nghỉ ngơi sau khi xả chiêu
+                // Chuyển sang Cooldown sau khi xả chiêu xong
                 currentState = BossState.Cooldown;
+                if (animator != null)
+                {
+                    animator.SetBool("idle", true); // Đưa về thế thủ chuẩn bị hồi chiêu
+                    animator.SetBool("Skill_1", false);
+                }
+
                 yield return new WaitForSeconds(skillCooldown);
             }
 
-            // Vòng lặp chờ tối ưu hiệu năng (tránh treo luồng game khi không có địch)
+            // Vòng lặp chờ tối ưu hiệu năng (Tránh đứng khung hình)
             yield return new WaitForSeconds(0.1f);
         }
     }
@@ -174,9 +211,13 @@ public class BossController : MonoBehaviour
     public void OnBossDeath()
     {
         currentState = BossState.Dead;
+        if (animator != null)
+        {
+            animator.SetTrigger("Dead");
+        }
         StopAllCoroutines();
         if (rb != null) rb.linearVelocity = Vector2.zero;
-        Destroy(gameObject);
+        Destroy(gameObject, 1.5f); // Trì hoãn hủy Object một chút để kịp diễn hoạt xong hoạt ảnh chết
     }
 
     private void OnDrawGizmosSelected()
@@ -187,7 +228,6 @@ public class BossController : MonoBehaviour
             {
                 if (skill is Skill1_MeteorShower meteorShowerSkill)
                 {
-                    // Vẽ vùng Box Area xanh ngọc dựa trên vị trí đứng yên của Boss
                     meteorShowerSkill.DrawGizmos(transform.position);
                 }
             }
