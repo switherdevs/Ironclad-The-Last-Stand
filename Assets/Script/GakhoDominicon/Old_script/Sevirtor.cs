@@ -21,9 +21,11 @@ public class Sevirtor : MonoBehaviour
     private GoldMine moDangDao = null;
     private int indexSlotCuaTho = -1;
     private Animator servitor_ani;
+    public Health_phechinh Heal;
 
     void Start()
     {
+        Heal = GetComponent<Health_phechinh>();
         servitor_ani = GetComponentInChildren<Animator>();
         // SỬA TẠI ĐÂY: Loại bỏ điều kiện kiểm tra null cũ, ép buộc mọi con lính khi spawn ra phải tự tìm tag "Home" hiện tại của Map
         GameObject nhaChinhmOnMap = GameObject.FindWithTag("Home");
@@ -37,8 +39,9 @@ public class Sevirtor : MonoBehaviour
 
     void Update()
     {
+        if (Heal.Dear) return;
         if (Tayperer.skibidi != null && Tayperer.skibidi.GameOver) return;
-
+        
         switch (trangThaiHienTai)
         {
             case MinerState.DiToiBaiVang: HanhDong_DiToiBaiVang(); break;

@@ -17,8 +17,8 @@ MonoBehaviour:
     mauGoc: 20
     satThuongGoc: 5
     heSoBoTro: 1
-    capDoMau: 0
-    capDoSatThuong: 0
+    capDoMau: 4
+    capDoSatThuong: 4
     mangHeSoMau:
     - 1
     - 1.3
@@ -35,8 +35,8 @@ MonoBehaviour:
     mauGoc: 200
     satThuongGoc: 15
     heSoBoTro: 1
-    capDoMau: 0
-    capDoSatThuong: 0
+    capDoMau: 4
+    capDoSatThuong: 4
     mangHeSoMau:
     - 1
     - 1.3
@@ -53,8 +53,8 @@ MonoBehaviour:
     mauGoc: 500
     satThuongGoc: 40
     heSoBoTro: 1
-    capDoMau: 0
-    capDoSatThuong: 0
+    capDoMau: 1
+    capDoSatThuong: 4
     mangHeSoMau:
     - 1
     - 1.3
@@ -67,7 +67,7 @@ MonoBehaviour:
     - 2
     mangGiaTienMau: 8a020000b0040000ca080000b80b0000
     mangGiaTienSatThuong: bc020000dc050000b80b000094110000
-  - tenChungLinh: Dead Iron walk
+  - tenChungLinh: Dead_iron_walk_new
     mauGoc: 1000
     satThuongGoc: 55
     heSoBoTro: 1
@@ -152,11 +152,11 @@ MonoBehaviour:
     mangGiaTienMau: 
     mangGiaTienSatThuong: 
   - tenChungLinh: Chaos DeadIron Walk
-    mauGoc: 7000
+    mauGoc: 3000
     satThuongGoc: 50
     heSoBoTro: 1
-    capDoMau: 1
-    capDoSatThuong: 1
+    capDoMau: 0
+    capDoSatThuong: 0
     mangHeSoMau:
     - 1
     mangHeSoSatThuong:
@@ -167,8 +167,8 @@ MonoBehaviour:
     mauGoc: 0
     satThuongGoc: 100
     heSoBoTro: 1
-    capDoMau: 1
-    capDoSatThuong: 1
+    capDoMau: 0
+    capDoSatThuong: 0
     mangHeSoMau:
     - 1
     mangHeSoSatThuong:

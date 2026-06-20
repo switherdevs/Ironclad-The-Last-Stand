@@ -50,9 +50,11 @@ public class Terminator_new : MonoBehaviour
     private static int groupCounter = 0;
 
     private Vector2 lucGianCachHienTai;
+    public Health_phechinh heal;
 
     void Awake()
     {
+        heal = GetComponent<Health_phechinh>();
         rb = GetComponent<Rigidbody2D>();
         rb.gravityScale = 0f;
         rb.linearDamping = 2f;
@@ -81,6 +83,7 @@ public class Terminator_new : MonoBehaviour
 
     void Update()
     {
+        if (heal.Dear) return;
         if (phechinh != null && phechinh.Dear) return;
         if (Tayperer.skibidi != null && Tayperer.skibidi.GameOver) return;
 
@@ -239,24 +242,71 @@ public class Terminator_new : MonoBehaviour
         }
     }
 
+    // ── 🎯 ĐOẠN CODE ĐÃ ĐƯỢC SỬA ĐỔI: TÌM KIẾM THEO TAG "Enemy" VÀ ƯU TIÊN BOSS ──
     void TimMucTieu()
     {
-        // Ưu tiên giữ mục tiêu cũ nếu còn sống và trong tầm bắn
+        // 1. Ưu tiên giữ mục tiêu cũ nếu còn sống và trong tầm bắn
         if (ThayDich != null && ThayDich.gameObject.activeInHierarchy && !KiemTraDichDaChet(ThayDich.gameObject))
         {
-            if (Vector2.Distance(transform.position, ThayDich.position) <= TamBan) return;
+            // Nếu đang bắn Boss rồi thì giữ nguyên mục tiêu, không đổi mục tiêu lung tung
+            if (ThayDich.gameObject.name.Contains("Chao_boss") || ThayDich.GetComponent<BossController>() != null)
+            {
+                if (Vector2.Distance(transform.position, ThayDich.position) <= TamBan) return;
+            }
         }
 
-        GameObject best = null;
-        float bestDist = TamBan;
-        foreach (var q in EnemyManager.Instance.danhSachDich)
+        // 2. Tìm kiếm toàn bộ đối tượng mang Tag "Enemy" trên Scene
+        GameObject[] tatCaKeThu = GameObject.FindGameObjectsWithTag("Enemy");
+
+        GameObject bestQuaiNho = null;
+        GameObject bestBoss = null;
+
+        float bestDistQuaiNho = TamBan;
+        float bestDistBoss = TamBan;
+
+        foreach (var q in tatCaKeThu)
         {
+            // Lọc bỏ những con quái ẩn, không hiển thị hoặc đã chết
             if (q == null || !q.activeInHierarchy || KiemTraDichDaChet(q)) continue;
 
             float kc = Vector2.Distance(transform.position, q.transform.position);
-            if (kc < bestDist) { bestDist = kc; best = q; }
+
+            // Chỉ xử lý những mục tiêu nằm trọn vẹn trong tầm bắn (TamBan)
+            if (kc <= TamBan)
+            {
+                // Kiểm tra xem thực thể có phải Boss hay không
+                if (q.name.Contains("Chao_boss") || q.GetComponent<BossController>() != null)
+                {
+                    if (kc < bestDistBoss)
+                    {
+                        bestDistBoss = kc;
+                        bestBoss = q; // Lưu lại con Boss gần nhất
+                    }
+                }
+                else // Nếu là quái cỏ nhỏ
+                {
+                    if (kc < bestDistQuaiNho)
+                    {
+                        bestDistQuaiNho = kc;
+                        bestQuaiNho = q; // Lưu lại con quái nhỏ gần nhất
+                    }
+                }
+            }
         }
-        ThayDich = (best != null) ? best.transform : null;
+
+        // 3. Phân chia mục tiêu: Ép ưu tiên dồn hỏa lực bắn Boss trước
+        if (bestBoss != null)
+        {
+            ThayDich = bestBoss.transform;
+        }
+        else if (bestQuaiNho != null)
+        {
+            ThayDich = bestQuaiNho.transform;
+        }
+        else
+        {
+            ThayDich = null;
+        }
     }
 
     private bool KiemTraDichDaChet(GameObject keThich)
@@ -291,11 +341,11 @@ public class Terminator_new : MonoBehaviour
 
     int GetRank() => loaiHinhDonVi switch
     {
-        LoaiLinh.Titan => 0,
-        LoaiLinh.KhoGrak => 1,
-        LoaiLinh.IronStorm => 2,
-        LoaiLinh.Terminator => 3,
-        LoaiLinh.DeadIron => 4,
+        LoaiLinh.KhoGrak => 0, // Khớp với KhoGrak (Rank = 0)
+        LoaiLinh.IronStorm => 1, // Khớp với IronStorm (Rank = 1)
+        LoaiLinh.Terminator => 2, // Khớp với Terminator (Rank = 2)
+        LoaiLinh.DeadIron => 3, // Khớp với DeadIron (Rank = 3)
+        LoaiLinh.Titan => 4,
         _ => -1
     };
 

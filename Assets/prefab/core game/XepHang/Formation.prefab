@@ -44,30 +44,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c38a5c49d3f4374d889e4c82daf76ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rankConfigs:
-  - tenLoai: Titan
-    rank: 4
-    maxPerColumn: 2
-    xOffset: 0
-  - tenLoai: KhoGrak
-    rank: 0
-    maxPerColumn: 5
-    xOffset: -3.5
-  - tenLoai: IronStorm
-    rank: 1
-    maxPerColumn: 5
-    xOffset: -7
-  - tenLoai: Terminator
-    rank: 2
-    maxPerColumn: 5
-    xOffset: -10.5
-  - tenLoai: DeadIron
-    rank: 3
-    maxPerColumn: 4
-    xOffset: -14
-  baseX: 0
-  centerY: -5
-  spacingY: 7
-  columnDepthSpacing: 10
-  snapSpeed: 7
-  arrivalThreshold: 0.15
+  danhSachCauHinh:
+  - tenLoaiLinh: Titan
+    capBacRank: 4
+    doLuiXMacDinh: -75
+    soLuongHangToiDa: 2
+  - tenLoaiLinh: KhoGrak
+    capBacRank: 0
+    doLuiXMacDinh: 0
+    soLuongHangToiDa: 6
+  - tenLoaiLinh: IronStorm
+    capBacRank: 1
+    doLuiXMacDinh: -15
+    soLuongHangToiDa: 6
+  - tenLoaiLinh: Terminator
+    capBacRank: 2
+    doLuiXMacDinh: -30
+    soLuongHangToiDa: 6
+  - tenLoaiLinh: DeadIron
+    capBacRank: 3
+    doLuiXMacDinh: -50
+    soLuongHangToiDa: 6
+  toaDoXHangDau: -12
+  toaDoYTrungTam: 2
+  gianCachDocY: 5.5
+  gianCachNgangX: 5
+  tocDoDiChuyenVeSlot: 5
+  saiSoDichDen: 0.15

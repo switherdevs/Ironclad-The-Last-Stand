@@ -48,9 +48,11 @@ public class NhanVat2 : MonoBehaviour
     private static int groupCounter = 0;
 
     private Vector2 lucGianCachHienTai;
+    public Health_phechinh heal;
 
     void Awake()
     {
+        heal = GetComponent<Health_phechinh>();
         rb = GetComponent<Rigidbody2D>();
         rb.gravityScale = 0f;
         rb.linearDamping = 2f;
@@ -76,17 +78,15 @@ public class NhanVat2 : MonoBehaviour
 
     void Update()
     {
-        if (phechinh != null && phechinh.Dear) return;
+        if (heal.Dear || (phechinh != null && phechinh.Dear)) return;
 
         if (lenhHienTai != LenhChienThuat.RutLui) TimMucTieuNgauNhien();
         else ResetTarget();
 
-        // 🎯 ĐÃ SỬA: Cập nhật thông số Animator chống xung đột trạng thái
         if (anim != null)
         {
             if (isShooting)
             {
-                // Khi đang bắn, bắt buộc tắt trạng thái di chuyển để tránh bị đè animation
                 anim.SetBool("Khogark_isMoving", false);
             }
             else
@@ -108,21 +108,23 @@ public class NhanVat2 : MonoBehaviour
 
         Vector2 vanTocMongMuon = Vector2.zero;
 
+        // 🎯 FIX LOGIC DI CHUYỂN: Ưu tiên bám hàng ngũ kể cả khi đang có địch tầm xa
         if (ThayDich != null && ThayDich.gameObject.activeInHierarchy && !KiemTraDichDaChet(ThayDich.gameObject))
         {
             float distToTarget = Vector2.Distance(transform.position, ThayDich.position);
-
             XoayMatTheoHuong(ThayDich.position.x - transform.position.x);
 
             if (distToTarget > TamBan)
             {
+                // Khi địch quá xa, chủ động tiến quân lên
                 Vector2 huongDi = ((Vector2)ThayDich.position - (Vector2)transform.position).normalized;
                 vanTocMongMuon = (huongDi * tocDoHanhQuan) + (lucGianCachHienTai * 0.4f);
             }
             else
             {
-                // Khi lọt vào tầm bắn, triệt tiêu vận tốc mong muốn để đứng yên bắn cho chuẩn
-                vanTocMongMuon = lucGianCachHienTai * 0.1f;
+                // Kể cả khi đã vào tầm bắn (Tầm bắn của con này rất xa tận 20m), 
+                // Nó vẫn phải giữ vị trí đi theo đúng Slot ô hàng của FormationManager thay vì đứng im tại chỗ!
+                vanTocMongMuon = TinhVanTocDoiHinh(lucGianCachHienTai);
 
                 if (HoiChieu <= Time.time && !isShooting)
                 {
@@ -132,6 +134,7 @@ public class NhanVat2 : MonoBehaviour
         }
         else
         {
+            // Không có địch: Hành quân bình thường theo hàng lối
             vanTocMongMuon = TinhVanTocDoiHinh(lucGianCachHienTai);
         }
 
@@ -173,6 +176,7 @@ public class NhanVat2 : MonoBehaviour
             if (_buffer[i].gameObject == gameObject) continue;
             if (_buffer[i].name.Contains("servitor")) continue;
 
+            // Tính lực đẩy nhẹ để các lính không dẫm đè lên nhau
             Vector2 huong = (Vector2)transform.position - (Vector2)_buffer[i].transform.position;
             float kc = huong.magnitude;
 
@@ -189,7 +193,6 @@ public class NhanVat2 : MonoBehaviour
     {
         isShooting = true;
 
-        // Đảm bảo cập nhật ngay lập tức các parameter của animator tại đây
         if (anim != null)
         {
             anim.SetBool("Khogark_isMoving", false);
@@ -230,12 +233,9 @@ public class NhanVat2 : MonoBehaviour
                     if (script != null) { script.satThuong = satThuong; script.KichHoatVienDan(); }
                 }
             }
-
-            // Thời gian chờ giãn cách giữa từng viên trong loạt bắn
             yield return new WaitForSeconds(0.1f);
         }
 
-        // Bắn xong một loạt, chờ thêm một chút (nếu cần) trước khi tắt hẳn trạng thái bắn để animation kịp diễn ra
         yield return new WaitForSeconds(0.15f);
 
         if (anim != null) anim.SetBool("Khogark_isShooting", false);
@@ -247,40 +247,55 @@ public class NhanVat2 : MonoBehaviour
     {
         if (ThayDich != null && ThayDich.gameObject.activeInHierarchy && !KiemTraDichDaChet(ThayDich.gameObject))
         {
-            if (Vector2.Distance(transform.position, ThayDich.position) <= TamBan) return;
+            if (ThayDich.gameObject.name.Contains("Chao_boss") || ThayDich.GetComponent<BossController>() != null)
+            {
+                if (Vector2.Distance(transform.position, ThayDich.position) <= TamBan) return;
+            }
         }
 
-        if (EnemyManager.Instance == null || EnemyManager.Instance.danhSachDich == null) return;
+        GameObject[] tatCaKeThu = GameObject.FindGameObjectsWithTag("Enemy");
+        GameObject bestQuaiNho = null;
+        GameObject bestBoss = null;
+        float bestDistQuaiNho = TamBan;
+        float bestDistBoss = TamBan;
 
-        List<GameObject> danhSachTrongTam = new List<GameObject>();
-        foreach (var q in EnemyManager.Instance.danhSachDich)
+        foreach (var q in tatCaKeThu)
         {
             if (q == null || !q.activeInHierarchy || KiemTraDichDaChet(q)) continue;
 
             float kc = Vector2.Distance(transform.position, q.transform.position);
-            if (kc <= TamBan) danhSachTrongTam.Add(q);
+
+            if (kc <= TamBan)
+            {
+                if (q.name.Contains("Chao_boss") || q.GetComponent<BossController>() != null)
+                {
+                    if (kc < bestDistBoss)
+                    {
+                        bestDistBoss = kc;
+                        bestBoss = q;
+                    }
+                }
+                else
+                {
+                    if (kc < bestDistQuaiNho)
+                    {
+                        bestDistQuaiNho = kc;
+                        bestQuaiNho = q;
+                    }
+                }
+            }
         }
 
-        if (danhSachTrongTam.Count > 0)
-        {
-            ThayDich = danhSachTrongTam[Random.Range(0, danhSachTrongTam.Count)].transform;
-        }
+        if (bestBoss != null) ThayDich = bestBoss.transform;
+        else if (bestQuaiNho != null) ThayDich = bestQuaiNho.transform;
         else ThayDich = null;
     }
 
     private bool KiemTraDichDaChet(GameObject keThich)
     {
         Health_chaos mauQuai = keThich.GetComponent<Health_chaos>();
-        if (mauQuai != null)
-        {
-            return mauQuai.Deadre;
-        }
-
-        if (keThich.CompareTag("Untagged"))
-        {
-            return true;
-        }
-
+        if (mauQuai != null) return mauQuai.Deadre;
+        if (keThich.CompareTag("Untagged")) return true;
         return false;
     }
 
@@ -308,7 +323,16 @@ public class NhanVat2 : MonoBehaviour
         }
     }
 
-    int GetRank() => loaiHinhDonVi switch { LoaiLinh.Titan => 0, LoaiLinh.KhoGrak => 1, LoaiLinh.IronStorm => 2, LoaiLinh.Terminator => 3, LoaiLinh.DeadIron => 4, _ => -1 };
+    // 🎯 ĐÃ SỬA CHUẨN XÁC: Đồng bộ chỉ số Rank với FormationManager
+    int GetRank() => loaiHinhDonVi switch
+    {
+        LoaiLinh.KhoGrak => 0,
+        LoaiLinh.IronStorm => 1,
+        LoaiLinh.Terminator => 2,
+        LoaiLinh.DeadIron => 3,
+        LoaiLinh.Titan => 4,
+        _ => -1
+    };
 
     void OnDisable()
     {

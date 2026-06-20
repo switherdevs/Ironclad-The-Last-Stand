@@ -289,6 +289,7 @@ public class ChaosDirector : MonoBehaviour
             else if (tienTrinh >= 50f && tienTrinh < 70f)
             {
                 yield return StartCoroutine(AloloGoiKhoRaQuaiToiUu(prefabZealot));
+                yield return StartCoroutine(AloloGoiKhoRaQuaiToiUu(prefabZealot));
                 yield return StartCoroutine(AloloGoiKhoRaQuaiToiUu(prefabMarine_Sword));
                 yield return StartCoroutine(AloloGoiKhoRaQuaiToiUu(prefabMarine));
                 yield return new WaitForSeconds(ThoiGianSpawn_gd2);
@@ -302,6 +303,7 @@ public class ChaosDirector : MonoBehaviour
                     TangQuai(1);
                 }
 
+                yield return StartCoroutine(AloloGoiKhoRaQuaiToiUu(prefabZealot));
                 yield return StartCoroutine(AloloGoiKhoRaQuaiToiUu(prefabZealot));
                 yield return StartCoroutine(AloloGoiKhoRaQuaiToiUu(prefabZealot));
                 yield return StartCoroutine(AloloGoiKhoRaQuaiToiUu(prefabMarine_Sword));

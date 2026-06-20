@@ -21,7 +21,7 @@ public class BossController : MonoBehaviour
     [Header("--- SKILLS POOL ---")]
     [Tooltip("Thêm các file ScriptableObject Skill vào danh sách này (Skill 1, Skill 2, Skill 3...)")]
     [SerializeField] private List<BossSkill> availableSkills = new List<BossSkill>();
-
+    private Health_chaos Heal;
     private BossSkill currentActiveSkill;
 
     // Lưu trữ lịch sử sử dụng kỹ năng để chạy thuật toán Anti-Repeat System
@@ -37,6 +37,7 @@ public class BossController : MonoBehaviour
 
     private void Awake()
     {
+        Heal = GetComponent<Health_chaos>();
         animator = GetComponentInChildren<Animator>();
         rb = GetComponent<Rigidbody2D>();
         ConfigurePhysics();
@@ -50,6 +51,7 @@ public class BossController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (Heal.Deadre) return;
         if (currentState == BossState.Dead || rb == null) return;
 
         if (rb.IsSleeping()) rb.WakeUp();

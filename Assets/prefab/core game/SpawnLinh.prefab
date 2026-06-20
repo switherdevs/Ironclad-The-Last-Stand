@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4533223056217654191}
   - component: {fileID: 7932048368006585064}
-  - component: {fileID: 8346067153233895861}
+  - component: {fileID: 7200701640994751168}
   m_Layer: 0
   m_Name: SpawnLinh
   m_TagString: Untagged
@@ -66,9 +66,9 @@ MonoBehaviour:
   slotIronStormMarine: 2
   stormTerminatorPrefab: {fileID: 3998876897299777512, guid: 06646f5b4db6f964cb61ef691d9ad500, type: 3}
   slotStormTerminator: 5
-  ironDreadWalkerPrefab: {fileID: 8067533523777300197, guid: 035fc219a64d5d4459797a2f92216a80, type: 3}
+  ironDreadWalkerPrefab: {fileID: 8067533523777300197, guid: 04be71437ee3a10419d4c473586d1aa8, type: 3}
   slotIronDreadWalker: 10
-  dominiconTitanPrefab: {fileID: 1044933436625295600, guid: 260f358ea6f39f34ba0826f084dd1a25, type: 3}
+  dominiconTitanPrefab: {fileID: 1044933436625295600, guid: 122afc31788817747a462c7fa5c7af99, type: 3}
   slotDominiconTitan: 20
   speedup: 0
   Amthanh: {fileID: 0}
@@ -78,7 +78,7 @@ MonoBehaviour:
   Ter: {fileID: 8300000, guid: 85aaad4b7d26f154ba4155977ce86a34, type: 3}
   DeadIron: {fileID: 8300000, guid: 927ebe5ae48d09f4098b4ce417b3623e, type: 3}
   Titan: {fileID: 8300000, guid: 20c23b6128f3c9d4a808bd2a5083d79e, type: 3}
---- !u!82 &8346067153233895861
+--- !u!82 &7200701640994751168
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -87,9 +87,9 @@ AudioSource:
   m_GameObject: {fileID: 6586124624548711824}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 2263520567922812711, guid: 79eb42bb6092979409f8e371476274cf, type: 2}
   m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 8300000, guid: a1123140c2c1a664f881bdccc9226d49, type: 3}
+  m_Resource: {fileID: 8300000, guid: 88ce0627c28746c4d939b85ed4b00bf9, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1

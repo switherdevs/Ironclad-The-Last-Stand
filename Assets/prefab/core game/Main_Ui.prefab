@@ -258,9 +258,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7932048368006585064, guid: fb48637ac264e48468e2c25b4497955a, type: 3}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: SpawnLinh, Assembly-CSharp
-        m_MethodName: SpawnStormTerminator
+        m_MethodName: 
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -667,6 +667,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8666982643205944591}
   - component: {fileID: 7748600670693779627}
+  - component: {fileID: 6919061600627869791}
   m_Layer: 0
   m_Name: Paugame_Ui
   m_TagString: Untagged
@@ -737,7 +738,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 150
+  m_SortingOrder: 140
   m_Sprite: {fileID: -1253802238601966064, guid: c9afff96a0c284647b45b603b475cc5f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -749,6 +750,18 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!210 &6919061600627869791
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 757940030649146540}
+  m_Enabled: 1
+  m_SortingLayerID: 555874285
+  m_SortingLayer: 1
+  m_SortingOrder: 140
+  m_SortAtRoot: 0
 --- !u!1 &808282990106625527
 GameObject:
   m_ObjectHideFlags: 0
@@ -898,6 +911,7 @@ GameObject:
   - component: {fileID: 8131976127114622723}
   - component: {fileID: 4681997211074882353}
   - component: {fileID: 1849733291057023289}
+  - component: {fileID: 1667443462628199816}
   m_Layer: 5
   m_Name: NextMap
   m_TagString: Untagged
@@ -1019,6 +1033,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!210 &1667443462628199816
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1057816584270152680}
+  m_Enabled: 1
+  m_SortingLayerID: 555874285
+  m_SortingLayer: 1
+  m_SortingOrder: 170
+  m_SortAtRoot: 0
 --- !u!1 &1106336324636347197
 GameObject:
   m_ObjectHideFlags: 0
@@ -2012,9 +2038,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7932048368006585064, guid: fb48637ac264e48468e2c25b4497955a, type: 3}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: SpawnLinh, Assembly-CSharp
-        m_MethodName: SpawnKhograkGuard
+        m_MethodName: 
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2161,6 +2187,93 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!1 &2371894867146790243
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6183622570894610804}
+  - component: {fileID: 4473013301174959881}
+  m_Layer: 0
+  m_Name: Ui_Command_0
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &6183622570894610804
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2371894867146790243}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -556.4915, y: -352.86145, z: 0}
+  m_LocalScale: {x: 40, y: 40, z: 40}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 4066628229280315197}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!212 &4473013301174959881
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2371894867146790243}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 155
+  m_Sprite: {fileID: 9022335612504863286, guid: a0768ee6000b6e04e872e19468ce2ca7, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 16.9, y: 6.02}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
 --- !u!1 &2394682051645712584
 GameObject:
   m_ObjectHideFlags: 0
@@ -2336,6 +2449,7 @@ RectTransform:
   - {fileID: 8666982643205944591}
   - {fileID: 6153046139319322815}
   - {fileID: 6426867602546420930}
+  - {fileID: 6183622570894610804}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -2364,7 +2478,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 150
+  m_SortingOrder: 140
   m_TargetDisplay: 0
 --- !u!114 &1308783667362532200
 MonoBehaviour:
@@ -2614,9 +2728,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7932048368006585064, guid: fb48637ac264e48468e2c25b4497955a, type: 3}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: SpawnLinh, Assembly-CSharp
-        m_MethodName: SpawnDominiconTitan
+        m_MethodName: 
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3445,6 +3559,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2567164548634059084}
+  - component: {fileID: 5158625199022305145}
   m_Layer: 5
   m_Name: GameOver
   m_TagString: Untagged
@@ -3474,6 +3589,18 @@ RectTransform:
   m_AnchoredPosition: {x: -24.896702, y: -92.202194}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!210 &5158625199022305145
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4021063369656886588}
+  m_Enabled: 1
+  m_SortingLayerID: 555874285
+  m_SortingLayer: 1
+  m_SortingOrder: 150
+  m_SortAtRoot: 0
 --- !u!1 &4092083183665497329
 GameObject:
   m_ObjectHideFlags: 0
@@ -4032,6 +4159,7 @@ GameObject:
   - component: {fileID: 8189206782036956659}
   - component: {fileID: 6311316694372786111}
   - component: {fileID: 2247132574970909424}
+  - component: {fileID: 8550072331560302995}
   m_Layer: 5
   m_Name: MainMenu
   m_TagString: Untagged
@@ -4153,6 +4281,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!210 &8550072331560302995
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4880087616007652485}
+  m_Enabled: 1
+  m_SortingLayerID: 555874285
+  m_SortingLayer: 1
+  m_SortingOrder: 170
+  m_SortAtRoot: 0
 --- !u!1 &4888869173036362056
 GameObject:
   m_ObjectHideFlags: 0
@@ -4165,6 +4305,7 @@ GameObject:
   - component: {fileID: 2424496698749754739}
   - component: {fileID: 2960451928120137338}
   - component: {fileID: 7189930704399148911}
+  - component: {fileID: 654580684662645215}
   m_Layer: 5
   m_Name: veMenu
   m_TagString: Untagged
@@ -4286,6 +4427,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!210 &654580684662645215
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4888869173036362056}
+  m_Enabled: 1
+  m_SortingLayerID: 555874285
+  m_SortingLayer: 1
+  m_SortingOrder: 150
+  m_SortAtRoot: 0
 --- !u!1 &5113336699609220231
 GameObject:
   m_ObjectHideFlags: 0
@@ -4681,9 +4834,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7932048368006585064, guid: fb48637ac264e48468e2c25b4497955a, type: 3}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: SpawnLinh, Assembly-CSharp
-        m_MethodName: SpawnIronStormMarine
+        m_MethodName: 
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5913,9 +6066,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7932048368006585064, guid: fb48637ac264e48468e2c25b4497955a, type: 3}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: SpawnLinh, Assembly-CSharp
-        m_MethodName: Sevitor
+        m_MethodName: 
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5935,6 +6088,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5617229240296173851}
   - component: {fileID: 8933256807034251788}
+  - component: {fileID: 5393291194105853089}
   m_Layer: 5
   m_Name: backGround
   m_TagString: Untagged
@@ -6005,7 +6159,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 150
+  m_SortingOrder: 140
   m_Sprite: {fileID: 7796090427810659363, guid: 7b7d4a5b40260b74f8bf6a0ceb9ee628, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -6017,6 +6171,18 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!210 &5393291194105853089
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6604036175006816678}
+  m_Enabled: 1
+  m_SortingLayerID: 555874285
+  m_SortingLayer: 1
+  m_SortingOrder: 150
+  m_SortAtRoot: 0
 --- !u!1 &6631752027837121046
 GameObject:
   m_ObjectHideFlags: 0
@@ -6432,6 +6598,7 @@ GameObject:
   - component: {fileID: 934798048595372714}
   - component: {fileID: 605220610290219151}
   - component: {fileID: 8873324209958043823}
+  - component: {fileID: 8089321165801467865}
   m_Layer: 5
   m_Name: Stand again
   m_TagString: Untagged
@@ -6553,6 +6720,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!210 &8089321165801467865
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7144568002857144803}
+  m_Enabled: 1
+  m_SortingLayerID: 555874285
+  m_SortingLayer: 1
+  m_SortingOrder: 150
+  m_SortAtRoot: 0
 --- !u!1 &7351470090365703795
 GameObject:
   m_ObjectHideFlags: 0
@@ -6640,6 +6819,7 @@ GameObject:
   - component: {fileID: 1200710164908660967}
   - component: {fileID: 817404952475682799}
   - component: {fileID: 7763734474126458158}
+  - component: {fileID: 6973051896308870379}
   m_Layer: 5
   m_Name: Update
   m_TagString: Untagged
@@ -6761,6 +6941,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!210 &6973051896308870379
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7465753498532884819}
+  m_Enabled: 1
+  m_SortingLayerID: 555874285
+  m_SortingLayer: 1
+  m_SortingOrder: 170
+  m_SortAtRoot: 0
 --- !u!1 &7469403556901325642
 GameObject:
   m_ObjectHideFlags: 0
@@ -6863,6 +7055,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4634384863198910542}
   - component: {fileID: 7344030198050818571}
+  - component: {fileID: 2761263983088939186}
   m_Layer: 5
   m_Name: Background
   m_TagString: Untagged
@@ -6932,7 +7125,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 150
+  m_SortingOrder: 170
   m_Sprite: {fileID: -3141960736632533033, guid: 66eed9c41cbb13146b5a50a3514d93a4, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -6944,6 +7137,18 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!210 &2761263983088939186
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7472648652770477333}
+  m_Enabled: 1
+  m_SortingLayerID: 555874285
+  m_SortingLayer: 1
+  m_SortingOrder: 170
+  m_SortAtRoot: 0
 --- !u!1 &7651038456165306052
 GameObject:
   m_ObjectHideFlags: 0
@@ -7646,6 +7851,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6426867602546420930}
+  - component: {fileID: 3643214756691224460}
   m_Layer: 5
   m_Name: Wingame
   m_TagString: Untagged
@@ -7673,9 +7879,21 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.000038594007, y: -0}
+  m_AnchoredPosition: {x: 0.000038594007, y: -58}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!210 &3643214756691224460
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8606538555424027756}
+  m_Enabled: 1
+  m_SortingLayerID: 555874285
+  m_SortingLayer: 1
+  m_SortingOrder: 170
+  m_SortAtRoot: 0
 --- !u!1 &8754074724618419844
 GameObject:
   m_ObjectHideFlags: 0
@@ -8017,9 +8235,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7932048368006585064, guid: fb48637ac264e48468e2c25b4497955a, type: 3}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: SpawnLinh, Assembly-CSharp
-        m_MethodName: SpawnStormTerminator
+        m_MethodName: 
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

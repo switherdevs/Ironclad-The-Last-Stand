@@ -118,8 +118,8 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0.68, y: 3.23}
-  m_Size: {x: 2.92, y: 5.56}
+  m_Offset: {x: -0.5648588, y: 3.2300003}
+  m_Size: {x: 2.7503028, y: 5.5600004}
   m_Direction: 0
 --- !u!114 &7067758908118674617
 MonoBehaviour:
@@ -135,11 +135,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bangSatThuongChung: {fileID: 11400000, guid: a60a65e6a8b057b4ea1e9fc841c3d9bc, type: 2}
   ThanhMau: {fileID: 6231448359198395928}
-  maxHP: 80000
+  maxHP: 3000000
   Animationdead: 99999
   tenAnimationChet: die_ter_chaos
   prefabPopupSatThuong: {fileID: 3638261266717980917, guid: 3b6786f6b44be624c8cc3efc99707eaa, type: 3}
-  spritel: {fileID: 3638261266717980917, guid: 3b6786f6b44be624c8cc3efc99707eaa, type: 3}
+  spritel: {fileID: -8653719598885068355, guid: a8d08dadc641cdb4aa6e433088858584, type: 3}
   Deadre: 0
   Dead: {fileID: 8300000, guid: c8afcac33773304458db1c73443dff99, type: 3}
 --- !u!82 &1983692053359618619
@@ -151,7 +151,7 @@ AudioSource:
   m_GameObject: {fileID: 1081199852648897285}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 9120607623054430816, guid: 79eb42bb6092979409f8e371476274cf, type: 2}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: c8afcac33773304458db1c73443dff99, type: 3}
   m_PlayOnAwake: 0
@@ -899,6 +899,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -8653719598885068355, guid: a8d08dadc641cdb4aa6e433088858584, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4021912787579793200}
+    - targetCorrespondingSourceObject: {fileID: -8653719598885068355, guid: a8d08dadc641cdb4aa6e433088858584, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5090141864798360032}
   m_SourcePrefab: {fileID: 4843985084834002234, guid: a8d08dadc641cdb4aa6e433088858584, type: 3}
 --- !u!4 &2817419376522432373 stripped
 Transform:
@@ -932,3 +935,15 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!210 &5090141864798360032
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4022103875625899798}
+  m_Enabled: 1
+  m_SortingLayerID: 555874285
+  m_SortingLayer: 1
+  m_SortingOrder: 70
+  m_SortAtRoot: 0

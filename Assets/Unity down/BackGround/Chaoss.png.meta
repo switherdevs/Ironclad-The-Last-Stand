@@ -1,0 +1,467 @@
+fileFormatVersion: 2
+guid: f89b2c9a9926ac14f9dd5b4ad06bf937
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -7292338644264779393
+    second: Chaoss_0
+  - first:
+      213: 4071589328878753821
+    second: Chaoss_1
+  - first:
+      213: -6450186510927881955
+    second: Chaoss_2
+  - first:
+      213: 3617156610335792089
+    second: Chaoss_3
+  - first:
+      213: -7130838103089258363
+    second: Chaoss_4
+  - first:
+      213: -134841037487090150
+    second: Chaoss_5
+  - first:
+      213: 1443535066626557524
+    second: Chaoss_6
+  - first:
+      213: 7142553001934195129
+    second: Chaoss_7
+  - first:
+      213: -8361640973649135857
+    second: Chaoss_8
+  - first:
+      213: 2627307262768377877
+    second: Chaoss_9
+  - first:
+      213: -2235838379959183868
+    second: Chaoss_10
+  - first:
+      213: 6257761131136703101
+    second: Chaoss_11
+  - first:
+      213: 3447648399373130175
+    second: Chaoss_12
+  - first:
+      213: 4253408478650295813
+    second: Chaoss_13
+  - first:
+      213: -6591145914931934251
+    second: Chaoss_14
+  - first:
+      213: 1084126099892779981
+    second: Chaoss_15
+  - first:
+      213: -4863115717339280069
+    second: Chaoss_16
+  - first:
+      213: 1017113724814828092
+    second: Chaoss_17
+  - first:
+      213: 1042059291913284165
+    second: Chaoss_18
+  - first:
+      213: -3506807895964464022
+    second: Chaoss_19
+  - first:
+      213: -4977847759867574987
+    second: Chaoss_20
+  - first:
+      213: -1209787894984909616
+    second: Chaoss_21
+  - first:
+      213: 3788860850591962489
+    second: Chaoss_22
+  - first:
+      213: 8121210796148192778
+    second: Chaoss_23
+  - first:
+      213: -6639458540656647969
+    second: Chaoss_24
+  - first:
+      213: -3641126577403082377
+    second: Chaoss_25
+  - first:
+      213: 4837050384552661609
+    second: Chaoss_26
+  - first:
+      213: -8363877742015652641
+    second: Chaoss_27
+  - first:
+      213: -3889875512065614840
+    second: Chaoss_28
+  - first:
+      213: 8487307745022548367
+    second: Chaoss_29
+  - first:
+      213: 6989523605524935441
+    second: Chaoss_30
+  - first:
+      213: -5525101556435434254
+    second: Chaoss_31
+  - first:
+      213: -6842185196474123626
+    second: Chaoss_32
+  - first:
+      213: 1712656699430653479
+    second: Chaoss_33
+  - first:
+      213: 2785572482409100111
+    second: Chaoss_34
+  - first:
+      213: 2751043650267320967
+    second: Chaoss_35
+  - first:
+      213: -1756008973981859893
+    second: Chaoss_36
+  - first:
+      213: -1490096730563612524
+    second: Chaoss_37
+  - first:
+      213: 5528177644980616666
+    second: Chaoss_38
+  - first:
+      213: 429729271737313826
+    second: Chaoss_39
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Chaoss_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 384
+        width: 275
+        height: 384
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f718eb6b3a86cca90800000000000000
+      internalID: -7292338644264779393
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Chaoss_1
+      rect:
+        serializedVersion: 2
+        x: 275
+        y: 384
+        width: 275
+        height: 384
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d18d6132ce0318830800000000000000
+      internalID: 4071589328878753821
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Chaoss_2
+      rect:
+        serializedVersion: 2
+        x: 550
+        y: 384
+        width: 275
+        height: 384
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d199029fa855c76a0800000000000000
+      internalID: -6450186510927881955
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Chaoss_3
+      rect:
+        serializedVersion: 2
+        x: 825
+        y: 384
+        width: 275
+        height: 384
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9db5508c5c8b23230800000000000000
+      internalID: 3617156610335792089
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Chaoss_4
+      rect:
+        serializedVersion: 2
+        x: 1100
+        y: 384
+        width: 275
+        height: 384
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5806b8aa68c2a0d90800000000000000
+      internalID: -7130838103089258363
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Chaoss_5
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 275
+        height: 384
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a16df637ac2f02ef0800000000000000
+      internalID: -134841037487090150
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Chaoss_6
+      rect:
+        serializedVersion: 2
+        x: 275
+        y: 0
+        width: 275
+        height: 384
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4568813be77780410800000000000000
+      internalID: 1443535066626557524
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Chaoss_7
+      rect:
+        serializedVersion: 2
+        x: 550
+        y: 0
+        width: 254
+        height: 384
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9b900b5cc127f1360800000000000000
+      internalID: 7142553001934195129
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Chaoss_8
+      rect:
+        serializedVersion: 2
+        x: 825
+        y: 0
+        width: 275
+        height: 384
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f07ba4a16db75fb80800000000000000
+      internalID: -8361640973649135857
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Chaoss_9
+      rect:
+        serializedVersion: 2
+        x: 1131
+        y: 2
+        width: 243
+        height: 384
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 510fc111902167420800000000000000
+      internalID: 2627307262768377877
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 91274df3675b940499e28141d29a34bd
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Chaoss_0: -7292338644264779393
+      Chaoss_1: 4071589328878753821
+      Chaoss_2: -6450186510927881955
+      Chaoss_3: 3617156610335792089
+      Chaoss_4: -7130838103089258363
+      Chaoss_5: -134841037487090150
+      Chaoss_6: 1443535066626557524
+      Chaoss_7: 7142553001934195129
+      Chaoss_8: -8361640973649135857
+      Chaoss_9: 2627307262768377877
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

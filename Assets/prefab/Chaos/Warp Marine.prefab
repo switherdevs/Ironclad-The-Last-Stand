@@ -545,7 +545,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 12
-  attackRange: 150
+  attackRange: 175
   leftMoveBias: 0.6
   detectionRange: 90
   normalHP: 20
@@ -575,13 +575,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bangSatThuongChung: {fileID: 11400000, guid: a60a65e6a8b057b4ea1e9fc841c3d9bc, type: 2}
   ThanhMau: {fileID: 5635992745966958847}
-  maxHP: 450
+  maxHP: 750
   Animationdead: 3
   tenAnimationChet: dead_warps
   prefabPopupSatThuong: {fileID: 3638261266717980917, guid: 3b6786f6b44be624c8cc3efc99707eaa, type: 3}
   spritel: {fileID: 4830508459913615557}
   Deadre: 0
-  Dead: {fileID: 0}
+  Dead: {fileID: 8300000, guid: 2ce31a73c895e904cbe423ff640af5b6, type: 3}
 --- !u!82 &3072783666709260034
 AudioSource:
   m_ObjectHideFlags: 0
@@ -921,6 +921,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -8653719598885068355, guid: 8a0e8ec93fe9d334787120dd9de85b47, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3143073471718767253}
+    - targetCorrespondingSourceObject: {fileID: -8653719598885068355, guid: 8a0e8ec93fe9d334787120dd9de85b47, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3000316391717000996}
   m_SourcePrefab: {fileID: 4843985084834002234, guid: 8a0e8ec93fe9d334787120dd9de85b47, type: 3}
 --- !u!1 &4830508459913615557 stripped
 GameObject:
@@ -949,6 +952,18 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!210 &3000316391717000996
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4830508459913615557}
+  m_Enabled: 1
+  m_SortingLayerID: 555874285
+  m_SortingLayer: 1
+  m_SortingOrder: 30
+  m_SortAtRoot: 0
 --- !u!4 &6035228177614291110 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -7552582706839291426, guid: 8a0e8ec93fe9d334787120dd9de85b47, type: 3}

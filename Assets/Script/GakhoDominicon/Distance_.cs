@@ -2,176 +2,281 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// FormationManager — Quản lý đội hình ma trận cho tất cả lính (trừ Servitor).
-/// Đã tối ưu hóa thuật toán chia hàng/cột so le và dọn sạch code thừa.
+/// Quản lý đội hình ma trận động:
+/// Tự động xếp lính theo các hàng dọc dựa vào cấu hình từng lớp nhân vật,
+/// Có cơ chế tự động dồn hàng lên phía trước khi hàng trước chết sạch (Stick War style).
 /// </summary>
 public class FormationManager : MonoBehaviour
 {
     public static FormationManager Instance { get; private set; }
 
     [System.Serializable]
-    public class RankConfig
+    public class CauHinhLopLinh
     {
-        public string tenLoai;      // Tên loại lính (Ví dụ: Titan, KhoGrak...)
-        public int rank;            // Chỉ số Rank tương ứng (0, 1, 2, 3...)
-        public int maxPerColumn;    // Số quân tối đa trên một cột dọc trước khi lùi sang cột mới
-        public float xOffset;       // Khoảng cách lùi mặc định của lớp lính này (trục X âm)
+        public string tenLoaiLinh;         // Tên chủng lính để hiển thị (Titan, KhoGrak...)
+        public int capBacRank;             // Chỉ số phân lớp (0, 1, 2, 3...)
+        public float doLuiXMacDinh;        // Khoảng cách lùi mặc định ban đầu của lớp lính này (trục X âm)
+        public int soLuongHangToiDa = 6;   // Số lính tối đa trên 1 hàng của lớp này
     }
 
     [Header("--- CẤU HÌNH TỪNG LOẠI LÍNH ---")]
-    public RankConfig[] rankConfigs = new RankConfig[]
+    public CauHinhLopLinh[] danhSachCauHinh = new CauHinhLopLinh[]
     {
-        // Khoảng cách xOffset đã được tối ưu giãn cách xa nhau để các lớp lính không dẫm lên nhau
-        new RankConfig { tenLoai = "Titan",      rank = 4, maxPerColumn = 2,  xOffset =  0f   },
-        new RankConfig { tenLoai = "KhoGrak",    rank = 0, maxPerColumn = 5,  xOffset = -3.5f },
-        new RankConfig { tenLoai = "IronStorm",  rank = 1, maxPerColumn = 5,  xOffset = -7.0f },
-        new RankConfig { tenLoai = "Terminator", rank = 2, maxPerColumn = 5,  xOffset = -10.5f},
-        new RankConfig { tenLoai = "DeadIron",   rank = 3, maxPerColumn = 4,  xOffset = -14.0f },
+        new CauHinhLopLinh { tenLoaiLinh = "Titan",      capBacRank = 4, doLuiXMacDinh =  0f,   soLuongHangToiDa = 6 },
+        new CauHinhLopLinh { tenLoaiLinh = "KhoGrak",    capBacRank = 0, doLuiXMacDinh = -4.0f, soLuongHangToiDa = 6 },
+        new CauHinhLopLinh { tenLoaiLinh = "IronStorm",  capBacRank = 1, doLuiXMacDinh = -8.0f, soLuongHangToiDa = 6 },
+        new CauHinhLopLinh { tenLoaiLinh = "Terminator", capBacRank = 2, doLuiXMacDinh = -12.0f,soLuongHangToiDa = 6 },
+        new CauHinhLopLinh { tenLoaiLinh = "DeadIron",   capBacRank = 3, doLuiXMacDinh = -16.0f,soLuongHangToiDa = 6 },
     };
 
-    [Header("--- CÀI ĐẶT GIÃN CÁCH CHUNG ---")]
-    [Tooltip("Vị trí trục X của hàng đầu tiên (gần địch nhất)")]
-    public float baseX = -2f; //
+    [Header("--- THIẾT LẬP KÍCH THƯỚC ĐỘI HÌNH ---")]
+    public float toaDoXHangDau = -2f;         // Vị trí X của hàng đầu tiên tiên phong
+    public float toaDoYTrungTam = -1.5f;       // Tâm đường biên ngang đội hình dọc Y
+    public float gianCachDocY = 1.2f;          // Khoảng cách giữa các lính trong cùng một hàng dọc
+    public float gianCachNgangX = 2.5f;        // Khoảng cách giữa hàng trước và hàng sau
+    public float tocDoDiChuyenVeSlot = 5.0f;   // Tốc độ di chuyển mượt của lính về ô
+    public float saiSoDichDen = 0.15f;         // Ngưỡng dừng để triệt tiêu dao động giật giật
 
-    [Tooltip("Trục Y trung tâm của đội hình (giữa làn đường chạy)")]
-    public float centerY = -1.5f; //
-
-    [Tooltip("Khoảng cách dọc giữa các con lính trong cùng một cột (Tăng lên để không bị chồng Sprite)")]
-    public float spacingY = 2.5f; // Đã tối ưu lên 2.5 để lính không đè đầu cưỡi cổ nhau
-
-    [Tooltip("Khoảng lùi về sau (trục X) khi lính đầy cột và tràn sang cột thứ 2, thứ 3...")]
-    public float columnDepthSpacing = 2.5f; // Đã tối ưu lên 2.5 để các hàng dọc cách xa nhau rõ ràng
-
-    [Tooltip("Tốc độ lính di chuyển tịnh tiến về vị trí ô slot")]
-    public float snapSpeed = 5.0f;
-
-    [Tooltip("Khoảng cách tối thiểu để coi như lính đã đứng đúng vị trí")]
-    public float arrivalThreshold = 0.15f;
-
-    // ── Dữ liệu quản lý Slot nội bộ ──────────────────────────────────────────────
-    private class Slot
+    // Lớp nội bộ biểu diễn trạng thái của một ô quân trong ma trận dọc
+    private class ODoQuan
     {
-        public Vector2 position;
-        public int instanceID; // 0 = Slot đang trống
+        public int hangNgangThuMay;     // Chỉ số hàng hiện tại sau khi dồn (0 = hàng đầu, 1 = hàng sau...)
+        public int viTriTrongHang;      // Vị trí đứng trong hàng đó (0 -> soLuongHangToiDa - 1)
+        public int instanceID;          // ID của Instance lính đang giữ ô này (0 nếu ô trống)
+        public Vector2 toaDoGocKhaiSinh;// Vị trí tính toán gốc ban đầu
     }
 
-    private readonly Dictionary<int, List<Slot>> _slots = new Dictionary<int, List<Slot>>();
-    private readonly Dictionary<int, Slot> _unitSlot = new Dictionary<int, Slot>();
-    private readonly Dictionary<int, RankConfig> _cfgMap = new Dictionary<int, RankConfig>();
+    // Bộ nhớ quản lý dữ liệu linh hoạt bằng Dictionary để tăng tốc độ truy xuất
+    private readonly Dictionary<int, List<ODoQuan>> _khoOQuanTheoRank = new Dictionary<int, List<ODoQuan>>();
+    private readonly Dictionary<int, ODoQuan> _linhNaoOAnDo = new Dictionary<int, ODoQuan>();
+    private readonly Dictionary<int, CauHinhLopLinh> _soDoCauHinh = new Dictionary<int, CauHinhLopLinh>();
 
     void Awake()
     {
-        if (Instance != null && Instance != this) { Destroy(gameObject); return; } //
-        Instance = this; //
-
-        foreach (var cfg in rankConfigs) //
+        if (Instance != null && Instance != this)
         {
-            _cfgMap[cfg.rank] = cfg; //
-            _slots[cfg.rank] = new List<Slot>(); //
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
+
+        // Khởi tạo sơ đồ cấu hình dữ liệu tĩnh ban đầu
+        foreach (var cauHinh in danhSachCauHinh)
+        {
+            _soDoCauHinh[cauHinh.capBacRank] = cauHinh;
+            _khoOQuanTheoRank[cauHinh.capBacRank] = new List<ODoQuan>();
         }
     }
 
-    // ── Public API Điều khiển Đội Hình ───────────────────────────────────────────────────
+    // ── PUBLIC API ĐIỀU KHIỂN XẾP HÀNG ───────────────────────────────────────────────────
 
     /// <summary>
-    /// Đăng ký lính vào hệ thống slot ngay khi vừa được sinh ra
+    /// Đăng ký một con lính mới xuất hiện vào hệ thống ma trận đội hình
     /// </summary>
     public bool Register(GameObject go, int rank)
     {
-        int id = go.GetInstanceID(); //
-        if (_unitSlot.ContainsKey(id)) return true; //
-        if (!_cfgMap.TryGetValue(rank, out RankConfig cfg)) return false; //
+        if (go == null) return false;
+        int idLinh = go.GetInstanceID();
 
-        List<Slot> slots = _slots[cfg.rank]; //
+        // Nếu lính đã đăng ký rồi thì không xử lý trùng lặp
+        if (_linhNaoOAnDo.ContainsKey(idLinh)) return true;
 
-        // 1. Tìm xem có slot cũ nào đang trống (do lính đứng trước đó vừa chết) để điền vào không
-        Slot slot = null; //
-        foreach (var s in slots) //
+        if (!_soDoCauHinh.TryGetValue(rank, out CauHinhLopLinh ch)) return false;
+
+        List<ODoQuan> danhSachOQuan = _khoOQuanTheoRank[ch.capBacRank];
+        ODoQuan oTrongTimThay = null;
+
+        // Tìm một ô trống cũ (lính trước đó đã chết giải phóng) để tái sử dụng
+        foreach (var oQuan in danhSachOQuan)
         {
-            if (s.instanceID == 0) { slot = s; break; } //
+            if (oQuan.instanceID == 0)
+            {
+                oTrongTimThay = oQuan;
+                break;
+            }
         }
 
-        // 2. Nếu không có slot trống, tính toán tạo thêm một Slot hoàn toàn mới ở rìa đội hình
-        if (slot == null) //
+        // Nếu không tìm thấy ô trống cũ, sinh ra ô mới ở hàng sau
+        if (oTrongTimThay == null)
         {
-            slot = new Slot { position = CalcPosition(cfg, slots.Count) }; //
-            slots.Add(slot); //
+            int tongSoOAnhEm = danhSachOQuan.Count;
+            int hangDuKien = tongSoOAnhEm / ch.soLuongHangToiDa;
+            int viTriDuKien = tongSoOAnhEm % ch.soLuongHangToiDa;
+
+            oTrongTimThay = new ODoQuan
+            {
+                hangNgangThuMay = hangDuKien,
+                viTriTrongHang = viTriDuKien,
+                toaDoGocKhaiSinh = TinhToaDoGoc(ch, hangDuKien, viTriDuKien)
+            };
+            danhSachOQuan.Add(oTrongTimThay);
         }
 
-        slot.instanceID = id; //
-        _unitSlot[id] = slot; //
-        return true; //
+        // Gán ID của lính vào ô dữ liệu này
+        oTrongTimThay.instanceID = idLinh;
+        _linhNaoOAnDo[idLinh] = oTrongTimThay;
+
+        // Gọi cập nhật dồn hàng lập tức để phân bổ lại vị trí
+        CapNhatThuatToanDonHang(ch.capBacRank);
+        return true;
     }
 
     /// <summary>
-    /// Hủy đăng ký khi lính chết - Giải phóng slot nhưng GIỮ NGUYÊN vị trí cố định của Slot đó
+    /// Hủy đăng ký giải phóng ô khi lính chết
     /// </summary>
     public void Unregister(GameObject go)
     {
-        int id = go.GetInstanceID(); //
-        if (!_unitSlot.TryGetValue(id, out Slot slot)) return; //
-        slot.instanceID = 0; // Đánh dấu ô trống để con lính sinh sau tự động chạy vào điền chỗ trống
-        _unitSlot.Remove(id); //
+        if (go == null) return;
+        int idLinh = go.GetInstanceID();
+
+        if (!_linhNaoOAnDo.TryGetValue(idLinh, out ODoQuan oQuan)) return;
+
+        oQuan.instanceID = 0; // Đánh dấu giải phóng ô đứng ngay lập tức
+        _linhNaoOAnDo.Remove(idLinh); // Bẻ gãy liên kết để lính chết không bao giờ tìm thấy ô nữa
+
+        // Kích hoạt thuật toán dồn hàng cho những con còn sống ở phía sau tiến lên
+        foreach (var cap in _khoOQuanTheoRank)
+        {
+            if (cap.Value.Contains(oQuan))
+            {
+                CapNhatThuatToanDonHang(cap.Key);
+                break;
+            }
+        }
     }
 
     /// <summary>
-    /// Lấy tọa độ đích của ô slot tương ứng với con lính
+    /// Hàm lấy vị trí Slot thực tế theo Tọa độ thế giới (World Position)
     /// </summary>
     public bool TryGetSlot(GameObject go, out Vector2 pos)
     {
-        if (_unitSlot.TryGetValue(go.GetInstanceID(), out Slot s)) //
+        pos = Vector2.zero;
+        if (go == null) return false;
+
+        // ⭐ KHẮC PHỤC LỖI TRÔI XÁC: Kiểm tra xem con lính này có còn trong từ điển quản lý không
+        if (_linhNaoOAnDo.TryGetValue(go.GetInstanceID(), out ODoQuan oQuan))
         {
-            pos = s.position; //
-            return true; //
+            // Nếu ô này đã bị gán về 0 (tức là lính đã gọi Unregister hoặc chết), từ chối trả về vị trí di chuyển
+            if (oQuan.instanceID == 0) return false;
+
+            if (_soDoCauHinh.TryGetValue(LayRankCuaOQuan(oQuan), out CauHinhLopLinh ch))
+            {
+                pos = TinhToaDoThucTeHienTai(ch, oQuan);
+                return true;
+            }
         }
-        pos = Vector2.zero; //
-        return false; //
+        return false;
     }
 
     /// <summary>
-    /// Kiểm tra xem lính đã đứng khít vào ô slot hay chưa
-    /// </summary>
-    public bool IsAtSlot(GameObject go)
-    {
-        if (!_unitSlot.TryGetValue(go.GetInstanceID(), out Slot s)) return false; //
-        return Vector2.Distance(go.transform.position, s.position) <= arrivalThreshold; //
-    }
-
-    /// <summary>
-    /// Trả về Vận tốc tịnh tiến (Velocity) cần thiết để di chuyển lính về đúng slot
+    /// Hàm tính toán vector vận tốc (Velocity) mượt mà để lính bám theo Slot của mình
     /// </summary>
     public Vector2 GetSlotVelocity(GameObject go, float overrideSpeed = -1f)
     {
-        if (!_unitSlot.TryGetValue(go.GetInstanceID(), out Slot s)) return Vector2.zero; //
-        Vector2 toSlot = s.position - (Vector2)go.transform.position; //
-        if (toSlot.magnitude <= arrivalThreshold) return Vector2.zero; //
-        float spd = overrideSpeed > 0f ? overrideSpeed : snapSpeed; //
-        return toSlot.normalized * spd; //
-    }
+        if (go == null) return Vector2.zero;
 
-    // ── Thuật toán tính toán vị trí ma trận nâng cao ──────────────────────
-
-    private Vector2 CalcPosition(RankConfig cfg, int index)
-    {
-        int col = index / cfg.maxPerColumn; // Cột thứ mấy lùi về sau
-        int row = index % cfg.maxPerColumn; // Hàng thứ mấy trong cột dọc đó
-
-        // 1. Tính toán vị trí trục X (Giữ nguyên logic của bạn)
-        float finalX = baseX + cfg.xOffset - (col * columnDepthSpacing);
-
-        // 2. TÍNH TOÁN TRỤC Y CHUẨN STICK WAR (Cố định khoảng cách bám theo tâm centerY):
-        // Thay vì tính giật lùi phức tạp, ta lấy centerY làm gốc chính giữa.
-        // Các hàng lính (row) sẽ được xếp đối xứng qua tâm bằng cách trừ đi một nửa số lượng hàng.
-        float nửaĐộiHình = (cfg.maxPerColumn - 1) * 0.5f;
-        float finalY = centerY + ((row - nửaĐộiHình) * spacingY);
-
-        // 3. Hiệu ứng so le răng cưa (Zigzag) giữa các cột để không che tầm bắn
-        if (col % 2 != 0)
+        // ⭐ KHẮC PHỤC LỖI TRÔI XÁC: Nếu không lấy được Slot hợp lệ (do lính đã chết), trả về vận tốc bằng 0 lập tức
+        Vector2 viTriDich;
+        if (!TryGetSlot(go, out viTriDich))
         {
-            finalY += spacingY * 0.3f; // Nhích nhẹ một chút cho đẹp đội hình hàng sau
+            return Vector2.zero;
         }
 
-        // Tịnh tiến theo Object quản lý
-        return new Vector2(transform.position.x + finalX, transform.position.y + finalY);
+        Vector2 huongDi = viTriDich - (Vector2)go.transform.position;
+        if (huongDi.magnitude <= saiSoDichDen) return Vector2.zero;
+
+        float tocDo = overrideSpeed > 0f ? overrideSpeed : tocDoHienTaiKhac(go, huongDi.magnitude);
+        return huongDi.normalized * tocDo;
+    }
+
+    // ── THUẬT TOÁN ĐẨY HÀNG STICK WAR ──────────────────────────────────────────────
+
+    /// <summary>
+    /// Thuật toán quét và dồn hàng tự động khi có lính chết ở hàng trước
+    /// </summary>
+    private void CapNhatThuatToanDonHang(int rank)
+    {
+        List<ODoQuan> danhSachO = _khoOQuanTheoRank[rank];
+        if (danhSachO.Count == 0) return;
+
+        int cấuHìnhMaxHàng = _soDoCauHinh[rank].soLuongHangToiDa;
+        int soLuongHangHienTai = 0;
+        foreach (var o in danhSachO)
+        {
+            int hangGoc = danhSachO.IndexOf(o) / cấuHìnhMaxHàng;
+            if (hangGoc > soLuongHangHienTai) soLuongHangHienTai = hangGoc;
+        }
+
+        // Tạo bảng trạng thái kiểm tra xem hàng đó hiện tại có lính sống hay không
+        Dictionary<int, bool> hangNayConLinhSong = new Dictionary<int, bool>();
+        for (int h = 0; h <= soLuongHangHienTai; h++) hangNayConLinhSong[h] = false;
+
+        foreach (var o in danhSachO)
+        {
+            int hangGoc = danhSachO.IndexOf(o) / cấuHìnhMaxHàng;
+            if (o.instanceID != 0)
+            {
+                hangNayConLinhSong[hangGoc] = true; // Hàng này có ít nhất một con lính còn sống
+            }
+        }
+
+        // Đẩy lùi các chỉ số hàng thực tế dựa trên số lượng các hàng trống phía trước nó
+        foreach (var o in danhSachO)
+        {
+            int hangGocBanDau = danhSachO.IndexOf(o) / cấuHìnhMaxHàng;
+            int soHangTrongPhiaTruoc = 0;
+
+            for (int h = 0; h < hangGocBanDau; h++)
+            {
+                if (!hangNayConLinhSong[h])
+                {
+                    soHangTrongPhiaTruoc++; // Đếm số hàng phía trước bị chết sạch hoàn toàn
+                }
+            }
+
+            // Gán lại vị trí hàng hiển thị thực tế cho ô
+            o.hangNgangThuMay = hangGocBanDau - soHangTrongPhiaTruoc;
+        }
+    }
+
+    // ── TOÁN HỌC ĐỘI HÌNH ────────────────────────────────────────────────────────
+
+    private Vector2 TinhToaDoGoc(CauHinhLopLinh ch, int hang, int viTri)
+    {
+        float xGoc = toaDoXHangDau + ch.doLuiXMacDinh - (hang * gianCachNgangX);
+        float nuaHang = (ch.soLuongHangToiDa - 1) * 0.5f;
+        float yGoc = toaDoYTrungTam + ((viTri - nuaHang) * gianCachDocY);
+        return new Vector2(xGoc, yGoc);
+    }
+
+    private Vector2 TinhToaDoThucTeHienTai(CauHinhLopLinh ch, ODoQuan o)
+    {
+        float xThucTe = toaDoXHangDau + ch.doLuiXMacDinh - (o.hangNgangThuMay * gianCachNgangX);
+        float nuaHang = (ch.soLuongHangToiDa - 1) * 0.5f;
+        float yThucTe = toaDoYTrungTam + ((o.viTriTrongHang - nuaHang) * gianCachDocY);
+
+        // Tạo hiệu ứng so le nhẹ giữa các hàng đối với các đội hình đông (6 lính) để nhìn trực quan hơn
+        if (ch.soLuongHangToiDa > 2 && o.hangNgangThuMay % 2 != 0)
+        {
+            yThucTe += gianCachDocY * 0.3f;
+        }
+
+        return new Vector2(transform.position.x + xThucTe, transform.position.y + yThucTe);
+    }
+
+    private int LayRankCuaOQuan(ODoQuan oTarget)
+    {
+        foreach (var cap in _khoOQuanTheoRank)
+        {
+            if (cap.Value.Contains(oTarget)) return cap.Key;
+        }
+        return 0;
+    }
+
+    private float tocDoHienTaiKhac(GameObject go, float kc)
+    {
+        // Nếu lính ở quá xa vị trí slot (ví dụ khi mới Spawn), tăng tốc độ để chạy nhanh về hàng ngũ
+        if (kc > 5f) return tocDoDiChuyenVeSlot * 1.5f;
+        return tocDoDiChuyenVeSlot;
     }
 }

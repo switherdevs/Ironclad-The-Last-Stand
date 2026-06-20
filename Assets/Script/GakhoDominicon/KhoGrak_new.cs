@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
-[RequireComponent(typeof(AudioSource))] // ĐẢM BẢO: Tự động thêm AudioSource vào lính nếu chưa có
+[RequireComponent(typeof(AudioSource))]
 public class NhanVat1 : MonoBehaviour
 {
     public enum LenhChienThuat { PhongThu, TanCong, RutLui }
@@ -22,7 +22,7 @@ public class NhanVat1 : MonoBehaviour
     public GameObject prefabDanNho;
 
     [Header("--- Âm Thanh (MỚI TÍCH HỢP) ---")]
-    [SerializeField] private AudioClip TiengSung; // Kéo file âm thanh tiếng súng vào đây trên Inspector
+    [SerializeField] private AudioClip TiengSung;
     private AudioSource AmthanhLinh;
 
     [Header("--- Di Chuyển & Giãn Cách ---")]
@@ -42,20 +42,20 @@ public class NhanVat1 : MonoBehaviour
     private readonly Collider2D[] _buffer = new Collider2D[64];
     private int updateGroup;
     private static int groupCounter = 0;
+    public Health_phechinh heal;
 
     private Vector2 lucGianCachHienTai;
 
     void Awake()
     {
+        heal = GetComponent<Health_phechinh>();
         rb = GetComponent<Rigidbody2D>();
         rb.gravityScale = 0f;
         rb.linearDamping = 2f;
         rb.interpolation = RigidbodyInterpolation2D.Interpolate;
         rb.constraints = RigidbodyConstraints2D.FreezeRotation;
 
-        // Lấy Component AudioSource đã yêu cầu ở đầu Class
         AmthanhLinh = GetComponent<AudioSource>();
-        // Cấu hình nhanh AudioSource để tránh âm thanh quá to hoặc lặp vô tận
         AmthanhLinh.playOnAwake = false;
         AmthanhLinh.loop = false;
 
@@ -75,18 +75,29 @@ public class NhanVat1 : MonoBehaviour
 
     void Update()
     {
+        if (heal.Dear) return;
         if (lenhHienTai != LenhChienThuat.RutLui) TimMucTieu();
         else ResetTarget();
 
         if (anim != null)
         {
-            bool isMoving = rb.linearVelocity.magnitude > 0.6f;
-            anim.SetBool("Khogark_isMoving", isMoving);
+            if (isShooting)
+            {
+                // Ép tắt trạng thái chạy để tránh lỗi đè Animation khi đang đứng bắn
+                anim.SetBool("Khogark_isMoving", false);
+            }
+            else
+            {
+                bool isMoving = rb.linearVelocity.magnitude > 0.6f;
+                anim.SetBool("Khogark_isMoving", isMoving);
+            }
         }
     }
 
     void FixedUpdate()
     {
+        if (heal.Dear) return;
+
         if (Time.frameCount % 5 == updateGroup)
         {
             lucGianCachHienTai = TinhLucGianCach();
@@ -94,21 +105,23 @@ public class NhanVat1 : MonoBehaviour
 
         Vector2 vanTocMongMuon = Vector2.zero;
 
-        // 🎯 ĐÃ SỬA: Kiểm tra thêm điều kiện Quái sống hay chết trước khi di chuyển bám đuổi địch
         if (ThayDich != null && ThayDich.gameObject.activeInHierarchy && !KiemTraDichDaChet(ThayDich.gameObject))
         {
             float distToTarget = Vector2.Distance(transform.position, ThayDich.position);
-
             XoayMatTheoHuong(ThayDich.position.x - transform.position.x);
 
             if (distToTarget > TamBan)
             {
+                // Địch ngoài tầm bắn: Tiến quân lên phía trước bám đuổi địch
                 Vector2 huongDi = ((Vector2)ThayDich.position - (Vector2)transform.position).normalized;
                 vanTocMongMuon = (huongDi * tocDoHanhQuan) + (lucGianCachHienTai * 0.4f);
             }
             else
             {
-                vanTocMongMuon = lucGianCachHienTai;
+                // 🎯 ĐÃ BỔ SUNG: Địch nằm trong tầm bắn -> Triệt tiêu vận tốc di chuyển hàng ngũ
+                // Chỉ giữ lại một chút lực giãn cách siêu nhỏ (10%) để không bị dẫm đè lên lính khác.
+                vanTocMongMuon = lucGianCachHienTai * 0.1f;
+
                 if (HoiChieu <= Time.time && !isShooting)
                 {
                     StartCoroutine(CoroutineBanLoat());
@@ -117,6 +130,7 @@ public class NhanVat1 : MonoBehaviour
         }
         else
         {
+            // Sạch bóng quân thù: Tiếp tục hành quân bám hàng bám lối bình thường
             vanTocMongMuon = TinhVanTocDoiHinh(lucGianCachHienTai);
         }
 
@@ -175,7 +189,6 @@ public class NhanVat1 : MonoBehaviour
         isShooting = true;
         if (anim != null) anim.SetBool("Khogark_isShooting", true);
 
-        // PHÁT ÂM THANH: Phát âm thanh tiếng súng ngay khi bắt đầu loạt bắn
         if (AmthanhLinh != null && TiengSung != null)
         {
             AmthanhLinh.PlayOneShot(TiengSung);
@@ -183,10 +196,8 @@ public class NhanVat1 : MonoBehaviour
 
         yield return new WaitForSeconds(0.3f);
 
-        // Vòng lặp bắn nhiều viên đạn dựa theo chỉ số 'soVienLoatNay'
         for (int i = 0; i < soVienLoatNay; i++)
         {
-            // 🎯 ĐÃ SỬA: Nếu quái chết giữa loạt bắn -> Dừng loạt đạn ngay lập tức để đảo mục tiêu
             if (ThayDich == null || !ThayDich.gameObject.activeInHierarchy || KiemTraDichDaChet(ThayDich.gameObject)) break;
 
             if (prefabDanNho != null && DiemBan != null)
@@ -210,7 +221,6 @@ public class NhanVat1 : MonoBehaviour
                 }
             }
 
-            // Nếu bắn loạt nhiều viên (soVienLoatNay > 1), giãn cách nhỏ giữa các viên đạn
             if (soVienLoatNay > 1)
             {
                 yield return new WaitForSeconds(0.1f);
@@ -219,7 +229,6 @@ public class NhanVat1 : MonoBehaviour
 
         if (anim != null) anim.SetBool("Khogark_isShooting", false);
 
-        // Tính toán hồi chiêu dựa trên tốc độ bắn (soDanBan)
         HoiChieu = Time.time + (1f / soDanBan);
         isShooting = false;
     }
@@ -240,39 +249,59 @@ public class NhanVat1 : MonoBehaviour
 
     void TimMucTieu()
     {
-        // 🎯 ĐÃ SỬA: Giữ lại mục tiêu cũ nếu nó còn trong tầm bắn VÀ PHẢI CÒN SỐNG
         if (ThayDich != null && ThayDich.gameObject.activeInHierarchy && !KiemTraDichDaChet(ThayDich.gameObject))
         {
-            if (Vector2.Distance(transform.position, ThayDich.position) <= TamBan) return;
+            if (ThayDich.gameObject.name.Contains("Chao_boss") || ThayDich.GetComponent<BossController>() != null)
+            {
+                if (Vector2.Distance(transform.position, ThayDich.position) <= TamBan) return;
+            }
         }
 
-        GameObject best = null;
-        float bestDist = TamBan;
-        foreach (var q in EnemyManager.Instance.danhSachDich)
+        GameObject[] tatCaKeThu = GameObject.FindGameObjectsWithTag("Enemy");
+
+        GameObject bestQuaiNho = null;
+        GameObject bestBoss = null;
+
+        float bestDistQuaiNho = TamBan;
+        float bestDistBoss = TamBan;
+
+        foreach (var q in tatCaKeThu)
         {
-            // 🎯 ĐÃ SỬA: Lọc bỏ những con quái có dấu hiệu đã chết khỏi danh sách nhắm bắn
             if (q == null || !q.activeInHierarchy || KiemTraDichDaChet(q)) continue;
 
             float kc = Vector2.Distance(transform.position, q.transform.position);
-            if (kc < bestDist) { bestDist = kc; best = q; }
+
+            if (kc <= TamBan)
+            {
+                if (q.name.Contains("Chao_boss") || q.GetComponent<BossController>() != null)
+                {
+                    if (kc < bestDistBoss)
+                    {
+                        bestDistBoss = kc;
+                        bestBoss = q;
+                    }
+                }
+                else
+                {
+                    if (kc < bestDistQuaiNho)
+                    {
+                        bestDistQuaiNho = kc;
+                        bestQuaiNho = q;
+                    }
+                }
+            }
         }
-        ThayDich = (best != null) ? best.transform : null;
+
+        if (bestBoss != null) ThayDich = bestBoss.transform;
+        else if (bestQuaiNho != null) ThayDich = bestQuaiNho.transform;
+        else ThayDich = null;
     }
 
-    // 🎯 HÀM ĐÃ ĐỒNG BỘ: Kiểm tra trạng thái chết của quái dựa trên file Health_chaos mà bạn gửi
     private bool KiemTraDichDaChet(GameObject keThich)
     {
         Health_chaos mauQuai = keThich.GetComponent<Health_chaos>();
-        if (mauQuai != null)
-        {
-            return mauQuai.Deadre; // Đọc trực tiếp biến public của quái
-        }
-
-        if (keThich.CompareTag("Untagged"))
-        {
-            return true; // Nếu quái bị lột tag "Enemy" thành "Untagged" thì cũng coi như đã chết
-        }
-
+        if (mauQuai != null) return mauQuai.Deadre;
+        if (keThich.CompareTag("Untagged")) return true;
         return false;
     }
 
@@ -280,11 +309,11 @@ public class NhanVat1 : MonoBehaviour
 
     int GetRank() => loaiHinhDonVi switch
     {
-        LoaiLinh.Titan => 0,
-        LoaiLinh.KhoGrak => 1,
-        LoaiLinh.IronStorm => 2,
-        LoaiLinh.Terminator => 3,
-        LoaiLinh.DeadIron => 4,
+        LoaiLinh.KhoGrak => 0,
+        LoaiLinh.IronStorm => 1,
+        LoaiLinh.Terminator => 2,
+        LoaiLinh.DeadIron => 3,
+        LoaiLinh.Titan => 4,
         _ => -1
     };
 

@@ -116,12 +116,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bangSatThuongChung: {fileID: 11400000, guid: a60a65e6a8b057b4ea1e9fc841c3d9bc, type: 2}
   ThanhMau: {fileID: 912487205477603797}
-  maxHP: 20
+  maxHP: 30
   Dead_ani: 5
   tenAnimationChet: die_khograk
   prefabPopupSatThuong: {fileID: 3638261266717980917, guid: 3b6786f6b44be624c8cc3efc99707eaa, type: 3}
   Dear: 0
-  Dead: {fileID: 0}
+  Dead: {fileID: 8300000, guid: 07440d12591990145ab4a8f6dfe34589, type: 3}
 --- !u!82 &6515236219651498613
 AudioSource:
   m_ObjectHideFlags: 0
@@ -233,9 +233,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lenhHienTai: 0
   loaiHinhDonVi: 1
-  TamBan: 125
+  TamBan: 100
   soDanBan: 1
-  satThuong: 10
+  satThuong: 5
   soVienLoatNay: 1
   DiemBan: {fileID: 2004108194799325827}
   prefabDanNho: {fileID: 5603226188732681372, guid: df6f67a729046c64eafe9fd29744a575, type: 3}
@@ -245,6 +245,7 @@ MonoBehaviour:
   lucDayGianCach: 2
   doMuotDiChuyen: 0.15
   vungBoxPhongThu: {fileID: 7942286887352987862, guid: 43e938c73a2cad44e9d19025d21e3afb, type: 3}
+  heal: {fileID: 0}
 --- !u!1 &1579733531303239221
 GameObject:
   m_ObjectHideFlags: 0
@@ -339,7 +340,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.17420459, g: 1, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -724,7 +725,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.23087609, g: 1, b: 0, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -817,7 +818,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 26
+  m_SortingOrder: 25
   m_Sprite: {fileID: -7401291701072278871, guid: 222539c45c414e34fa447d1b04e09f4a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -1283,6 +1284,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -8653719598885068355, guid: 5762fe66509a7644695fe62b1e25eea4, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1916304668642964073}
+    - targetCorrespondingSourceObject: {fileID: -8653719598885068355, guid: 5762fe66509a7644695fe62b1e25eea4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2800063837366989433}
   m_SourcePrefab: {fileID: 4843985084834002234, guid: 5762fe66509a7644695fe62b1e25eea4, type: 3}
 --- !u!4 &2830295403400715049 stripped
 Transform:
@@ -1321,3 +1325,15 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!210 &2800063837366989433
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6176897745129432666}
+  m_Enabled: 1
+  m_SortingLayerID: 555874285
+  m_SortingLayer: 1
+  m_SortingOrder: 20
+  m_SortAtRoot: 0

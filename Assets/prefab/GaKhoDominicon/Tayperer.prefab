@@ -419,11 +419,11 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
-  m_VertexColorAlwaysGammaSpace: 0
+  m_VertexColorAlwaysGammaSpace: 1
   m_AdditionalShaderChannelsFlag: 0
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 30
+  m_SortingOrder: 5
   m_TargetDisplay: 0
 --- !u!114 &5244785524054203344
 MonoBehaviour:
@@ -479,6 +479,7 @@ GameObject:
   - component: {fileID: 4617217117900085222}
   - component: {fileID: 7678146785442531038}
   - component: {fileID: 8271481549249990752}
+  - component: {fileID: 5698635951294623005}
   m_Layer: 0
   m_Name: Tayperer
   m_TagString: Phechinh
@@ -545,7 +546,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 120
+  m_SortingOrder: 70
   m_Sprite: {fileID: 3832756445817090078, guid: 38ea4451fa4ded949854e89ee96a54f5, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -636,14 +637,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_ShadowGroup: 0
-  m_Priority: 0
+  m_Priority: 70
   m_ComponentVersion: 5
   m_HasRenderer: 1
   m_UseRendererSilhouette: 1
   m_CastsShadows: 1
   m_SelfShadows: 0
   m_AlphaCutoff: 0.1
-  m_ApplyToSortingLayers: 00000000
+  m_ApplyToSortingLayers: 00000000edf72121
   m_ShapePath:
   - {x: -5.0008273, y: -2.5104637, z: -0.0000000012609664}
   - {x: -4.9067593, y: 0.7029074, z: -0.00000033902063}
@@ -728,3 +729,15 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!210 &5698635951294623005
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9039909186378433268}
+  m_Enabled: 1
+  m_SortingLayerID: 555874285
+  m_SortingLayer: 1
+  m_SortingOrder: 11
+  m_SortAtRoot: 0

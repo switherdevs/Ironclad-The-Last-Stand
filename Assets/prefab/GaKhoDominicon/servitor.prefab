@@ -66,8 +66,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -27, y: -2.0404065, z: 2.355349}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 295074460486022489}
   - {fileID: 2206528958574017648}
@@ -153,6 +153,7 @@ MonoBehaviour:
   tocDoDiChuyen: 7
   thoiGianDaoVang: 5
   luongVangMangTheo: 50
+  Heal: {fileID: 0}
 --- !u!114 &3536162725100961749
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -408,7 +409,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 1, b: 0.0032572746, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -483,7 +484,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.1921128, g: 1, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -720,7 +721,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1352952134527521156, guid: 8eca234cfdb029e4fa5cde5c0f88e05d, type: 3}
       propertyPath: m_SortingOrder
-      value: 20
+      value: 21
       objectReference: {fileID: 0}
     - target: {fileID: 1609719090194301641, guid: 8eca234cfdb029e4fa5cde5c0f88e05d, type: 3}
       propertyPath: m_SortingOrder
@@ -753,6 +754,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -8653719598885068355, guid: 8eca234cfdb029e4fa5cde5c0f88e05d, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4412706621206151859}
+    - targetCorrespondingSourceObject: {fileID: -8653719598885068355, guid: 8eca234cfdb029e4fa5cde5c0f88e05d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4934903549595759100}
   m_SourcePrefab: {fileID: 4843985084834002234, guid: 8eca234cfdb029e4fa5cde5c0f88e05d, type: 3}
 --- !u!4 &295074460486022489 stripped
 Transform:
@@ -786,3 +790,15 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!210 &4934903549595759100
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1499779474366164282}
+  m_Enabled: 1
+  m_SortingLayerID: 555874285
+  m_SortingLayer: 1
+  m_SortingOrder: 15
+  m_SortAtRoot: 0
