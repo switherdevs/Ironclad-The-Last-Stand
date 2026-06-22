@@ -422,8 +422,8 @@ Canvas:
   m_VertexColorAlwaysGammaSpace: 1
   m_AdditionalShaderChannelsFlag: 0
   m_UpdateRectTransformForStandalone: 0
-  m_SortingLayerID: 0
-  m_SortingOrder: 5
+  m_SortingLayerID: 555874285
+  m_SortingOrder: 200
   m_TargetDisplay: 0
 --- !u!114 &5244785524054203344
 MonoBehaviour:
@@ -479,7 +479,8 @@ GameObject:
   - component: {fileID: 4617217117900085222}
   - component: {fileID: 7678146785442531038}
   - component: {fileID: 8271481549249990752}
-  - component: {fileID: 5698635951294623005}
+  - component: {fileID: 979978889285174424}
+  - component: {fileID: 1227714549283889434}
   m_Layer: 0
   m_Name: Tayperer
   m_TagString: Phechinh
@@ -546,7 +547,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 70
+  m_SortingOrder: 10
   m_Sprite: {fileID: 3832756445817090078, guid: 38ea4451fa4ded949854e89ee96a54f5, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -592,7 +593,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0.48628902, y: -2.8255045}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -602,7 +603,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 10.45, y: 8.33}
+  m_Size: {x: 6.4926147, y: 2.6789908}
   m_EdgeRadius: 0
 --- !u!114 &4617217117900085222
 MonoBehaviour:
@@ -622,7 +623,7 @@ MonoBehaviour:
   spriteGiaiDoan1_750: {fileID: 2606288834641805968, guid: 375453045e7c14b4e8febe22821a1cff, type: 3}
   spriteGiaiDoan2_500: {fileID: -4703503160979223883, guid: 375453045e7c14b4e8febe22821a1cff, type: 3}
   spriteGiaiDoan3_250: {fileID: -2109809190214997959, guid: 375453045e7c14b4e8febe22821a1cff, type: 3}
-  prefabPopupSatThuong: {fileID: 3638261266717980917, guid: 3b6786f6b44be624c8cc3efc99707eaa, type: 3}
+  prefabPopupSatThuong: {fileID: 5227452735512652460, guid: 1bdbb6ff3c811ad46b8a664b30e92e0a, type: 3}
   GameOver: 0
 --- !u!114 &7678146785442531038
 MonoBehaviour:
@@ -637,7 +638,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_ShadowGroup: 0
-  m_Priority: 70
+  m_Priority: 10
   m_ComponentVersion: 5
   m_HasRenderer: 1
   m_UseRendererSilhouette: 1
@@ -729,7 +730,7 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!210 &5698635951294623005
+--- !u!210 &979978889285174424
 SortingGroup:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -737,7 +738,22 @@ SortingGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9039909186378433268}
   m_Enabled: 1
-  m_SortingLayerID: 555874285
-  m_SortingLayer: 1
-  m_SortingOrder: 11
+  m_SortingLayerID: -507329879
+  m_SortingLayer: 3
+  m_SortingOrder: 70
   m_SortAtRoot: 0
+--- !u!114 &1227714549283889434
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9039909186378433268}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b83de1b8e327fa64cad2ca8b4837d996, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  heSoChinhXac: 100
+  diemBuTruGoc: 5000
+  capNhatLienTuc: 1

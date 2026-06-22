@@ -117,7 +117,7 @@ MonoBehaviour:
   currentChargerState: 0
   fastMoveSpeed: 10
   leftMoveBias: 0.6
-  detectionRange: 150
+  detectionRange: 20
   attackCooldown: 2
   projectileSpeed: 50
   projectilePrefab: {fileID: 6190148803816918428, guid: a5d4ea2ce304a784fbbafdc794b7264f, type: 3}
@@ -129,7 +129,7 @@ MonoBehaviour:
   explosionDamage: 40
   explosionDuration: 0.5
   meleeMoveSpeed: 5
-  meleeAttackRange: 7
+  meleeAttackRange: 8
   meleeDamage: 15
   meleeAttackCooldown: 1.2
   meleeHitboxObject: {fileID: 3859087662752273699}
@@ -152,7 +152,7 @@ MonoBehaviour:
   maxHP: 5000
   Animationdead: 3
   tenAnimationChet: chao_dead_die
-  prefabPopupSatThuong: {fileID: 3638261266717980917, guid: 3b6786f6b44be624c8cc3efc99707eaa, type: 3}
+  prefabPopupSatThuong: {fileID: 5227452735512652460, guid: 1bdbb6ff3c811ad46b8a664b30e92e0a, type: 3}
   spritel: {fileID: 2170042348629646210}
   Deadre: 0
   Dead: {fileID: 8300000, guid: c8afcac33773304458db1c73443dff99, type: 3}
@@ -177,7 +177,7 @@ AudioSource:
   SpatializePostEffects: 0
   Priority: 128
   DopplerLevel: 1
-  MinDistance: 30
+  MinDistance: 20
   MaxDistance: 500
   Pan2D: 0
   rolloffMode: 0
@@ -1066,6 +1066,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -8653719598885068355, guid: 431484c8f053e76429bd3d0fc1388429, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5402988636574945053}
+    - targetCorrespondingSourceObject: {fileID: -8653719598885068355, guid: 431484c8f053e76429bd3d0fc1388429, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5691162245070812608}
   m_SourcePrefab: {fileID: 4843985084834002234, guid: 431484c8f053e76429bd3d0fc1388429, type: 3}
 --- !u!4 &1068923008620725217 stripped
 Transform:
@@ -1111,6 +1114,21 @@ SortingGroup:
   m_SortingLayer: 1
   m_SortingOrder: 50
   m_SortAtRoot: 0
+--- !u!114 &5691162245070812608
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2170042348629646210}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b83de1b8e327fa64cad2ca8b4837d996, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  heSoChinhXac: 100
+  diemBuTruGoc: 5000
+  capNhatLienTuc: 1
 --- !u!4 &5823559164852469006 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5272367092442662705, guid: 431484c8f053e76429bd3d0fc1388429, type: 3}

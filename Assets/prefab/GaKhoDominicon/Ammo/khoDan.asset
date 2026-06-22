@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DanPrefab: {fileID: 5603226188732681372, guid: df6f67a729046c64eafe9fd29744a575, type: 3}
   SoLuongDanBanDau: 1000
-  tocDobay: 300
+  tocDobay: 400
   Duytri: 3.5

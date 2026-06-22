@@ -530,10 +530,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bangSatThuongChung: {fileID: 11400000, guid: a60a65e6a8b057b4ea1e9fc841c3d9bc, type: 2}
   ThanhMau: {fileID: 436096490989326454}
-  maxHP: 1000
-  Animationdead: 3
+  maxHP: 1500
+  Animationdead: 2
   tenAnimationChet: die_ter_chaos
-  prefabPopupSatThuong: {fileID: 3638261266717980917, guid: 3b6786f6b44be624c8cc3efc99707eaa, type: 3}
+  prefabPopupSatThuong: {fileID: 5227452735512652460, guid: 1bdbb6ff3c811ad46b8a664b30e92e0a, type: 3}
   spritel: {fileID: 47023036494362224}
   Deadre: 0
   Dead: {fileID: 8300000, guid: 2ce31a73c895e904cbe423ff640af5b6, type: 3}
@@ -558,7 +558,7 @@ AudioSource:
   SpatializePostEffects: 0
   Priority: 128
   DopplerLevel: 1
-  MinDistance: 10
+  MinDistance: 20
   MaxDistance: 500
   Pan2D: 0
   rolloffMode: 0
@@ -594,7 +594,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -823,6 +823,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -8653719598885068355, guid: 23e162bf13bb6504293815104c04f4eb, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5036360002833320992}
+    - targetCorrespondingSourceObject: {fileID: -8653719598885068355, guid: 23e162bf13bb6504293815104c04f4eb, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 741847485437570736}
   m_SourcePrefab: {fileID: 4843985084834002234, guid: 23e162bf13bb6504293815104c04f4eb, type: 3}
 --- !u!1 &47023036494362224 stripped
 GameObject:
@@ -859,10 +862,25 @@ SortingGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 47023036494362224}
   m_Enabled: 1
-  m_SortingLayerID: 555874285
-  m_SortingLayer: 1
+  m_SortingLayerID: -1031853461
+  m_SortingLayer: 2
   m_SortingOrder: 40
   m_SortAtRoot: 0
+--- !u!114 &741847485437570736
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 47023036494362224}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b83de1b8e327fa64cad2ca8b4837d996, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  heSoChinhXac: 100
+  diemBuTruGoc: 5000
+  capNhatLienTuc: 1
 --- !u!4 &1184190408650583571 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -7552582706839291426, guid: 23e162bf13bb6504293815104c04f4eb, type: 3}

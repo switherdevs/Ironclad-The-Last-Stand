@@ -151,10 +151,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bangSatThuongChung: {fileID: 11400000, guid: a60a65e6a8b057b4ea1e9fc841c3d9bc, type: 2}
   ThanhMau: {fileID: 7746798906374633708}
-  maxHP: 3000
+  maxHP: 5000
   Dead_ani: 5
   tenAnimationChet: die_titan
-  prefabPopupSatThuong: {fileID: 3638261266717980917, guid: 3b6786f6b44be624c8cc3efc99707eaa, type: 3}
+  prefabPopupSatThuong: {fileID: 5227452735512652460, guid: 1bdbb6ff3c811ad46b8a664b30e92e0a, type: 3}
   Dear: 0
   Dead: {fileID: 8300000, guid: 317129b8bf1dcc743ae2a2a27c1411f1, type: 3}
 --- !u!82 &137496903060910580
@@ -268,15 +268,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lenhHienTai: 0
   loaiHinhDonVi: 0
-  TamBan: 175
+  TamBan: 400
   satThuong: 40
   DiemBan: {fileID: 6952550864982342412}
   prefabDanLon: {fileID: 258804693158038890, guid: 08ed8d023f119464989717e425a14d8e, type: 3}
   soVienMoiLoat: 10
   thoiGianGiuaCacVien: 0.1
-  thoiGianHoiChieu: 3
+  thoiGianHoiChieu: 2
   heSoTangToc: 1
-  tocDoHanhQuan: 5
+  tocDoHanhQuan: 7
   doMuotDiChuyen: 0.15
   phechinh: {fileID: 0}
   shoot: {fileID: 8300000, guid: 7da6febfb4bfb6f48a52adf9241ff66a, type: 3}
@@ -370,7 +370,7 @@ Canvas:
   m_VertexColorAlwaysGammaSpace: 1
   m_AdditionalShaderChannelsFlag: 0
   m_UpdateRectTransformForStandalone: 0
-  m_SortingLayerID: 0
+  m_SortingLayerID: -507329879
   m_SortingOrder: 80
   m_TargetDisplay: 0
 --- !u!114 &8996455373963429640
@@ -486,8 +486,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -507329879
+  m_SortingLayer: 3
   m_SortingOrder: 90
   m_Sprite: {fileID: -5909984572565836660, guid: b0b7e33eed76c1346b4adf236a11004c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -930,6 +930,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -8653719598885068355, guid: 2e91fbdbf922bcb4d84279518f8fad7f, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2810606425941760864}
+    - targetCorrespondingSourceObject: {fileID: -8653719598885068355, guid: 2e91fbdbf922bcb4d84279518f8fad7f, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8101968911941348914}
   m_SourcePrefab: {fileID: 4843985084834002234, guid: 2e91fbdbf922bcb4d84279518f8fad7f, type: 3}
 --- !u!4 &2325282850538247791 stripped
 Transform:
@@ -971,10 +974,25 @@ SortingGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3498463180276403724}
   m_Enabled: 1
-  m_SortingLayerID: 555874285
-  m_SortingLayer: 1
+  m_SortingLayerID: -507329879
+  m_SortingLayer: 3
   m_SortingOrder: 71
   m_SortAtRoot: 0
+--- !u!114 &8101968911941348914
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3498463180276403724}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b83de1b8e327fa64cad2ca8b4837d996, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  heSoChinhXac: 100
+  diemBuTruGoc: 5000
+  capNhatLienTuc: 1
 --- !u!4 &6065352202267479670 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7153602785122935239, guid: 2e91fbdbf922bcb4d84279518f8fad7f, type: 3}

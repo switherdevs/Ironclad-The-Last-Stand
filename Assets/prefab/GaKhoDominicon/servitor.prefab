@@ -107,8 +107,8 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -1.9091244, y: -0.07494998}
-  m_Size: {x: 2.5521507, y: 5.334087}
+  m_Offset: {x: -1.9091244, y: -0.051244102}
+  m_Size: {x: 2.5521507, y: 5.3814993}
   m_Direction: 0
 --- !u!50 &2754418266746272032
 Rigidbody2D:
@@ -168,10 +168,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bangSatThuongChung: {fileID: 11400000, guid: a60a65e6a8b057b4ea1e9fc841c3d9bc, type: 2}
   ThanhMau: {fileID: 2021203107893120862}
-  maxHP: 50
-  Dead_ani: 5
+  maxHP: 75
+  Dead_ani: 3
   tenAnimationChet: ser_die
-  prefabPopupSatThuong: {fileID: 3638261266717980917, guid: 3b6786f6b44be624c8cc3efc99707eaa, type: 3}
+  prefabPopupSatThuong: {fileID: 5227452735512652460, guid: 1bdbb6ff3c811ad46b8a664b30e92e0a, type: 3}
   Dear: 0
   Dead: {fileID: 0}
 --- !u!1 &4649563182233616097
@@ -756,7 +756,7 @@ PrefabInstance:
       addedObject: {fileID: 4412706621206151859}
     - targetCorrespondingSourceObject: {fileID: -8653719598885068355, guid: 8eca234cfdb029e4fa5cde5c0f88e05d, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 4934903549595759100}
+      addedObject: {fileID: 4283423818744520219}
   m_SourcePrefab: {fileID: 4843985084834002234, guid: 8eca234cfdb029e4fa5cde5c0f88e05d, type: 3}
 --- !u!4 &295074460486022489 stripped
 Transform:
@@ -790,7 +790,7 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!210 &4934903549595759100
+--- !u!210 &4283423818744520219
 SortingGroup:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -798,7 +798,7 @@ SortingGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1499779474366164282}
   m_Enabled: 1
-  m_SortingLayerID: 555874285
-  m_SortingLayer: 1
-  m_SortingOrder: 15
+  m_SortingLayerID: -507329879
+  m_SortingLayer: 3
+  m_SortingOrder: 11
   m_SortAtRoot: 0

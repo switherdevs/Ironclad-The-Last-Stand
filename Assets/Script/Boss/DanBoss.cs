@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(CircleCollider2D))]
 public class BossDamageArea : MonoBehaviour
@@ -7,9 +8,12 @@ public class BossDamageArea : MonoBehaviour
     private CircleCollider2D circleCollider;
     private int damage;
     private bool hasDealtDamage = false;
+    private AudioSource Amthanh;
+    [SerializeField] private AudioClip TiengNo;
 
     private void Awake()
     {
+        Amthanh = GetComponent<AudioSource>();
         circleCollider = GetComponent<CircleCollider2D>();
         circleCollider.isTrigger = true;
         circleCollider.enabled = false; // Tạm khóa collider khi chưa được kích hoạt
@@ -20,6 +24,7 @@ public class BossDamageArea : MonoBehaviour
         damage = dmgValue;
         circleCollider.radius = radius;
         circleCollider.enabled = true; // Mở collider ra để quét Trigger trong 1 Frame duy nhất
+        Amthanh.PlayOneShot(TiengNo);
 
         yield return new WaitForFixedUpdate(); // Chờ hệ thống vật lý 2D cập nhật xong Frame đó
 

@@ -8,6 +8,9 @@ public class Dead_iron_new : MonoBehaviour
     public Transform DiemBan;
     public GameObject prefabDanMobi;
 
+    [Header("Hiệu ứng khi bắn")]
+    public GameObject hieuUngKhiBan; // HIỆU ỨNG MỚI: Tự động ẩn/hiện độc lập khi bắn đạn
+
     [Header("Hiệu ứng nạp năng lượng")]
     public GameObject hieuUngNapNangLuong;
     public float thoiGianNapNangLuong = 5f;
@@ -47,7 +50,9 @@ public class Dead_iron_new : MonoBehaviour
         // Đăng ký vào hệ thống quản lý hàng ngũ ngay khi vừa xuất hiện
         KichHoatXepHang();
 
+        // Tối ưu tắt mặc định ban đầu cho cả 2 loại hiệu ứng độc lập
         if (hieuUngNapNangLuong != null) hieuUngNapNangLuong.SetActive(false);
+        if (hieuUngKhiBan != null) hieuUngKhiBan.SetActive(false);
     }
 
     void Update()
@@ -68,11 +73,20 @@ public class Dead_iron_new : MonoBehaviour
             TimMucTieuThongMinh();
         }
 
-        // ── [ANIMATION] Cập nhật isMoving theo vị trí thực tế ───────────────
+        // ── [ANIMATION LOGIC SỬA ĐỔI]: Ưu tiên hoạt ảnh Bắn tuyệt đối ──
         if (DeadIron_animator != null)
         {
-            bool dangDiChuyen = transform.position != viTriKhungHinhTruoc;
-            DeadIron_animator.SetBool("DeadIron_isMoving", dangDiChuyen);
+            if (dangTrongLuongBan)
+            {
+                // Nếu đang trong luồng nạp năng lượng hoặc đang bắn, ép trạng thái di chuyển về false 
+                // để hoạt ảnh di chuyển không thể nhảy vào đè lên hoạt ảnh bắn của xương được.
+                DeadIron_animator.SetBool("DeadIron_isMoving", false);
+            }
+            else
+            {
+                bool dangDiChuyen = transform.position != viTriKhungHinhTruoc;
+                DeadIron_animator.SetBool("DeadIron_isMoving", dangDiChuyen);
+            }
         }
         viTriKhungHinhTruoc = transform.position;
         // ────────────────────────────────────────────────────────────────────
@@ -107,7 +121,7 @@ public class Dead_iron_new : MonoBehaviour
             }
         }
 
-        // Chỉ khi không có địch trong tầm ngắm và không bận bắn mới di chuyển về đúng hàng ngũ của mình
+        // 🎯 ĐÃ SỬA: Khi hết kẻ thù (dangDungBan = false) hoặc kẻ thù nằm ngoài tầm ngắm, quay về hàng ngay lập tức
         if (!daDenViTriThu && !dangDungBan && !dangTrongLuongBan)
         {
             HanhQuanVaoViTri();
@@ -129,13 +143,23 @@ public class Dead_iron_new : MonoBehaviour
 
         yield return new WaitForSeconds(thoiGianNapNangLuong);
 
+        // Kích hoạt bắn đạn và xử lý hiệu ứng bắn đi kèm
         if (mucTieuQuai != null)
         {
             BanThienThachPooling();
+
+            // Kích hoạt hiệu ứng bắn (Muzzle flash/khói lửa súng)
+            if (hieuUngKhiBan != null) hieuUngKhiBan.SetActive(true);
         }
 
         if (hieuUngNapNangLuong != null)
             hieuUngNapNangLuong.SetActive(false);
+
+        // Chờ thêm một nhịp ngắn 0.5s để hiệu ứng súng kịp hiển thị rồi tắt đi cùng hoạt ảnh bắn
+        yield return new WaitForSeconds(0.5f);
+
+        if (hieuUngKhiBan != null)
+            hieuUngKhiBan.SetActive(false);
 
         if (DeadIron_animator != null)
             DeadIron_animator.SetBool("DeadIron_isShooting", false);

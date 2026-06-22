@@ -12,12 +12,12 @@ GameObject:
   - component: {fileID: 7652428488205453394}
   - component: {fileID: 7170246694764393275}
   m_Layer: 0
-  m_Name: Spot Light 2D
+  m_Name: "Plasma_n\u1EA1p"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &4813426273278949405
 Transform:
   m_ObjectHideFlags: 0

@@ -411,7 +411,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 15
-  attackRange: 2
+  attackRange: 5
   leftMoveBias: 0.6
   detectionRange: 30
   normalHP: 20
@@ -442,7 +442,7 @@ MonoBehaviour:
   maxHP: 50
   Animationdead: 3
   tenAnimationChet: dead_zelos
-  prefabPopupSatThuong: {fileID: 3638261266717980917, guid: 3b6786f6b44be624c8cc3efc99707eaa, type: 3}
+  prefabPopupSatThuong: {fileID: 5227452735512652460, guid: 1bdbb6ff3c811ad46b8a664b30e92e0a, type: 3}
   spritel: {fileID: 2971373222081987329}
   Deadre: 0
   Dead: {fileID: 8300000, guid: 07440d12591990145ab4a8f6dfe34589, type: 3}
@@ -467,7 +467,7 @@ AudioSource:
   SpatializePostEffects: 0
   Priority: 128
   DopplerLevel: 1
-  MinDistance: 1
+  MinDistance: 20
   MaxDistance: 500
   Pan2D: 0
   rolloffMode: 0
@@ -1180,6 +1180,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -8653719598885068355, guid: 544e6696c5be1564a86e548371c65c4e, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8334761217558548866}
+    - targetCorrespondingSourceObject: {fileID: -8653719598885068355, guid: 544e6696c5be1564a86e548371c65c4e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7107482200352574770}
     - targetCorrespondingSourceObject: {fileID: 151485432933898545, guid: 544e6696c5be1564a86e548371c65c4e, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6556359062038219824}
@@ -1455,6 +1458,21 @@ SortingGroup:
   m_SortingLayer: 1
   m_SortingOrder: 12
   m_SortAtRoot: 0
+--- !u!114 &7107482200352574770
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2971373222081987329}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b83de1b8e327fa64cad2ca8b4837d996, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  heSoChinhXac: 100
+  diemBuTruGoc: 5000
+  capNhatLienTuc: 1
 --- !u!1 &3225018094644329357 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 151485432933898545, guid: 544e6696c5be1564a86e548371c65c4e, type: 3}

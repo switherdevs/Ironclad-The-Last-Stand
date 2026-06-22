@@ -15,8 +15,10 @@ public class NhanVat2 : MonoBehaviour
 
     [Header("--- Chỉ Số Chiến Đấu ---")]
     public float TamBan = 20f;
+    [Tooltip("Số đợt bắn (loạt) trong 1 giây. Càng cao bắn càng nhanh.")]
     public float soDanBan = 1.2f;
     public int satThuong = 15;
+    [Tooltip("Số viên đạn bắn ra trong một loạt. Tốc độ giãn cách giữa các viên tự động điều chỉnh theo soDanBan.")]
     public int soVienLoatNay = 1;
     public Transform DiemBan;
     public GameObject prefabDanNho;
@@ -25,7 +27,7 @@ public class NhanVat2 : MonoBehaviour
     [SerializeField] private AudioClip TiengSung;
     private AudioSource AmthanhLinh;
 
-    [Header("--- Di Chuyển & Giãn Cách (GIỐNG NV1) ---")]
+    [Header("--- Di Chuyển & Giãn Cách ---")]
     public float tocDoHanhQuan = 3.5f;
     public float banKinhGianCach = 0.6f;
     public float lucDayGianCach = 2.0f;
@@ -88,9 +90,15 @@ public class NhanVat2 : MonoBehaviour
             if (isShooting)
             {
                 anim.SetBool("Khogark_isMoving", false);
+
+                // 🔥 TỐI ƯU 1: Đồng bộ tốc độ Animation với Tốc độ bắn thực tế
+                // Tốc độ bắn gốc thiết kế tầm 1.2 -> Tính tỉ lệ tăng tốc tương ứng
+                float thoiGianMotVongMoPhong = 1f / soDanBan;
+                anim.speed = Mathf.Clamp(1.2f / thoiGianMotVongMoPhong, 1f, 5f);
             }
             else
             {
+                anim.speed = 1f; // Trở về tốc độ bình thường khi di chuyển/idle
                 bool isMoving = rb.linearVelocity.magnitude > 0.6f;
                 anim.SetBool("Khogark_isMoving", isMoving);
             }
@@ -108,7 +116,6 @@ public class NhanVat2 : MonoBehaviour
 
         Vector2 vanTocMongMuon = Vector2.zero;
 
-        // 🎯 FIX LOGIC DI CHUYỂN: Ưu tiên bám hàng ngũ kể cả khi đang có địch tầm xa
         if (ThayDich != null && ThayDich.gameObject.activeInHierarchy && !KiemTraDichDaChet(ThayDich.gameObject))
         {
             float distToTarget = Vector2.Distance(transform.position, ThayDich.position);
@@ -116,15 +123,12 @@ public class NhanVat2 : MonoBehaviour
 
             if (distToTarget > TamBan)
             {
-                // Khi địch quá xa, chủ động tiến quân lên
                 Vector2 huongDi = ((Vector2)ThayDich.position - (Vector2)transform.position).normalized;
                 vanTocMongMuon = (huongDi * tocDoHanhQuan) + (lucGianCachHienTai * 0.4f);
             }
             else
             {
-                // Kể cả khi đã vào tầm bắn (Tầm bắn của con này rất xa tận 20m), 
-                // Nó vẫn phải giữ vị trí đi theo đúng Slot ô hàng của FormationManager thay vì đứng im tại chỗ!
-                vanTocMongMuon = TinhVanTocDoiHinh(lucGianCachHienTai);
+                vanTocMongMuon = Vector2.zero; // Ưu tiên đứng yên bắn địch
 
                 if (HoiChieu <= Time.time && !isShooting)
                 {
@@ -134,7 +138,6 @@ public class NhanVat2 : MonoBehaviour
         }
         else
         {
-            // Không có địch: Hành quân bình thường theo hàng lối
             vanTocMongMuon = TinhVanTocDoiHinh(lucGianCachHienTai);
         }
 
@@ -176,7 +179,6 @@ public class NhanVat2 : MonoBehaviour
             if (_buffer[i].gameObject == gameObject) continue;
             if (_buffer[i].name.Contains("servitor")) continue;
 
-            // Tính lực đẩy nhẹ để các lính không dẫm đè lên nhau
             Vector2 huong = (Vector2)transform.position - (Vector2)_buffer[i].transform.position;
             float kc = huong.magnitude;
 
@@ -199,14 +201,28 @@ public class NhanVat2 : MonoBehaviour
             anim.SetBool("Khogark_isShooting", true);
         }
 
-        if (AmthanhLinh != null && TiengSung != null)
+        // 🔥 TỐI ƯU 2: Tăng tốc độ Pitch âm thanh dựa trên tốc độ bắn cao, giúp âm thanh dứt khoát không bị rè chồng lấp
+        if (AmthanhLinh != null)
         {
-            AmthanhLinh.PlayOneShot(TiengSung);
+            if (soDanBan > 3.0f)
+                AmthanhLinh.pitch = Mathf.Clamp(soDanBan / 3.0f, 1.0f, 1.8f);
+            else
+                AmthanhLinh.pitch = 1.0f;
         }
+
+        // 🔥 TỐI ƯU 3: Tính toán khoa học thời gian giãn cách giữa các viên dựa vào tốc độ bắn thực tế
+        // Nếu soVienLoatNay > 1, thời gian nghỉ giữa mỗi viên sẽ thu ngắn lại để vừa khít tổng thời gian nạp chiêu
+        float thoiGianGiuaMoiVien = (1f / soDanBan) / (soVienLoatNay + 1f);
+        thoiGianGiuaMoiVien = Mathf.Clamp(thoiGianGiuaMoiVien, 0.02f, 0.15f); // Ngăn lỗi số quá nhỏ làm treo luồng
 
         for (int i = 0; i < soVienLoatNay; i++)
         {
             if (ThayDich == null || !ThayDich.gameObject.activeInHierarchy || KiemTraDichDaChet(ThayDich.gameObject)) break;
+
+            if (AmthanhLinh != null && TiengSung != null)
+            {
+                AmthanhLinh.PlayOneShot(TiengSung);
+            }
 
             if (prefabDanNho != null && DiemBan != null)
             {
@@ -233,12 +249,16 @@ public class NhanVat2 : MonoBehaviour
                     if (script != null) { script.satThuong = satThuong; script.KichHoatVienDan(); }
                 }
             }
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSeconds(thoiGianGiuaMoiVien);
         }
 
-        yield return new WaitForSeconds(0.15f);
+        // Thời gian chờ trễ nhỏ để trả Animator về trạng thái nghỉ một cách mượt mà
+        float delayEndAnimation = Mathf.Clamp(0.15f / (soDanBan / 1.2f), 0.03f, 0.15f);
+        yield return new WaitForSeconds(delayEndAnimation);
 
         if (anim != null) anim.SetBool("Khogark_isShooting", false);
+
+        // Đặt hồi chiêu chuẩn xác theo công thức 1 giây / số viên loạt bắn
         HoiChieu = Time.time + (1f / soDanBan);
         isShooting = false;
     }
@@ -323,7 +343,6 @@ public class NhanVat2 : MonoBehaviour
         }
     }
 
-    // 🎯 ĐÃ SỬA CHUẨN XÁC: Đồng bộ chỉ số Rank với FormationManager
     int GetRank() => loaiHinhDonVi switch
     {
         LoaiLinh.KhoGrak => 0,
@@ -341,6 +360,7 @@ public class NhanVat2 : MonoBehaviour
 
         if (anim != null)
         {
+            anim.speed = 1f;
             anim.SetBool("Khogark_isMoving", false);
             anim.SetBool("Khogark_isShooting", false);
         }

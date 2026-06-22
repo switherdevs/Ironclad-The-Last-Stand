@@ -53,5 +53,14 @@ TagManager:
   - name: Tuong_sword
     uniqueID: 555874285
     locked: 0
+  - name: DiGIao
+    uniqueID: 3263113835
+    locked: 0
+  - name: PheChinh
+    uniqueID: 3787637417
+    locked: 0
+  - name: UI
+    uniqueID: 2802949281
+    locked: 0
   m_RenderingLayers:
   - Default

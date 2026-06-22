@@ -443,6 +443,8 @@ GameObject:
   - component: {fileID: 502423405432053162}
   - component: {fileID: 1791983155422518380}
   - component: {fileID: 3072783666709260034}
+  - component: {fileID: 2452330637863680861}
+  - component: {fileID: 6286275630216805475}
   m_Layer: 0
   m_Name: Warp Marine
   m_TagString: Enemy
@@ -575,10 +577,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bangSatThuongChung: {fileID: 11400000, guid: a60a65e6a8b057b4ea1e9fc841c3d9bc, type: 2}
   ThanhMau: {fileID: 5635992745966958847}
-  maxHP: 750
-  Animationdead: 3
+  maxHP: 1000
+  Animationdead: 2
   tenAnimationChet: dead_warps
-  prefabPopupSatThuong: {fileID: 3638261266717980917, guid: 3b6786f6b44be624c8cc3efc99707eaa, type: 3}
+  prefabPopupSatThuong: {fileID: 5227452735512652460, guid: 1bdbb6ff3c811ad46b8a664b30e92e0a, type: 3}
   spritel: {fileID: 4830508459913615557}
   Deadre: 0
   Dead: {fileID: 8300000, guid: 2ce31a73c895e904cbe423ff640af5b6, type: 3}
@@ -603,7 +605,7 @@ AudioSource:
   SpatializePostEffects: 0
   Priority: 128
   DopplerLevel: 1
-  MinDistance: 10
+  MinDistance: 20
   MaxDistance: 500
   Pan2D: 0
   rolloffMode: 0
@@ -639,7 +641,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -679,6 +681,33 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!210 &2452330637863680861
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7092217994205969470}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_SortAtRoot: 0
+--- !u!114 &6286275630216805475
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7092217994205969470}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b83de1b8e327fa64cad2ca8b4837d996, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  heSoChinhXac: 100
+  diemBuTruGoc: 5000
+  capNhatLienTuc: 1
 --- !u!1 &8529727197274060074
 GameObject:
   m_ObjectHideFlags: 0
@@ -778,6 +807,10 @@ PrefabInstance:
     - target: {fileID: 5292559256451534302, guid: 72789e12f52f59e47ba6960cc41a16c4, type: 3}
       propertyPath: m_Name
       value: Spot Light 2D
+      objectReference: {fileID: 0}
+    - target: {fileID: 5292559256451534302, guid: 72789e12f52f59e47ba6960cc41a16c4, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

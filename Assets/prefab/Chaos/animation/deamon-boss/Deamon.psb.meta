@@ -1872,8 +1872,8 @@ ScriptedImporter:
     spriteBone:
     - name: Tay
       guid: c1e1cc30b158bb446aca5a924d4a3ddb
-      position: {x: 129.41647, y: 0.00014761965, z: 0}
-      rotation: {x: 0, y: 0, z: 0.4406288, w: 0.8976894}
+      position: {x: 129.41684, y: 0.00001259097, z: 0}
+      rotation: {x: 0, y: 0, z: -0.44062904, w: -0.89768934}
       length: 173.8654
       parentId: 1
       color:
@@ -1882,8 +1882,8 @@ ScriptedImporter:
     - name: Canhtay
       guid: faada1221edc068488063a6330122175
       position: {x: 155.31451, y: 336.55566, z: 0}
-      rotation: {x: 0, y: 0, z: 0.883188, w: -0.46901923}
-      length: 129.41655
+      rotation: {x: 0, y: 0, z: -0.88318807, w: 0.46901906}
+      length: 129.41661
       parentId: -1
       color:
         serializedVersion: 2
@@ -2281,16 +2281,16 @@ ScriptedImporter:
     - name: Canhtay
       guid: faada1221edc068488063a6330122175
       position: {x: 134.31451, y: 136.55566, z: 0}
-      rotation: {x: 0, y: 0, z: 0.883188, w: -0.46901923}
-      length: 129.41655
+      rotation: {x: 0, y: 0, z: -0.88318807, w: 0.46901906}
+      length: 129.41661
       parentId: -1
       color:
         serializedVersion: 2
         rgba: 4278255360
     - name: Tay
       guid: c1e1cc30b158bb446aca5a924d4a3ddb
-      position: {x: 129.41669, y: 0.00002885357, z: 0}
-      rotation: {x: 0, y: 0, z: 0.4406288, w: 0.8976894}
+      position: {x: 129.41675, y: 0.000006407601, z: 0}
+      rotation: {x: 0, y: 0, z: -0.44062895, w: -0.8976893}
       length: 173.8654
       parentId: 0
       color:
@@ -2777,9 +2777,9 @@ ScriptedImporter:
     spriteBone:
     - name: kiem
       guid: ccfee8e5e053f1641902f253a543c457
-      position: {x: 27.718323, y: 25.775024, z: 0}
-      rotation: {x: 0, y: 0, z: -0.18454927, w: -0.9828233}
-      length: 681.32965
+      position: {x: 27.718262, y: 25.775024, z: 0}
+      rotation: {x: 0, y: 0, z: -0.18454929, w: -0.9828233}
+      length: 681.3296
       parentId: -1
       color:
         serializedVersion: 2
@@ -3782,9 +3782,9 @@ ScriptedImporter:
     spriteBone:
     - name: Chantrai
       guid: ace29fa1cd738bb48853db01f9df5e5f
-      position: {x: 42.412037, y: 0.00007440377, z: 0}
-      rotation: {x: 0, y: 0, z: -0.42035487, w: 0.90735984}
-      length: 208.59525
+      position: {x: 42.41195, y: 0.0001830784, z: 0}
+      rotation: {x: 0, y: 0, z: -0.42035508, w: 0.9073598}
+      length: 208.59526
       parentId: 1
       color:
         serializedVersion: 2
@@ -3792,8 +3792,8 @@ ScriptedImporter:
     - name: Duitrai
       guid: 79edb831091895248aad9499adb2c523
       position: {x: 60.360962, y: 94.1604, z: 0}
-      rotation: {x: 0, y: 0, z: -0.30559015, w: 0.95216316}
-      length: 42.41213
+      rotation: {x: 0, y: 0, z: -0.3055899, w: 0.9521632}
+      length: 42.412117
       parentId: -1
       color:
         serializedVersion: 2
@@ -4259,7 +4259,7 @@ ScriptedImporter:
       guid: ace29fa1cd738bb48853db01f9df5e5f
       position: {x: 94.851746, y: 224.479, z: 0}
       rotation: {x: 0, y: 0, z: -0.67752665, w: 0.7354983}
-      length: 208.59526
+      length: 208.59528
       parentId: -1
       color:
         serializedVersion: 2
@@ -4894,8 +4894,8 @@ ScriptedImporter:
     spriteBone:
     - name: Chanphai
       guid: 109f4f9427107694886551e7e2d0df5b
-      position: {x: 78.12979, y: -0.000054705135, z: 0}
-      rotation: {x: 0, y: 0, z: -0.095634185, w: 0.9954166}
+      position: {x: 78.12985, y: 0.00012914065, z: 0}
+      rotation: {x: 0, y: 0, z: -0.09563401, w: 0.9954166}
       length: 210.78966
       parentId: 1
       color:
@@ -4904,8 +4904,8 @@ ScriptedImporter:
     - name: Duiphai
       guid: cc3ddfb602c587144963412cc840e381
       position: {x: 282.57025, y: 111.372314, z: 0}
-      rotation: {x: 0, y: 0, z: -0.838493, w: 0.54491246}
-      length: 78.12995
+      rotation: {x: 0, y: 0, z: -0.8384931, w: 0.54491234}
+      length: 78.12989
       parentId: -1
       color:
         serializedVersion: 2
@@ -5317,8 +5317,8 @@ ScriptedImporter:
     spriteBone:
     - name: Chanphai
       guid: 109f4f9427107694886551e7e2d0df5b
-      position: {x: 78.13008, y: -0.000008724726, z: 0}
-      rotation: {x: 0, y: 0, z: -0.095634185, w: 0.9954166}
+      position: {x: 78.13005, y: 0.00009758875, z: 0}
+      rotation: {x: 0, y: 0, z: -0.09563401, w: 0.9954166}
       length: 210.78966
       parentId: 1
       color:
@@ -5327,8 +5327,8 @@ ScriptedImporter:
     - name: Duiphai
       guid: cc3ddfb602c587144963412cc840e381
       position: {x: 282.57025, y: 253.37231, z: 0}
-      rotation: {x: 0, y: 0, z: -0.838493, w: 0.54491246}
-      length: 78.12995
+      rotation: {x: 0, y: 0, z: -0.8384931, w: 0.54491234}
+      length: 78.12989
       parentId: -1
       color:
         serializedVersion: 2
@@ -7049,16 +7049,16 @@ ScriptedImporter:
     - name: Canhtay
       guid: faada1221edc068488063a6330122175
       position: {x: 799.3145, y: 675.5556, z: 0}
-      rotation: {x: 0, y: 0, z: 0.883188, w: -0.46901923}
-      length: 129.41655
+      rotation: {x: 0, y: 0, z: -0.88318807, w: 0.46901906}
+      length: 129.41661
       parentId: -1
       color:
         serializedVersion: 2
         rgba: 4278255360
     - name: Tay
       guid: c1e1cc30b158bb446aca5a924d4a3ddb
-      position: {x: 129.4166, y: -0.0000021993255, z: 0}
-      rotation: {x: 0, y: 0, z: 0.4406288, w: 0.8976894}
+      position: {x: 129.4167, y: 0.00002267155, z: 0}
+      rotation: {x: 0, y: 0, z: -0.44062898, w: -0.89768934}
       length: 173.8654
       parentId: 1
       color:
@@ -7094,16 +7094,16 @@ ScriptedImporter:
     - name: Duiphai
       guid: cc3ddfb602c587144963412cc840e381
       position: {x: 721.57025, y: 417.37228, z: 0}
-      rotation: {x: 0, y: 0, z: -0.838493, w: 0.54491246}
-      length: 78.12995
+      rotation: {x: 0, y: 0, z: -0.8384931, w: 0.54491234}
+      length: 78.12989
       parentId: -1
       color:
         serializedVersion: 2
         rgba: 4278255488
     - name: Chanphai
       guid: 109f4f9427107694886551e7e2d0df5b
-      position: {x: 78.129906, y: 0.000013352823, z: 0}
-      rotation: {x: 0, y: 0, z: -0.09563419, w: 0.9954166}
+      position: {x: 78.12989, y: 0.000056262896, z: 0}
+      rotation: {x: 0, y: 0, z: -0.09563401, w: 0.9954166}
       length: 210.78966
       parentId: 6
       color:
@@ -7112,16 +7112,16 @@ ScriptedImporter:
     - name: Duitrai
       guid: 79edb831091895248aad9499adb2c523
       position: {x: 879.36096, y: 413.16043, z: 0}
-      rotation: {x: 0, y: 0, z: -0.30559015, w: 0.95216316}
-      length: 42.41213
+      rotation: {x: 0, y: 0, z: -0.3055899, w: 0.9521632}
+      length: 42.412113
       parentId: -1
       color:
         serializedVersion: 2
         rgba: 4294934528
     - name: Chantrai
       guid: ace29fa1cd738bb48853db01f9df5e5f
-      position: {x: 42.412106, y: 0.000032589815, z: 0}
-      rotation: {x: 0, y: 0, z: -0.42035484, w: 0.90735984}
+      position: {x: 42.412106, y: -0.0000018446699, z: 0}
+      rotation: {x: 0, y: 0, z: -0.42035508, w: 0.9073598}
       length: 208.59526
       parentId: 8
       color:
@@ -7238,7 +7238,7 @@ ScriptedImporter:
       order: 0
     dimension: {x: 0, y: 0}
     characterGroups: []
-    pivot: {x: 0.54990494, y: 0.13707246}
+    pivot: {x: 0.5800808, y: 0.43552953}
     boneReadOnly: 0
   platformSettings:
   - name: DefaultTexturePlatform
@@ -7267,7 +7267,7 @@ ScriptedImporter:
     androidETC2FallbackOverride: 0
   mosaicLayers: 1
   characterMode: 1
-  documentPivot: {x: 0.54990494, y: 0.13707246}
+  documentPivot: {x: 0.5800808, y: 0.43552953}
   documentAlignment: 9
   importHiddenLayers: 0
   layerMappingOption: 2

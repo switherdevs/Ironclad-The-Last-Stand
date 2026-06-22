@@ -5,6 +5,7 @@ using UnityEngine;
 /// Quản lý đội hình ma trận động:
 /// Tự động xếp lính theo các hàng dọc dựa vào cấu hình từng lớp nhân vật,
 /// Có cơ chế tự động dồn hàng lên phía trước khi hàng trước chết sạch (Stick War style).
+/// Đã được tối ưu hóa hiển thị trục Y chống chồng chéo hình ảnh khi lính xuất hiện thời gian thực.
 /// </summary>
 public class FormationManager : MonoBehaviour
 {
@@ -31,7 +32,7 @@ public class FormationManager : MonoBehaviour
 
     [Header("--- THIẾT LẬP KÍCH THƯỚC ĐỘI HÌNH ---")]
     public float toaDoXHangDau = -2f;         // Vị trí X của hàng đầu tiên tiên phong
-    public float toaDoYTrungTam = -1.5f;       // Tâm đường biên ngang đội hình dọc Y
+    public float toaDoYTrungTam = -1.5f;       // Điểm bắt đầu của vị trí lính đầu tiên trên đỉnh hàng dọc Y
     public float gianCachDocY = 1.2f;          // Khoảng cách giữa các lính trong cùng một hàng dọc
     public float gianCachNgangX = 2.5f;        // Khoảng cách giữa hàng trước và hàng sau
     public float tocDoDiChuyenVeSlot = 5.0f;   // Tốc độ di chuyển mượt của lính về ô
@@ -153,7 +154,7 @@ public class FormationManager : MonoBehaviour
         pos = Vector2.zero;
         if (go == null) return false;
 
-        // ⭐ KHẮC PHỤC LỖI TRÔI XÁC: Kiểm tra xem con lính này có còn trong từ điển quản lý không
+        // Kiểm tra xem con lính này có còn trong từ điển quản lý không
         if (_linhNaoOAnDo.TryGetValue(go.GetInstanceID(), out ODoQuan oQuan))
         {
             // Nếu ô này đã bị gán về 0 (tức là lính đã gọi Unregister hoặc chết), từ chối trả về vị trí di chuyển
@@ -175,7 +176,7 @@ public class FormationManager : MonoBehaviour
     {
         if (go == null) return Vector2.zero;
 
-        // ⭐ KHẮC PHỤC LỖI TRÔI XÁC: Nếu không lấy được Slot hợp lệ (do lính đã chết), trả về vận tốc bằng 0 lập tức
+        // Nếu không lấy được Slot hợp lệ (do lính đã chết), trả về vận tốc bằng 0 lập tức
         Vector2 viTriDich;
         if (!TryGetSlot(go, out viTriDich))
         {
@@ -239,26 +240,32 @@ public class FormationManager : MonoBehaviour
         }
     }
 
-    // ── TOÁN HỌC ĐỘI HÌNH ────────────────────────────────────────────────────────
+    // ── TOÁN HỌC ĐỘI HÌNH (XẾP TỪ TRÊN XUỐNG + MICRO-OFFSET CHỐNG TRÙNG LAYER) ──────
 
     private Vector2 TinhToaDoGoc(CauHinhLopLinh ch, int hang, int viTri)
     {
         float xGoc = toaDoXHangDau + ch.doLuiXMacDinh - (hang * gianCachNgangX);
-        float nuaHang = (ch.soLuongHangToiDa - 1) * 0.5f;
-        float yGoc = toaDoYTrungTam + ((viTri - nuaHang) * gianCachDocY);
+
+        // Vị trí đầu tiên (viTri = 0) nằm tại đỉnh trên, các lính tiếp theo trừ dần Y để xếp dịch xuống dưới.
+        // Bổ sung thêm micro-offset để phân tách lớp hiển thị cơ học tuyệt đối.
+        float yGoc = toaDoYTrungTam - (viTri * gianCachDocY) - (hang * 0.001f);
         return new Vector2(xGoc, yGoc);
     }
 
     private Vector2 TinhToaDoThucTeHienTai(CauHinhLopLinh ch, ODoQuan o)
     {
         float xThucTe = toaDoXHangDau + ch.doLuiXMacDinh - (o.hangNgangThuMay * gianCachNgangX);
-        float nuaHang = (ch.soLuongHangToiDa - 1) * 0.5f;
-        float yThucTe = toaDoYTrungTam + ((o.viTriTrongHang - nuaHang) * gianCachDocY);
+
+        // 🎯 ĐIỀU CHỈNH QUAN TRỌNG: Trừ đi một lượng siêu nhỏ (o.hangNgangThuMay * 0.001f) dựa vào hàng ngang.
+        // Điều này đảm bảo lính ở hàng sau sẽ có Y thấp hơn hàng trước một chút xíu nếu vô tình đứng ngang hàng,
+        // giúp tính năng Custom Axis Y của URP nhận biết thứ tự đè hình thời gian thực chuẩn 100%.
+        float yThucTe = toaDoYTrungTam - (o.viTriTrongHang * gianCachDocY) - (o.hangNgangThuMay * 0.001f);
 
         // Tạo hiệu ứng so le nhẹ giữa các hàng đối với các đội hình đông (6 lính) để nhìn trực quan hơn
         if (ch.soLuongHangToiDa > 2 && o.hangNgangThuMay % 2 != 0)
         {
-            yThucTe += gianCachDocY * 0.3f;
+            // Hàng lẻ sẽ thụt xuống dưới một chút để tạo độ so le đan xen đẹp mắt
+            yThucTe -= gianCachDocY * 0.3f;
         }
 
         return new Vector2(transform.position.x + xThucTe, transform.position.y + yThucTe);

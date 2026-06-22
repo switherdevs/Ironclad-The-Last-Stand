@@ -61,9 +61,15 @@ public class ChaosDirector : MonoBehaviour
     [Header("--- DANH SÁCH VỊ TRÍ SPAWN QUÁI LÍNH ---")]
     public Transform[] danhSachDiemSpawn;
 
-    [Header("--- VỊ TRÍ SPAWN CỐ ĐỊNH CHO BOSS ---")]
+    [Header("--- CẤU HÌNH BOSS CUỐI TRẬN ---")]
+    [Tooltip("Tích chọn nếu Map này có Boss cuối. Nếu không tích, hết giờ + sạch quái = Win")]
+    public bool coBossTrongMap = false;
     [Tooltip("Kéo Object vị trí chỉ định dành riêng cho Boss vào đây")]
     public Transform diemSpawnBossCoDinh;
+    public GameObject prefabDemonPrince;
+
+    // Sử dụng lớp quản lý máu mới cho Boss
+    private Health_boss _bossHealthReference;
 
     [Header("--- KHUÔN ĐÚC CÁC LOẠI QUÁI ---")]
     public GameObject prefabZealot;
@@ -71,7 +77,6 @@ public class ChaosDirector : MonoBehaviour
     public GameObject prefabMarine_Sword;
     public GameObject prefabTerminator;
     public GameObject prefabHellBrute;
-    public GameObject prefabDemonPrince;
 
     [Header("--- KHUÔN ĐÚC MINI-BOSS ---")]
     public GameObject prefabMiniBoss;
@@ -146,7 +151,7 @@ public class ChaosDirector : MonoBehaviour
         if (WinGame) return;
         if (Tayperer.skibidi != null && Tayperer.skibidi.GameOver) return;
 
-        // Logic Spawn Boss khi kết thúc thời gian chuẩn bị
+        // Logic Spawn Boss khi kết thúc thời gian chuẩn bị (00:00)
         if (dongHoDem >= 0f && !daPhatSoundBatDau)
         {
             daPhatSoundBatDau = true;
@@ -156,20 +161,19 @@ public class ChaosDirector : MonoBehaviour
                 nguonAmThanh.PlayOneShot(amThanhBatDauQuaiRa);
             }
 
-            if (prefabDemonPrince != null)
+            if (coBossTrongMap && prefabDemonPrince != null && !daSpawnBossCuoi)
             {
-                if (!daSpawnBossCuoi)
-                {
-                    daSpawnBossCuoi = true;
-                    Vector3 viTriSpawnBoss = (diemSpawnBossCoDinh != null) ? diemSpawnBossCoDinh.position : transform.position;
-                    Instantiate(prefabDemonPrince, viTriSpawnBoss, Quaternion.identity);
-                    TangQuai(1);
-                    Debug.Log("[CẢNH BÁO BOSS TRÙM] Demon Prince đã khởi tạo!");
-                }
+                daSpawnBossCuoi = true;
+                Vector3 viTriSpawnBoss = (diemSpawnBossCoDinh != null) ? diemSpawnBossCoDinh.position : transform.position;
+                GameObject bossInstance = Instantiate(prefabDemonPrince, viTriSpawnBoss, Quaternion.identity);
+
+                _bossHealthReference = bossInstance.GetComponent<Health_boss>();
+                TangQuai(1);
+                Debug.Log("[CẢNH BÁO BOSS TRÙM] Demon Prince đã khởi tạo và đang được giám sát qua Health_boss!");
             }
             else
             {
-                daSpawnBossCuoi = true; // Không có boss (Map thường) -> Đánh dấu true luôn
+                daSpawnBossCuoi = true;
             }
         }
 
@@ -180,14 +184,7 @@ public class ChaosDirector : MonoBehaviour
         }
         else
         {
-            dongHoDem = tongThoiGian; // Khóa chặt ở 600s (10:00) không cho tăng lố
-
-            if (!daXoasLuatSpawnHetGio)
-            {
-                daXoasLuatSpawnHetGio = true;
-                StopAllCoroutines(); // Dừng triệt để luồng đẻ quái tự động
-                Debug.Log("[HẾT GIỜ] Đã khóa hệ thống đẻ quái tự động!");
-            }
+            dongHoDem = tongThoiGian;
         }
 
         ChayGiaoDienUI();
@@ -195,17 +192,53 @@ public class ChaosDirector : MonoBehaviour
         float tienTrinhHienTai = (dongHoDem / tongThoiGian) * 100f;
         KiemTraKichHoatThongBaoWave(tienTrinhHienTai);
 
-        // KIỂM TRA ĐIỀU KIỆN THẮNG
-        if (dongHoDem >= tongThoiGian)
+        // --- HỆ THỐNG XỬ LÝ DỪNG SPAWN QUÁI & ĐIỀU KIỆN THẮNG TRẬN ---
+
+        // 1. Nếu đã đạt đủ điều kiện để dừng đẻ quái tự động
+        if (KiemTraDieuKienDungSpawnQuai())
         {
+            if (!daXoasLuatSpawnHetGio)
+            {
+                daXoasLuatSpawnHetGio = true;
+                Debug.Log("[HỆ THỐNG] Đã đủ điều kiện (Hết giờ / Boss tử trận). Khóa cổng đẻ quái!");
+            }
+
+            // 2. Chờ người chơi dọn sạch tàn dư trên bản đồ để Thắng Game
             if (KiemTraKhongConQuaiTrenBanDo())
             {
-                WinGame = true;
-                TuDongSaveTienKhiWinGame();
-                Debug.Log("[CHIẾN THẮNG] Đã đủ 10 phút và quét sạch quái active trên bản đồ!");
-                return;
+                KíchHoatChienThang();
             }
         }
+    }
+
+    // --- HÀM MỚI: QUẢN LÝ TẬP TRUNG LOGIC DỪNG ĐẺ QUÁI ---
+    private bool KiemTraDieuKienDungSpawnQuai()
+    {
+        if (WinGame) return true;
+
+        if (coBossTrongMap)
+        {
+            // YÊU CẦU CỦA BẠN: Ngừng lại khi ĐỦ 2 ĐIỀU KIỆN (Hết giờ VÀ Boss chết)
+            bool daHetGio = dongHoDem >= tongThoiGian;
+
+            // Dùng logic bao gồm cả trường hợp Boss bị Destroy khỏi Hierarchy (null) để tránh kẹt
+            bool bossDaChet = (_bossHealthReference == null) || _bossHealthReference.Deadre_boss;
+
+            return daHetGio && bossDaChet;
+        }
+        else
+        {
+            // Nếu map thường không có Boss thì chỉ cần hết giờ là cổng tự đóng
+            return dongHoDem >= tongThoiGian;
+        }
+    }
+
+    private void KíchHoatChienThang()
+    {
+        WinGame = true;
+        StopAllCoroutines();
+        TuDongSaveTienKhiWinGame();
+        Debug.Log("[CHIẾN THẮNG] Đã hạ gục Boss và dọn sạch quái. Hoàn thành màn chơi!");
     }
 
     public void TangQuai(int soLuong = 1) => soLuongQuaiHienTai += soLuong;
@@ -264,7 +297,8 @@ public class ChaosDirector : MonoBehaviour
 
     IEnumerator HeThongQuanLySpawnQuaiToiUu()
     {
-        while (dongHoDem < tongThoiGian)
+        // Kiểm tra chặn ngay từ cửa vòng lặp tổng bằng Hàm logic tập trung
+        while (!KiemTraDieuKienDungSpawnQuai())
         {
             if (dongHoDem < 0f)
             {
@@ -317,7 +351,7 @@ public class ChaosDirector : MonoBehaviour
             yield return null;
         }
 
-        if (!daSpawnMiniBoss && prefabMiniBoss != null)
+        if (!coBossTrongMap && !daSpawnMiniBoss && prefabMiniBoss != null)
         {
             daSpawnMiniBoss = true;
             SimpleObjectPool.Instance.LayQuaiRa(prefabMiniBoss, LayViTriSpawnTandRa());
@@ -328,7 +362,9 @@ public class ChaosDirector : MonoBehaviour
     IEnumerator AloloGoiKhoRaQuaiToiUu(GameObject khuonMuonLay)
     {
         if (khuonMuonLay == null || SimpleObjectPool.Instance == null) yield break;
-        if (dongHoDem >= tongThoiGian) yield break;
+
+        // Chặn đầu vào bằng Hàm logic tập trung
+        if (KiemTraDieuKienDungSpawnQuai()) yield break;
 
         int soLuongQuaiGocMax = LaySoLuongQuaiToiDaTheoDoKho();
         int soLuongBoSung = LaySoLuongQuaiBoSungTheoDoKho();
@@ -343,7 +379,9 @@ public class ChaosDirector : MonoBehaviour
 
         for (int i = 0; i < soLuongQuaiDotNay; i++)
         {
-            if (dongHoDem >= tongThoiGian) yield break;
+            // Kiểm tra ngắt mạch ngay cả khi đang trong vòng lặp đẻ từng con quái
+            if (KiemTraDieuKienDungSpawnQuai()) yield break;
+
             Vector3 viTriTandRa = LayViTriSpawnTandRa();
             SimpleObjectPool.Instance.LayQuaiRa(khuonMuonLay, viTriTandRa);
             TangQuai(1);
@@ -402,21 +440,17 @@ public class ChaosDirector : MonoBehaviour
         }
     }
 
-    // ⭐ THUẬT TOÁN QUÉT QUÁI MỚI CHỐNG LỖI OBJECT POOL (SET ACTIVE FALSE)
     private bool KiemTraKhongConQuaiTrenBanDo()
     {
-        // Bước 1: Quét tất cả các quái thường có trên Scene
         BaseEnemy[] danhSachQuaiThongThuong = FindObjectsByType<BaseEnemy>(FindObjectsSortMode.None);
         foreach (var quai in danhSachQuaiThongThuong)
         {
-            // Nếu tìm thấy con quái nào còn tồn tại VÀ nó đang bật (Active) -> Chưa thể thắng
             if (quai != null && quai.gameObject.activeInHierarchy)
             {
                 return false;
             }
         }
 
-        // Bước 2: Quét tương tự với quái Charger
         EnemyCharger[] danhSachQuaiCharger = FindObjectsByType<EnemyCharger>(FindObjectsSortMode.None);
         foreach (var quai in danhSachQuaiCharger)
         {
@@ -426,7 +460,6 @@ public class ChaosDirector : MonoBehaviour
             }
         }
 
-        // Bước 3: Nếu không tìm thấy bất kỳ con nào đang Active -> Reset luôn biến đếm lọt lưới về 0
         soLuongQuaiHienTai = 0;
         return true;
     }

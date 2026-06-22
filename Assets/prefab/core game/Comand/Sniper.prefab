@@ -148,6 +148,7 @@ GameObject:
   - component: {fileID: 272861498052175168}
   - component: {fileID: 8581691812451645300}
   - component: {fileID: 2107634140858108183}
+  - component: {fileID: 2953269009393471600}
   m_Layer: 0
   m_Name: Sniper
   m_TagString: Untagged
@@ -290,6 +291,18 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!210 &2953269009393471600
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2097077970555502269}
+  m_Enabled: 1
+  m_SortingLayerID: -1492018015
+  m_SortingLayer: 4
+  m_SortingOrder: 240
+  m_SortAtRoot: 0
 --- !u!1 &3123961163466127615
 GameObject:
   m_ObjectHideFlags: 0
@@ -436,6 +449,7 @@ GameObject:
   - component: {fileID: 8772395514853890670}
   - component: {fileID: 8203162920086842769}
   - component: {fileID: 4124526904230176254}
+  - component: {fileID: 681414000766637064}
   m_Layer: 0
   m_Name: Canvas
   m_TagString: Untagged
@@ -472,7 +486,7 @@ Canvas:
   m_GameObject: {fileID: 3396189978021480205}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 1
+  m_RenderMode: 0
   m_Camera: {fileID: 0}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
@@ -484,7 +498,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 170
+  m_SortingOrder: 240
   m_TargetDisplay: 0
 --- !u!114 &8772395514853890670
 MonoBehaviour:
@@ -538,3 +552,15 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!210 &681414000766637064
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3396189978021480205}
+  m_Enabled: 1
+  m_SortingLayerID: -507329879
+  m_SortingLayer: 3
+  m_SortingOrder: 240
+  m_SortAtRoot: 0
