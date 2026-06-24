@@ -2,6 +2,7 @@ using UnityEngine;
 using System.IO;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine.SceneManagement; // Thư viện bắt buộc để tải lại Scene
 
 public class SaveSystem : MonoBehaviour
 {
@@ -18,10 +19,10 @@ public class SaveSystem : MonoBehaviour
         return File.Exists(duongDanFile) && DocToanBoFile().Count > 0;
     }
 
-    // ================= BỔ SUNG: HÀM XÓA FILE SAVE GAME =================
-    // Hàm này được thiết kế ở dạng public để bạn dễ dàng gán vào OnClick của Button UI
+    // ================= KHU VỰC XÓA FILE SAVE GAME & RESET RAM TUYỆT ĐỐI =================
     public void XoaFileSaveGame()
     {
+        // 1. Xóa file vật lý trên ổ cứng
         if (File.Exists(duongDanFile))
         {
             File.Delete(duongDanFile);
@@ -29,8 +30,14 @@ public class SaveSystem : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("[SaveSystem] Không tìm thấy file save để xóa hoặc file không tồn tại.");
+            Debug.LogWarning("[SaveSystem] Không tìm thấy file save để xóa.");
         }
+
+        // 2. 🔥 ÉP GAME TẢI LẠI MENU: Xóa sạch các biến cũ đang chạy ngầm trong RAM
+        // Điều này đảm bảo toàn bộ thông số lính, tiền, tướng quay về mặc định 100% trước khi vào trận
+        string sceneHienTai = SceneManager.GetActiveScene().name;
+        SceneManager.LoadScene(sceneHienTai);
+        Debug.Log($"<color=yellow><b>[SaveSystem]</b> Đã reload lại Scene {sceneHienTai} để đồng bộ RAM!</color>");
     }
 
     // ================= KHU VỰC LƯU / ĐỌC TIỀN NÂNG CẤP LÍNH =================
@@ -54,7 +61,7 @@ public class SaveSystem : MonoBehaviour
         return 0;
     }
 
-    // ================= KHU VỰC LƯU / ĐỌC TIẾN TRÌNH MAP (MỚI) =================
+    // ================= KHU VỰC LƯU / ĐỌC TIẾN TRÌNH MAP =================
     public void LuuTienTrinhMap(int mapIndex)
     {
         List<string> lines = DocToanBoFile();
@@ -133,7 +140,8 @@ public class SaveSystem : MonoBehaviour
     {
         File.WriteAllLines(duongDanFile, lines);
     }
-    // ================= KHU VỰC LƯU / ĐỌC TƯỚNG CHỌN (MỚI) =================
+
+    // ================= KHU VỰC LƯU / ĐỌC TƯỚNG CHỌN =================
     public void LuuTuongDaChon(int idTuong)
     {
         List<string> lines = DocToanBoFile();
@@ -151,6 +159,6 @@ public class SaveSystem : MonoBehaviour
         {
             return int.Parse(dongTimThay.Split(':').Last());
         }
-        return 0; // Mặc định trả về ID 0 nếu chưa chọn tướng nào
+        return 0;
     }
 }

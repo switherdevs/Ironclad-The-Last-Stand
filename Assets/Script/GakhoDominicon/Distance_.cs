@@ -16,25 +16,28 @@ public class FormationManager : MonoBehaviour
     {
         public string tenLoaiLinh;         // Tên chủng lính để hiển thị (Titan, KhoGrak...)
         public int capBacRank;             // Chỉ số phân lớp (0, 1, 2, 3...)
-        public float doLuiXMacDinh;        // Khoảng cách lùi mặc định ban đầu của lớp lính này (trục X âm)
-        public int soLuongHangToiDa = 6;   // Số lính tối đa trên 1 hàng của lớp này
+
+        [Header("Tùy chỉnh Vị Trí & Khoảng Cách Riêng")]
+        public float toaDoXBatDau;         // Vị trí X (ngang) xuất phát riêng của loại lính này
+        public float toaDoYBatDau;         // Vị trí Y (dọc) xuất phát riêng của loại lính này ở đỉnh hàng
+        public float gianCachDocY = 1.2f;  // Khoảng cách giữa các lính trong cùng một hàng dọc của loại này
+        public float gianCachNgangX = 2.5f;// Khoảng cách giữa hàng trước và hàng sau của loại này
+
+        public int soLuongHangToiDa = 6;   // Số lính tối đa trên 1 hàng dọc của lớp này
     }
 
     [Header("--- CẤU HÌNH TỪNG LOẠI LÍNH ---")]
     public CauHinhLopLinh[] danhSachCauHinh = new CauHinhLopLinh[]
     {
-        new CauHinhLopLinh { tenLoaiLinh = "Titan",      capBacRank = 4, doLuiXMacDinh =  0f,   soLuongHangToiDa = 6 },
-        new CauHinhLopLinh { tenLoaiLinh = "KhoGrak",    capBacRank = 0, doLuiXMacDinh = -4.0f, soLuongHangToiDa = 6 },
-        new CauHinhLopLinh { tenLoaiLinh = "IronStorm",  capBacRank = 1, doLuiXMacDinh = -8.0f, soLuongHangToiDa = 6 },
-        new CauHinhLopLinh { tenLoaiLinh = "Terminator", capBacRank = 2, doLuiXMacDinh = -12.0f,soLuongHangToiDa = 6 },
-        new CauHinhLopLinh { tenLoaiLinh = "DeadIron",   capBacRank = 3, doLuiXMacDinh = -16.0f,soLuongHangToiDa = 6 },
+        // Bạn có thể tùy chỉnh X, Y, khoảng cách dọc/ngang riêng biệt ngay trên Inspector
+        new CauHinhLopLinh { tenLoaiLinh = "Titan",      capBacRank = 4, toaDoXBatDau = -2f, toaDoYBatDau = -1.5f, gianCachDocY = 3.0f, gianCachNgangX = 4.0f, soLuongHangToiDa = 1 },
+        new CauHinhLopLinh { tenLoaiLinh = "KhoGrak",    capBacRank = 0, toaDoXBatDau = -4f, toaDoYBatDau = -1.5f, gianCachDocY = 1.2f, gianCachNgangX = 2.5f, soLuongHangToiDa = 6 },
+        new CauHinhLopLinh { tenLoaiLinh = "IronStorm",  capBacRank = 1, toaDoXBatDau = -8f, toaDoYBatDau = -1.5f, gianCachDocY = 1.2f, gianCachNgangX = 2.5f, soLuongHangToiDa = 6 },
+        new CauHinhLopLinh { tenLoaiLinh = "Terminator", capBacRank = 2, toaDoXBatDau = -12f,toaDoYBatDau = -1.5f, gianCachDocY = 1.5f, gianCachNgangX = 3.0f, soLuongHangToiDa = 4 },
+        new CauHinhLopLinh { tenLoaiLinh = "DeadIron",   capBacRank = 3, toaDoXBatDau = -16f,toaDoYBatDau = -1.5f, gianCachDocY = 1.5f, gianCachNgangX = 3.0f, soLuongHangToiDa = 4 },
     };
 
-    [Header("--- THIẾT LẬP KÍCH THƯỚC ĐỘI HÌNH ---")]
-    public float toaDoXHangDau = -2f;         // Vị trí X của hàng đầu tiên tiên phong
-    public float toaDoYTrungTam = -1.5f;       // Điểm bắt đầu của vị trí lính đầu tiên trên đỉnh hàng dọc Y
-    public float gianCachDocY = 1.2f;          // Khoảng cách giữa các lính trong cùng một hàng dọc
-    public float gianCachNgangX = 2.5f;        // Khoảng cách giữa hàng trước và hàng sau
+    [Header("--- TỐC ĐỘ ĐỘI HÌNH ---")]
     public float tocDoDiChuyenVeSlot = 5.0f;   // Tốc độ di chuyển mượt của lính về ô
     public float saiSoDichDen = 0.15f;         // Ngưỡng dừng để triệt tiêu dao động giật giật
 
@@ -71,9 +74,6 @@ public class FormationManager : MonoBehaviour
 
     // ── PUBLIC API ĐIỀU KHIỂN XẾP HÀNG ───────────────────────────────────────────────────
 
-    /// <summary>
-    /// Đăng ký một con lính mới xuất hiện vào hệ thống ma trận đội hình
-    /// </summary>
     public bool Register(GameObject go, int rank)
     {
         if (go == null) return false;
@@ -122,9 +122,6 @@ public class FormationManager : MonoBehaviour
         return true;
     }
 
-    /// <summary>
-    /// Hủy đăng ký giải phóng ô khi lính chết
-    /// </summary>
     public void Unregister(GameObject go)
     {
         if (go == null) return;
@@ -146,9 +143,6 @@ public class FormationManager : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Hàm lấy vị trí Slot thực tế theo Tọa độ thế giới (World Position)
-    /// </summary>
     public bool TryGetSlot(GameObject go, out Vector2 pos)
     {
         pos = Vector2.zero;
@@ -157,7 +151,7 @@ public class FormationManager : MonoBehaviour
         // Kiểm tra xem con lính này có còn trong từ điển quản lý không
         if (_linhNaoOAnDo.TryGetValue(go.GetInstanceID(), out ODoQuan oQuan))
         {
-            // Nếu ô này đã bị gán về 0 (tức là lính đã gọi Unregister hoặc chết), từ chối trả về vị trí di chuyển
+            // Nếu ô này đã bị gán về 0 (tức là lính đã gọi Unregister hoặc chết), từ chối trả về vị trí
             if (oQuan.instanceID == 0) return false;
 
             if (_soDoCauHinh.TryGetValue(LayRankCuaOQuan(oQuan), out CauHinhLopLinh ch))
@@ -169,9 +163,6 @@ public class FormationManager : MonoBehaviour
         return false;
     }
 
-    /// <summary>
-    /// Hàm tính toán vector vận tốc (Velocity) mượt mà để lính bám theo Slot của mình
-    /// </summary>
     public Vector2 GetSlotVelocity(GameObject go, float overrideSpeed = -1f)
     {
         if (go == null) return Vector2.zero;
@@ -192,9 +183,6 @@ public class FormationManager : MonoBehaviour
 
     // ── THUẬT TOÁN ĐẨY HÀNG STICK WAR ──────────────────────────────────────────────
 
-    /// <summary>
-    /// Thuật toán quét và dồn hàng tự động khi có lính chết ở hàng trước
-    /// </summary>
     private void CapNhatThuatToanDonHang(int rank)
     {
         List<ODoQuan> danhSachO = _khoOQuanTheoRank[rank];
@@ -244,28 +232,22 @@ public class FormationManager : MonoBehaviour
 
     private Vector2 TinhToaDoGoc(CauHinhLopLinh ch, int hang, int viTri)
     {
-        float xGoc = toaDoXHangDau + ch.doLuiXMacDinh - (hang * gianCachNgangX);
-
-        // Vị trí đầu tiên (viTri = 0) nằm tại đỉnh trên, các lính tiếp theo trừ dần Y để xếp dịch xuống dưới.
-        // Bổ sung thêm micro-offset để phân tách lớp hiển thị cơ học tuyệt đối.
-        float yGoc = toaDoYTrungTam - (viTri * gianCachDocY) - (hang * 0.001f);
+        // Đã sử dụng biến tọa độ độc lập của cấu hình (ch) thay vì biến toàn cục
+        float xGoc = ch.toaDoXBatDau - (hang * ch.gianCachNgangX);
+        float yGoc = ch.toaDoYBatDau - (viTri * ch.gianCachDocY) - (hang * 0.001f);
         return new Vector2(xGoc, yGoc);
     }
 
     private Vector2 TinhToaDoThucTeHienTai(CauHinhLopLinh ch, ODoQuan o)
     {
-        float xThucTe = toaDoXHangDau + ch.doLuiXMacDinh - (o.hangNgangThuMay * gianCachNgangX);
+        // Tính toán vị trí X và Y linh hoạt theo từng cấu hình của chủng lính
+        float xThucTe = ch.toaDoXBatDau - (o.hangNgangThuMay * ch.gianCachNgangX);
+        float yThucTe = ch.toaDoYBatDau - (o.viTriTrongHang * ch.gianCachDocY) - (o.hangNgangThuMay * 0.001f);
 
-        // 🎯 ĐIỀU CHỈNH QUAN TRỌNG: Trừ đi một lượng siêu nhỏ (o.hangNgangThuMay * 0.001f) dựa vào hàng ngang.
-        // Điều này đảm bảo lính ở hàng sau sẽ có Y thấp hơn hàng trước một chút xíu nếu vô tình đứng ngang hàng,
-        // giúp tính năng Custom Axis Y của URP nhận biết thứ tự đè hình thời gian thực chuẩn 100%.
-        float yThucTe = toaDoYTrungTam - (o.viTriTrongHang * gianCachDocY) - (o.hangNgangThuMay * 0.001f);
-
-        // Tạo hiệu ứng so le nhẹ giữa các hàng đối với các đội hình đông (6 lính) để nhìn trực quan hơn
+        // Tạo hiệu ứng so le nhẹ giữa các hàng đối với các đội hình đông
         if (ch.soLuongHangToiDa > 2 && o.hangNgangThuMay % 2 != 0)
         {
-            // Hàng lẻ sẽ thụt xuống dưới một chút để tạo độ so le đan xen đẹp mắt
-            yThucTe -= gianCachDocY * 0.3f;
+            yThucTe -= ch.gianCachDocY * 0.3f;
         }
 
         return new Vector2(transform.position.x + xThucTe, transform.position.y + yThucTe);
@@ -282,7 +264,6 @@ public class FormationManager : MonoBehaviour
 
     private float tocDoHienTaiKhac(GameObject go, float kc)
     {
-        // Nếu lính ở quá xa vị trí slot (ví dụ khi mới Spawn), tăng tốc độ để chạy nhanh về hàng ngũ
         if (kc > 5f) return tocDoDiChuyenVeSlot * 1.5f;
         return tocDoDiChuyenVeSlot;
     }

@@ -14,23 +14,23 @@ public class Terminator_new : MonoBehaviour
     public LoaiLinh loaiHinhDonVi = LoaiLinh.Terminator;
 
     [Header("--- Chỉ Số Chiến Đấu ---")]
-    public float TamBan = 9f;
-    public float soDanBan = 1f;
-    public int satThuong = 10;
+    public float TamBan = 9f; // Tầm bắn ngắn hơn IronStorm (vì giáp nặng, mang vũ khí cự ly trung bình-ngắn)
+    public float soDanBan = 1f; // Tốc độ đợt hồi bắn
+    public int satThuong = 10; // Sát thương mỗi viên đạn
     public Transform DiemBan;
     public GameObject prefabDanNho;
 
     [Header("--- Cấu Hình Loạt Đạn (ĐẶC TRƯNG) ---")]
-    public int soLuongDanTrongLoat = 5;
-    public float thoiGianCachNhauGiuaCacVien = 0.2f;
+    public int soLuongDanTrongLoat = 5; // Đặc trưng: Mỗi đợt bắn xả liên thanh liên tiếp 5 viên đạn
+    public float thoiGianCachNhauGiuaCacVien = 0.2f; // Độ trễ giữa từng phát bắn nhỏ bên trong loạt
 
     [Header("--- Âm Thanh ---")]
     [SerializeField] private AudioClip TiengSung;
     private AudioSource AmthanhTer;
 
     [Header("--- Di Chuyển & Giãn Cách (ĐỒNG BỘ NV1) ---")]
-    public float tocDoHanhQuan = 3f;
-    public float banKinhGianCach = 0.7f;
+    public float tocDoHanhQuan = 3f; // Tốc độ di chuyển chậm hơn một chút do mặc giáp Terminator nặng nề
+    public float banKinhGianCach = 0.7f; // Cần khoảng cách đứng rộng hơn vì kích thước to lớn
     public float lucDayGianCach = 2.0f;
     [Range(0.05f, 0.5f)] public float doMuotDiChuyen = 0.15f;
 
@@ -85,12 +85,13 @@ public class Terminator_new : MonoBehaviour
     {
         if (heal.Dear) return;
         if (phechinh != null && phechinh.Dear) return;
+        // Nếu hệ thống quản lý trò chơi báo kết thúc (GameOver) thì đứng hình, không chạy logic nữa
         if (Tayperer.skibidi != null && Tayperer.skibidi.GameOver) return;
 
         if (lenhHienTai != LenhChienThuat.RutLui) TimMucTieu();
         else ResetTarget();
 
-        // ĐỒNG BỘ ANIMATION DI CHUYỂN: Dựa trên vận tốc thực tế của Rigidbody giống NV1
+        // Đồng bộ hiệu ứng hoạt họa dựa theo độ lớn vận tốc thực tế giống hệt như thiết kế của Nhân vật 1
         if (Terminator_animator != null)
         {
             bool isMoving = rb.linearVelocity.magnitude > 0.6f;
@@ -109,22 +110,20 @@ public class Terminator_new : MonoBehaviour
 
         Vector2 vanTocMongMuon = Vector2.zero;
 
-        // 🎯 ĐÃ BỎ LÀN Y: Di chuyển tự do áp sát hoặc giữ khoảng cách giống NV1
         if (ThayDich != null && ThayDich.gameObject.activeInHierarchy && !KiemTraDichDaChet(ThayDich.gameObject))
         {
             float distToTarget = Vector2.Distance(transform.position, ThayDich.position);
-
             XoayMatTheoHuong(ThayDich.position.x - transform.position.x);
 
             if (distToTarget > TamBan)
             {
-                // Ngoài tầm bắn: Tiến thẳng về phía địch
+                // Đi tự do áp sát mục tiêu theo mọi hướng chứ không bị gò bó làn đường cố định
                 Vector2 huongDi = ((Vector2)ThayDich.position - (Vector2)transform.position).normalized;
                 vanTocMongMuon = (huongDi * tocDoHanhQuan) + (lucGianCachHienTai * 0.4f);
             }
             else
             {
-                // Đã vào tầm bắn: Đứng im giữ vị trí và kích hoạt xả đạn
+                // Khi lính bọc giáp nặng đã vào tầm bắn thì chỉ nhận lực giãn cách để giữ cự ly đứng, dừng hẳn tiến để bắn
                 vanTocMongMuon = lucGianCachHienTai;
                 if (HoiChieu <= Time.time && !isShooting)
                 {
@@ -134,7 +133,6 @@ public class Terminator_new : MonoBehaviour
         }
         else
         {
-            // Không có địch: Đi theo hàng ngũ của FormationManager
             vanTocMongMuon = TinhVanTocDoiHinh(lucGianCachHienTai);
         }
 
@@ -145,6 +143,7 @@ public class Terminator_new : MonoBehaviour
     {
         if (FormationManager.Instance == null) return lucGianCach;
 
+        // Giữ vị trí trong hàng ngũ theo dữ liệu cung cấp từ FormationManager
         Vector2 slotVelocity = FormationManager.Instance.GetSlotVelocity(gameObject, tocDoHanhQuan);
 
         if (lenhHienTai == LenhChienThuat.PhongThu || lenhHienTai == LenhChienThuat.TanCong)
@@ -188,33 +187,33 @@ public class Terminator_new : MonoBehaviour
         return Vector2.ClampMagnitude(tong, lucDayGianCach * 1.5f);
     }
 
-    // 🎯 GIỮ NGUYÊN CƠ CHẾ BẮN LOẠT ĐẶC TRƯNG + FIX LỖI XÁC CHẾT
+    // Coroutine xả nguyên 1 tràng/loạt đạn liên thanh đặc trưng của Terminator
     IEnumerator ChuKyXaDanVaNguongBan()
     {
         isShooting = true;
 
         if (Terminator_animator != null)
-            Terminator_animator.SetBool("Terminator_isShooting", true);
+            Terminator_animator.SetBool("Terminator_isShooting", true); // Kích hoạt hiệu ứng bắn liên thanh
 
         if (AmthanhTer != null && TiengSung != null)
         {
             AmthanhTer.PlayOneShot(TiengSung);
         }
 
+        // Vòng lặp bắn ra 5 viên liên tục (`soLuongDanTrongLoat = 5`)
         for (int i = 0; i < soLuongDanTrongLoat; i++)
         {
-            // Kiểm tra quái chết giữa loạt bắn để dừng ngay lập tức
+            // Điểm mấu chốt: Nếu mục tiêu bị hạ gục trước khi lính bắn xong viên thứ 5, hàm sẽ ngắt dòng ngay lập tức!
             if (ThayDich == null || !ThayDich.gameObject.activeInHierarchy || KiemTraDichDaChet(ThayDich.gameObject)) break;
 
-            TanCong();
-            yield return new WaitForSeconds(thoiGianCachNhauGiuaCacVien);
+            TanCong(); // Gọi hàm sinh đạn bay đi gây sát thương
+            yield return new WaitForSeconds(thoiGianCachNhauGiuaCacVien); // Chờ 0.2 giây rồi bắn viên tiếp theo
         }
 
         if (Terminator_animator != null)
             Terminator_animator.SetBool("Terminator_isShooting", false);
 
-        // Hồi chiêu tổng của cả loạt đạn
-        HoiChieu = Time.time + (1f / soDanBan);
+        HoiChieu = Time.time + (1f / soDanBan); // Thiết lập hồi chiêu cho toàn bộ cả loạt bắn lớn tiếp theo
         isShooting = false;
     }
 
@@ -222,10 +221,11 @@ public class Terminator_new : MonoBehaviour
     {
         if (ThayDich == null || DiemBan == null || QuanLyDan.Instance == null || prefabDanNho == null) return;
 
-        // Tính góc xoay thực tế hướng trực diện vào mục tiêu 360 độ giống NV1 và NV2
+        // Độc lập hướng bắn 360 độ: Đạn tự bay hướng xéo chéo thẳng vào địch chứ không bị bay ngang đơ
         Vector2 huongCoDinh = ((Vector2)ThayDich.position - (Vector2)DiemBan.position).normalized;
         float gocXoay = Mathf.Atan2(huongCoDinh.y, huongCoDinh.x) * Mathf.Rad2Deg;
 
+        // Lấy đạn từ kho Pooling tối ưu tài nguyên ram
         GameObject vienDan = QuanLyDan.Instance.LayDanTuKho(prefabDanNho);
         if (vienDan != null)
         {
@@ -242,64 +242,62 @@ public class Terminator_new : MonoBehaviour
         }
     }
 
-    // ── 🎯 ĐOẠN CODE ĐÃ ĐƯỢC SỬA ĐỔI: TÌM KIẾM THEO TAG "Enemy" VÀ ƯU TIÊN BOSS ──
+    // Thuật toán tìm mục tiêu thông minh: Ưu tiên diệt trừ chỉ huy địch (Boss) trước
     void TimMucTieu()
     {
-        // 1. Ưu tiên giữ mục tiêu cũ nếu còn sống và trong tầm bắn
+        // 1. Nếu đang có mục tiêu cũ, kiểm tra xem nó có phải Boss không. Nếu đúng và Boss vẫn còn sống thì tuyệt đối bám sát mục tiêu này
         if (ThayDich != null && ThayDich.gameObject.activeInHierarchy && !KiemTraDichDaChet(ThayDich.gameObject))
         {
-            // Nếu đang bắn Boss rồi thì giữ nguyên mục tiêu, không đổi mục tiêu lung tung
             if (ThayDich.gameObject.name.Contains("Chao_boss") || ThayDich.GetComponent<BossController>() != null)
             {
                 if (Vector2.Distance(transform.position, ThayDich.position) <= TamBan) return;
             }
         }
 
-        // 2. Tìm kiếm toàn bộ đối tượng mang Tag "Enemy" trên Scene
+        // 2. Tìm tất cả quái vật mang Tag "Enemy" trong màn chơi
         GameObject[] tatCaKeThu = GameObject.FindGameObjectsWithTag("Enemy");
 
         GameObject bestQuaiNho = null;
         GameObject bestBoss = null;
 
+        // Gán mốc khoảng cách tối đa ban đầu bằng tầm bắn để lọc những kẻ đứng xa quá
         float bestDistQuaiNho = TamBan;
         float bestDistBoss = TamBan;
 
         foreach (var q in tatCaKeThu)
         {
-            // Lọc bỏ những con quái ẩn, không hiển thị hoặc đã chết
             if (q == null || !q.activeInHierarchy || KiemTraDichDaChet(q)) continue;
 
             float kc = Vector2.Distance(transform.position, q.transform.position);
 
-            // Chỉ xử lý những mục tiêu nằm trọn vẹn trong tầm bắn (TamBan)
             if (kc <= TamBan)
             {
-                // Kiểm tra xem thực thể có phải Boss hay không
+                // Kiểm tra tên xem có chứa từ khóa Boss hoặc có đính kèm linh hồn BossController hay không
                 if (q.name.Contains("Chao_boss") || q.GetComponent<BossController>() != null)
                 {
                     if (kc < bestDistBoss)
                     {
                         bestDistBoss = kc;
-                        bestBoss = q; // Lưu lại con Boss gần nhất
+                        bestBoss = q; // Ghi nhận con Boss đang ở khoảng cách gần nhất
                     }
                 }
-                else // Nếu là quái cỏ nhỏ
+                else // Ngược lại nếu chỉ là lâu la quái nhỏ thông thường
                 {
                     if (kc < bestDistQuaiNho)
                     {
                         bestDistQuaiNho = kc;
-                        bestQuaiNho = q; // Lưu lại con quái nhỏ gần nhất
+                        bestQuaiNho = q; // Ghi nhận con quái nhỏ gần mình nhất
                     }
                 }
             }
         }
 
-        // 3. Phân chia mục tiêu: Ép ưu tiên dồn hỏa lực bắn Boss trước
+        // 3. Phân cấp quyết định nhắm bắn: Nếu có Boss xuất hiện thì dồn lực bắn Boss trước!
         if (bestBoss != null)
         {
             ThayDich = bestBoss.transform;
         }
-        else if (bestQuaiNho != null)
+        else if (bestQuaiNho != null) // Nếu khu vực xung quanh không có Boss nào mới chuyển qua dọn quái cỏ nhỏ
         {
             ThayDich = bestQuaiNho.transform;
         }
@@ -341,14 +339,15 @@ public class Terminator_new : MonoBehaviour
 
     int GetRank() => loaiHinhDonVi switch
     {
-        LoaiLinh.KhoGrak => 0, // Khớp với KhoGrak (Rank = 0)
-        LoaiLinh.IronStorm => 1, // Khớp với IronStorm (Rank = 1)
-        LoaiLinh.Terminator => 2, // Khớp với Terminator (Rank = 2)
-        LoaiLinh.DeadIron => 3, // Khớp với DeadIron (Rank = 3)
+        LoaiLinh.KhoGrak => 0,
+        LoaiLinh.IronStorm => 1,
+        LoaiLinh.Terminator => 2, // Terminator sẽ đứng hàng số 3, nhận nhiệm vụ đỡ đòn cho hàng sau và bắn quét Boss
+        LoaiLinh.DeadIron => 3,
         LoaiLinh.Titan => 4,
         _ => -1
     };
 
+    // Hàm vẽ viền trợ năng: Hiển thị một vòng tròn màu xanh lá bao quanh Terminator trong cửa sổ Scene của Unity để bạn dễ dàng căn chỉnh chỉnh sửa độ xa của TamBan trực quan
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.green;

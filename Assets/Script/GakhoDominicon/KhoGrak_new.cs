@@ -21,7 +21,7 @@ public class NhanVat1 : MonoBehaviour
     public Transform DiemBan;
     public GameObject prefabDanNho;
 
-    [Header("--- Âm Thanh (MỚI TÍCH HỢP) ---")]
+    [Header("--- Âm Thanh ---")]
     [SerializeField] private AudioClip TiengSung;
     private AudioSource AmthanhLinh;
 
@@ -76,14 +76,15 @@ public class NhanVat1 : MonoBehaviour
     void Update()
     {
         if (heal.Dear) return;
-        if (lenhHienTai != LenhChienThuat.RutLui) TimMucTieu();
+
+        // ĐÃ SỬA LỖI TẠI ĐÂY: Xoá dấu cách bị gõ nhầm để gọi đúng tên hàm gốc của bạn
+        if (lenhHienTai != LenhChienThuat.RutLui) TimMucTieuNgauNhienTrongTam();
         else ResetTarget();
 
         if (anim != null)
         {
             if (isShooting)
             {
-                // Ép tắt trạng thái chạy để tránh lỗi đè Animation khi đang đứng bắn
                 anim.SetBool("Khogark_isMoving", false);
             }
             else
@@ -112,14 +113,11 @@ public class NhanVat1 : MonoBehaviour
 
             if (distToTarget > TamBan)
             {
-                // Địch ngoài tầm bắn: Tiến quân lên phía trước bám đuổi địch
                 Vector2 huongDi = ((Vector2)ThayDich.position - (Vector2)transform.position).normalized;
                 vanTocMongMuon = (huongDi * tocDoHanhQuan) + (lucGianCachHienTai * 0.4f);
             }
             else
             {
-                // 🎯 ĐÃ BỔ SUNG: Địch nằm trong tầm bắn -> Triệt tiêu vận tốc di chuyển hàng ngũ
-                // Chỉ giữ lại một chút lực giãn cách siêu nhỏ (10%) để không bị dẫm đè lên lính khác.
                 vanTocMongMuon = lucGianCachHienTai * 0.1f;
 
                 if (HoiChieu <= Time.time && !isShooting)
@@ -130,7 +128,6 @@ public class NhanVat1 : MonoBehaviour
         }
         else
         {
-            // Sạch bóng quân thù: Tiếp tục hành quân bám hàng bám lối bình thường
             vanTocMongMuon = TinhVanTocDoiHinh(lucGianCachHienTai);
         }
 
@@ -200,24 +197,27 @@ public class NhanVat1 : MonoBehaviour
         {
             if (ThayDich == null || !ThayDich.gameObject.activeInHierarchy || KiemTraDichDaChet(ThayDich.gameObject)) break;
 
-            if (prefabDanNho != null && DiemBan != null)
+            if (DiemBan != null)
             {
                 Vector2 huongCoDinh = ((Vector2)ThayDich.position - (Vector2)DiemBan.position).normalized;
                 float gocXoay = Mathf.Atan2(huongCoDinh.y, huongCoDinh.x) * Mathf.Rad2Deg;
 
-                if (QuanLyDan.Instance != null)
+                if (prefabDanNho != null)
                 {
-                    GameObject dan = QuanLyDan.Instance.LayDanTuKho(prefabDanNho);
-                    if (dan != null)
+                    if (QuanLyDan.Instance != null)
                     {
-                        dan.transform.position = DiemBan.position;
-                        dan.transform.rotation = Quaternion.Euler(0, 0, gocXoay);
-                        dan.SetActive(true);
+                        GameObject dan = QuanLyDan.Instance.LayDanTuKho(prefabDanNho);
+                        if (dan != null)
+                        {
+                            dan.transform.position = DiemBan.position;
+                            dan.transform.rotation = Quaternion.Euler(0, 0, gocXoay);
+                            dan.SetActive(true);
+                        }
                     }
-                }
-                else
-                {
-                    Instantiate(prefabDanNho, DiemBan.position, Quaternion.Euler(0, 0, gocXoay));
+                    else
+                    {
+                        Instantiate(prefabDanNho, DiemBan.position, Quaternion.Euler(0, 0, gocXoay));
+                    }
                 }
             }
 
@@ -247,54 +247,36 @@ public class NhanVat1 : MonoBehaviour
         }
     }
 
-    void TimMucTieu()
+    void TimMucTieuNgauNhienTrongTam()
     {
         if (ThayDich != null && ThayDich.gameObject.activeInHierarchy && !KiemTraDichDaChet(ThayDich.gameObject))
         {
-            if (ThayDich.gameObject.name.Contains("Chao_boss") || ThayDich.GetComponent<BossController>() != null)
-            {
-                if (Vector2.Distance(transform.position, ThayDich.position) <= TamBan) return;
-            }
+            if (Vector2.Distance(transform.position, ThayDich.position) <= TamBan) return;
         }
 
         GameObject[] tatCaKeThu = GameObject.FindGameObjectsWithTag("Enemy");
-
-        GameObject bestQuaiNho = null;
-        GameObject bestBoss = null;
-
-        float bestDistQuaiNho = TamBan;
-        float bestDistBoss = TamBan;
+        List<Transform> danhSachKẻThùHợpLệ = new List<Transform>();
 
         foreach (var q in tatCaKeThu)
         {
             if (q == null || !q.activeInHierarchy || KiemTraDichDaChet(q)) continue;
 
             float kc = Vector2.Distance(transform.position, q.transform.position);
-
             if (kc <= TamBan)
             {
-                if (q.name.Contains("Chao_boss") || q.GetComponent<BossController>() != null)
-                {
-                    if (kc < bestDistBoss)
-                    {
-                        bestDistBoss = kc;
-                        bestBoss = q;
-                    }
-                }
-                else
-                {
-                    if (kc < bestDistQuaiNho)
-                    {
-                        bestDistQuaiNho = kc;
-                        bestQuaiNho = q;
-                    }
-                }
+                danhSachKẻThùHợpLệ.Add(q.transform);
             }
         }
 
-        if (bestBoss != null) ThayDich = bestBoss.transform;
-        else if (bestQuaiNho != null) ThayDich = bestQuaiNho.transform;
-        else ThayDich = null;
+        if (danhSachKẻThùHợpLệ.Count > 0)
+        {
+            int indexNgauNhien = Random.Range(0, danhSachKẻThùHợpLệ.Count);
+            ThayDich = danhSachKẻThùHợpLệ[indexNgauNhien];
+        }
+        else
+        {
+            ThayDich = null;
+        }
     }
 
     private bool KiemTraDichDaChet(GameObject keThich)

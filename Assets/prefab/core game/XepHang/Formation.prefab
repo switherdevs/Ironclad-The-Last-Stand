@@ -47,27 +47,38 @@ MonoBehaviour:
   danhSachCauHinh:
   - tenLoaiLinh: Titan
     capBacRank: 4
-    doLuiXMacDinh: -75
+    toaDoXBatDau: -70
+    toaDoYBatDau: -20
+    gianCachDocY: 10
+    gianCachNgangX: 4
     soLuongHangToiDa: 2
   - tenLoaiLinh: KhoGrak
     capBacRank: 0
-    doLuiXMacDinh: 0
+    toaDoXBatDau: 5
+    toaDoYBatDau: -1.5
+    gianCachDocY: 5
+    gianCachNgangX: 6
     soLuongHangToiDa: 6
   - tenLoaiLinh: IronStorm
     capBacRank: 1
-    doLuiXMacDinh: -15
+    toaDoXBatDau: -8
+    toaDoYBatDau: -1.5
+    gianCachDocY: 6
+    gianCachNgangX: 3
     soLuongHangToiDa: 6
   - tenLoaiLinh: Terminator
     capBacRank: 2
-    doLuiXMacDinh: -30
-    soLuongHangToiDa: 6
+    toaDoXBatDau: -20
+    toaDoYBatDau: -1.5
+    gianCachDocY: 6
+    gianCachNgangX: 7
+    soLuongHangToiDa: 5
   - tenLoaiLinh: DeadIron
     capBacRank: 3
-    doLuiXMacDinh: -50
-    soLuongHangToiDa: 6
-  toaDoXHangDau: -12
-  toaDoYTrungTam: 2
-  gianCachDocY: 5.5
-  gianCachNgangX: 5
+    toaDoXBatDau: -40
+    toaDoYBatDau: -20
+    gianCachDocY: 5
+    gianCachNgangX: 3
+    soLuongHangToiDa: 2
   tocDoDiChuyenVeSlot: 5
   saiSoDichDen: 0.15

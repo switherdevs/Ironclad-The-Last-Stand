@@ -10,8 +10,12 @@ public class DanNv4 : MonoBehaviour
     public bool laDanBanLan = true;
     public float banKinhNoLan = 2.5f;
 
+    [Header("--- HIỆU ỨNG VA CHẠM ---")]
+    [Tooltip("Prefab hiệu ứng sẽ được tạo ra tại vị trí viên đạn va chạm")]
+    public GameObject prefabHieuUngNo;
+
     [Header("--- CẤU HÌNH XUYÊN THẤU ---")]
-    [Tooltip("Điền tên các Prefab chủng lính KHÔNG THỂ bắn xuyên qua (Ví dụ: Titan, Chaos_boss)")]
+    [Tooltip("Điền tên các Prefab chủng lính KHÔNG THỂ bắn xuyên qua")]
     public string[] danhSachChungKhongXuyenQua;
 
     private float demThoiGian;
@@ -53,7 +57,6 @@ public class DanNv4 : MonoBehaviour
     {
         if (collision.CompareTag("Enemy"))
         {
-            // 1. Kiểm tra xem chủng lính va chạm có nằm trong danh sách KHÔNG cho xuyên qua không
             bool biChanLai = false;
             string tenVatTheVaCham = collision.gameObject.name;
 
@@ -61,7 +64,6 @@ public class DanNv4 : MonoBehaviour
             {
                 foreach (string tenChungLinh in danhSachChungKhongXuyenQua)
                 {
-                    // Dùng Contains để né lỗi chữ "(Clone)" sau tên Prefab khi sinh ra trong cụm ma trận
                     if (!string.IsNullOrEmpty(tenChungLinh) && tenVatTheVaCham.Contains(tenChungLinh))
                     {
                         biChanLai = true;
@@ -70,10 +72,8 @@ public class DanNv4 : MonoBehaviour
                 }
             }
 
-            // 2. Phân nhánh xử lý logic Sát thương
             if (biChanLai)
             {
-                // 🔥 TRƯỜNG HỢP 1: Chạm trúng chủng lính BỊ CHẶN -> Kích hoạt NỔ LAN (AOE)
                 if (laDanBanLan)
                 {
                     Collider2D[] xungQuanh = Physics2D.OverlapCircleAll(transform.position, banKinhNoLan);
@@ -95,20 +95,28 @@ public class DanNv4 : MonoBehaviour
                 }
                 else
                 {
-                    // Nếu không bật tính năng bắn lan, chỉ gây sát thương đơn cho mục tiêu chặn này
                     Health_chaos mauQuai = collision.GetComponent<Health_chaos>() ?? collision.GetComponentInParent<Health_chaos>();
                     if (mauQuai != null) mauQuai.TakeDamage(satThuong);
                 }
 
-                // Chạm quái to/bị chặn -> Đạn nổ chốt hạ và biến mất (Trả về pool)
+                TaoHieuUngVaCham(); // Gọi hiệu ứng trước khi trả đạn về pool
                 ThanhCongTraDan();
             }
             else
             {
-                // ✨ TRƯỜNG HỢP 2: Chạm quái thường -> XUYÊN QUA: Chỉ trừ máu đơn mục tiêu con đó, đạn bay tiếp
                 Health_chaos mauQuai = collision.GetComponent<Health_chaos>() ?? collision.GetComponentInParent<Health_chaos>();
                 if (mauQuai != null) mauQuai.TakeDamage(satThuong);
             }
+        }
+    }
+
+    // Hàm tạo hiệu ứng tại vị trí va chạm
+    void TaoHieuUngVaCham()
+    {
+        if (prefabHieuUngNo != null)
+        {
+            // Tạo hiệu ứng tại vị trí hiện tại của viên đạn, giữ nguyên góc xoay
+            Instantiate(prefabHieuUngNo, transform.position, transform.rotation);
         }
     }
 

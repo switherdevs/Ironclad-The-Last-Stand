@@ -30,6 +30,9 @@ public class SniperSkill : MonoBehaviour
     [SerializeField] private CanvasGroup canvasGroupNutBam;
     [Tooltip("Kéo TextMeshPro hiển thị số đạn / thời gian hồi vào đây")]
     [SerializeField] private TextMeshProUGUI textHienThiTrangThai;
+    [SerializeField] private GameObject HieuUng;
+    [Header("--- Aniamtion ---")]
+    private Animator animator;
 
     [Header("--- ÂM THANH ---")]
     private AudioSource Amthanh;
@@ -37,6 +40,8 @@ public class SniperSkill : MonoBehaviour
 
     private void Start()
     {
+        HieuUng.SetActive(false);
+        animator = GetComponentInChildren<Animator>();
         Amthanh = GetComponent<AudioSource>();
 
         // Thiết lập trạng thái UI ban đầu
@@ -86,6 +91,8 @@ public class SniperSkill : MonoBehaviour
         mousePos.z = 0;
 
         // Tạo hiệu ứng nổ và phát âm thanh
+        animator.SetTrigger("shoot_sniper");
+        HieuUng.SetActive(true);
         if (explosionPrefab != null) Instantiate(explosionPrefab, mousePos, Quaternion.identity);
         if (Amthanh != null && Shooot != null) Amthanh.PlayOneShot(Shooot);
 
@@ -104,6 +111,7 @@ public class SniperSkill : MonoBehaviour
         currentShots--;
         CapNhatTextTrangThai();
         Debug.Log("Đã bắn! Còn lại: " + currentShots);
+        HieuUng.SetActive(true);
 
         if (currentShots <= 0)
         {
