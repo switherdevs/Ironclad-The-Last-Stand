@@ -5,6 +5,10 @@ public class Dannv2 : MonoBehaviour
     public khodanan cauHinhDan;
     [HideInInspector] public int satThuong = 100; // Sẽ được nhân vật nạp đam vào khi bắn
 
+    [Header("--- HIỆU ỨNG VA CHẠM ---")]
+    [Tooltip("Prefab hiệu ứng sẽ được tạo ra tại vị trí viên đạn va chạm")]
+    public GameObject prefabHieuUngNo;
+
     private float demThoiGian;
     private bool daKichHoat = false;
     private TrailRenderer line;
@@ -63,6 +67,9 @@ public class Dannv2 : MonoBehaviour
         // Khi chạm trúng mục tiêu có Tag là Enemy
         if (collision.CompareTag("Enemy"))
         {
+            // 🌟 NÂNG CẤP: Tạo hiệu ứng nổ ngay khi chạm Collider của Enemy
+            TaoHieuUngVaCham();
+
             Health_chaos mauQuai = collision.GetComponent<Health_chaos>();
             if (mauQuai == null) mauQuai = collision.GetComponentInParent<Health_chaos>();
 
@@ -75,6 +82,15 @@ public class Dannv2 : MonoBehaviour
 
             // Biến mất ngay sau khi chạm mục tiêu
             ThanhCongTraDan();
+        }
+    }
+
+    // Hàm tạo hiệu ứng tại vị trí va chạm độc lập
+    void TaoHieuUngVaCham()
+    {
+        if (prefabHieuUngNo != null)
+        {
+            Instantiate(prefabHieuUngNo, transform.position, transform.rotation);
         }
     }
 

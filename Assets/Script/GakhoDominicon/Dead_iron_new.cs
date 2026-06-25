@@ -36,14 +36,14 @@ public class DeadIronWalk_new : MonoBehaviour
     public Transform DiemBanTenLua;
     public GameObject prefabTenLua;
     public int soTenLuaMoiLoat = 4;
-    [Tooltip("Khoảng cách thời gian delay giữa từng quả tên lửa phóng ra trong một loạt")]
-    public float delayGiuaCacQuaTenLua = 0.2f;
+    [Tooltip("Khoảng cách thời gian delay giữa từng quả tên lửa phóng ra trong một loạt để nhìn rõ Anim")]
+    public float delayGiuaCacQuaTenLua = 0.5f; // Tăng lên 0.5s mặc định để người chơi nhìn rõ từng quả phóng ra
     [Tooltip("Thời gian đứng yên Idle sau khi kết thúc loạt tên lửa")]
     public float thoiGianIdleSauTenLua = 2f;
     [Tooltip("Âm thanh phóng tên lửa")]
     public AudioClip amThanhPhongTenLua;
 
-    [Header("Cấu hình Vòng lặp Kỹ năng (Mới)")]
+    [Header("Cấu hình Vòng lặp Kỹ năng")]
     [Tooltip("Số lần bắn Plasma cần thiết để kích hoạt tên lửa")]
     public int soLanPlasmaDeBanTenLua = 3;
     [SerializeField] private int demSoLanBaoNhieuPlasma = 0;
@@ -82,7 +82,7 @@ public class DeadIronWalk_new : MonoBehaviour
     [Tooltip("Khoảng cách tối đa có thể di chuyển lên/xuống theo trục Y so với vị trí gốc")]
     public float phamViDiChuyenY = 5f;
     [Tooltip("Sai số trục Y cho phép giữa họng súng chính và quái để Dead Iron đứng yên bắn")]
-    public float saiSoCanhY = 0.1f;
+    public float saiSoCanhY = 0.5f;
 
     private Rigidbody2D rb;
     private Transform mucTieuQuai;
@@ -129,13 +129,10 @@ public class DeadIronWalk_new : MonoBehaviour
     {
         if ((phechinh != null && phechinh.Dear) || (Tayperer.skibidi != null && Tayperer.skibidi.GameOver)) return;
 
-        // Ưu tiên 1: Đang giẫm đạp thì không làm gì khác
         if (dangGiamDap) return;
 
-        // Ưu tiên 2: Kiểm tra kẻ địch áp sát để giẫm (Xử lý ngay lập tức trong Update để ưu tiên cao nhất)
         if (KiemTraVaKichHoatGiam()) return;
 
-        // Ưu tiên 3: Nếu đang trong trạng thái xả loạt đạn/tên lửa hoặc đang đứng im Idle thì khóa không tìm mục tiêu mới
         if (dangTrongLoat || dangBanTenLua) return;
 
         if (lenhHienTai != LenhChienThuat.RutLui) TimMucTieuThongMinh();
@@ -146,9 +143,19 @@ public class DeadIronWalk_new : MonoBehaviour
             XoayMat(mucTieuQuai.position.x);
         }
 
+        // Cập nhật Animation di chuyển chuẩn xác dựa vào sự xuất hiện của quái vật
         if (DeadIron_animator != null)
         {
-            DeadIron_animator.SetBool("DeadIron_isMoving", !dangTrongLoat && !dangBanTenLua && rb.linearVelocity.magnitude > 0.4f);
+            // 🌟 ƯU TIÊN: Nếu có quái trong tầm nhắm, ép tắt hoàn toàn animation đi bộ
+            if (mucTieuQuai != null)
+            {
+                DeadIron_animator.SetBool("DeadIron_isMoving", false);
+            }
+            else
+            {
+                bool coVanTocDiChuyen = rb.linearVelocity.magnitude > 0.1f;
+                DeadIron_animator.SetBool("DeadIron_isMoving", coVanTocDiChuyen);
+            }
         }
     }
 
@@ -156,44 +163,42 @@ public class DeadIronWalk_new : MonoBehaviour
     {
         if (phechinh != null && phechinh.Dear) return;
 
-        // Khóa cứng di chuyển khi giẫm hoặc bắn tên lửa
         if (dangGiamDap || dangBanTenLua || dangTrongLoat)
         {
             rb.linearVelocity = Vector2.zero;
             return;
         }
 
-        Vector2 vanTocMongMuon = TinhVanTocCanhGocYThongMinh();
-
+        // 🌟 NÂNG CẤP ƯU TIÊN: Nếu phát hiện thấy quái, đứng im tại chỗ ngay lập tức để bắn, không đi theo hàng nữa
         if (mucTieuQuai != null && mucTieuQuai.gameObject.activeInHierarchy && !KiemTraDichDaChet(mucTieuQuai.gameObject))
         {
+            rb.linearVelocity = Vector2.zero; // Triệt tiêu mọi vận tốc vật lý
+
             float distToTargetX = Mathf.Abs(transform.position.x - mucTieuQuai.position.x);
 
-            // Nếu lọt vào tầm bắn và hệ thống vũ khí sẵn sàng
+            // Chỉ bắn khi mục tiêu nằm trong tầm bắn tối đa
             if (distToTargetX <= TamBan)
             {
-                vanTocMongMuon.x = 0; // Đứng lại giữ đội hình hàng ngang
-
                 float hienTaiY = DiemBanPlasma != null ? DiemBanPlasma.position.y : transform.position.y;
                 float chechLechY = mucTieuQuai.position.y - hienTaiY;
 
-                // Khi đã thẳng hàng trục Y gần như tuyệt đối
                 if (Mathf.Abs(chechLechY) <= saiSoCanhY)
                 {
-                    // Kiểm tra xem đã đến lượt bắn tên lửa chưa
                     if (demSoLanBaoNhieuPlasma >= soLanPlasmaDeBanTenLua)
                     {
                         StartCoroutine(ThucHienLoatTenLua());
                     }
-                    // Nếu chưa thì bắn Plasma (nếu hết thời gian hồi chiêu)
                     else if (Time.time >= thoiGianHoiPlasmaTiepTheo)
                     {
                         StartCoroutine(ThucHienLoatPlasma());
                     }
                 }
             }
+            return; // Thoát hàm, ngăn không cho tính toán vị trí xếp hàng
         }
 
+        // 🌟 NÀO KHÔNG THẤY QUÁI: Mới chạy hàm tính vận tốc để di chuyển về vị trí xếp hàng (Formation)
+        Vector2 vanTocMongMuon = TinhVanTocCanhGocYThongMinh();
         rb.linearVelocity = Vector2.Lerp(rb.linearVelocity, vanTocMongMuon, doMuotDiChuyen);
     }
 
@@ -221,8 +226,6 @@ public class DeadIronWalk_new : MonoBehaviour
     IEnumerator ThucHienDonGiam()
     {
         dangGiamDap = true;
-
-        // Ngắt các trạng thái tấn công khác ngay lập tức
         dangTrongLoat = false;
         dangBanTenLua = false;
 
@@ -231,8 +234,7 @@ public class DeadIronWalk_new : MonoBehaviour
 
         if (DeadIron_animator != null)
         {
-            DeadIron_animator.SetBool("DeadIron_isShooting", false);
-            DeadIron_animator.SetBool("DeadIron_isMissiling", false);
+            DeadIron_animator.SetBool("DeadIron_isMoving", false);
             DeadIron_animator.SetTrigger("DeadIron_StompTrigger");
         }
 
@@ -249,8 +251,6 @@ public class DeadIronWalk_new : MonoBehaviour
         if (objectKhiGiam != null) objectKhiGiam.SetActive(false);
 
         dangGiamDap = false;
-
-        // Tạo khoảng hoãn nhỏ sau khi giẫm xong
         thoiGianHoiPlasmaTiepTheo = Time.time + 0.5f;
     }
 
@@ -258,8 +258,11 @@ public class DeadIronWalk_new : MonoBehaviour
     {
         dangTrongLoat = true;
 
-        // Bật animation Bắn ngay từ lúc nạp năng lượng theo yêu cầu của bạn
-        if (DeadIron_animator != null) DeadIron_animator.SetBool("DeadIron_isShooting", true);
+        if (DeadIron_animator != null)
+        {
+            DeadIron_animator.SetBool("DeadIron_isMoving", false);
+            DeadIron_animator.SetTrigger("DeadIron_ShootTrigger");
+        }
 
         if (vfxNapPlasma != null && DiemBanPlasma != null)
         {
@@ -293,24 +296,20 @@ public class DeadIronWalk_new : MonoBehaviour
             }
         }
 
-        // Tăng biến đếm số lần bắn Plasma thành công
         demSoLanBaoNhieuPlasma++;
-
         dangTrongLoat = false;
         thoiGianHoiPlasmaTiepTheo = Time.time + HoiChieuPlasmaThucTe;
-        if (DeadIron_animator != null) DeadIron_animator.SetBool("DeadIron_isShooting", false);
     }
 
     IEnumerator ThucHienLoatTenLua()
     {
         dangBanTenLua = true;
 
-        // Khi bắn tên lửa: Tắt di chuyển, chuyển sang animation Idle rồi mới bắn
         if (DeadIron_animator != null)
         {
             DeadIron_animator.SetBool("DeadIron_isMoving", false);
-            DeadIron_animator.SetBool("DeadIron_isShooting", false);
-            DeadIron_animator.SetBool("DeadIron_isMissiling", true); // Kích hoạt hiệu ứng/anim bắn tên lửa
+            // 🌟 THAY ĐỔI CHÍNH: Chuyển sang SetTrigger cho animation phóng tên lửa theo yêu cầu
+            DeadIron_animator.SetTrigger("DeadIron_MissileTrigger");
         }
 
         for (int i = 0; i < soTenLuaMoiLoat; i++)
@@ -331,18 +330,13 @@ public class DeadIronWalk_new : MonoBehaviour
                 Amthanh.PlayOneShot(amThanhPhongTenLua);
             }
 
+            // 🌟 CHỖ ĐIỀU CHỈNH TỐC ĐỘ PHÓNG: Dùng biến này để dãn cách thời gian phóng giữa từng quả
             yield return new WaitForSeconds(delayGiuaCacQuaTenLua);
         }
 
-        if (DeadIron_animator != null) DeadIron_animator.SetBool("DeadIron_isMissiling", false);
-
-        // ⏳ Trạng thái chờ: Đứng yên Idle một lúc sau khi bắn xong loạt tên lửa
         yield return new WaitForSeconds(thoiGianIdleSauTenLua);
 
-        // Reset lại mục tiêu cũ để bắt đầu thuật toán tìm kiếm mục tiêu mới hoàn toàn
         ResetTarget();
-
-        // Đặt lại biến đếm loạt Plasma về số 0
         demSoLanBaoNhieuPlasma = 0;
         dangBanTenLua = false;
     }
@@ -522,8 +516,8 @@ public class DeadIronWalk_new : MonoBehaviour
         if (_registered && FormationManager.Instance != null) FormationManager.Instance.Unregister(gameObject);
         if (DeadIron_animator)
         {
-            DeadIron_animator.SetBool("DeadIron_isShooting", false);
-            DeadIron_animator.SetBool("DeadIron_isMissiling", false);
+            DeadIron_animator.ResetTrigger("DeadIron_ShootTrigger");
+            DeadIron_animator.ResetTrigger("DeadIron_MissileTrigger");
         }
         if (vfxChanKhiGiam != null) vfxChanKhiGiam.SetActive(false);
         if (objectKhiGiam != null) objectKhiGiam.SetActive(false);

@@ -269,7 +269,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lenhHienTai: 0
   loaiHinhDonVi: 0
-  TamBan: 200
+  TamBan: 250
   satThuong: 40
   DiemBan: {fileID: 6952550864982342412}
   prefabDanLon: {fileID: 5603226188732681372, guid: 34bac72397804c34998af74a1edaa59f, type: 3}

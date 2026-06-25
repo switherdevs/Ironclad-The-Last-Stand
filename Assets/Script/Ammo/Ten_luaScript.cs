@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DanNv4 : MonoBehaviour
+public class Ten_luaScript : MonoBehaviour
 {
     public khodanan cauHinhDan;
     [HideInInspector] public int satThuong = 100;
@@ -57,23 +57,24 @@ public class DanNv4 : MonoBehaviour
     {
         if (collision.CompareTag("Enemy"))
         {
+            // 🌟 NÂNG CẤP: Miễn là chạm vào Collider của Enemy thì sẽ sinh ra hiệu ứng nổ ngay lập tức
+            TaoHieuUngVaCham();
+
             bool biChanLai = false;
             string tenVatTheVaCham = collision.gameObject.name;
 
-            // Vòng lặp quét kiểm tra xem tên con quái này có nằm trong mảng danh sách chặn không
             if (danhSachChungKhongXuyenQua != null)
             {
                 foreach (string tenChungLinh in danhSachChungKhongXuyenQua)
                 {
                     if (!string.IsNullOrEmpty(tenChungLinh) && tenVatTheVaCham.Contains(tenChungLinh))
                     {
-                        biChanLai = true; // Xác nhận con quái này nằm trong mảng cần chặn!
+                        biChanLai = true;
                         break;
                     }
                 }
             }
 
-            // LỚP ĐIỀU KIỆN CHÍNH: Nếu quái nằm trong mảng (biChanLai == true)
             if (biChanLai)
             {
                 if (laDanBanLan)
@@ -101,15 +102,12 @@ public class DanNv4 : MonoBehaviour
                     if (mauQuai != null) mauQuai.TakeDamage(satThuong);
                 }
 
-                // 🌟 ĐÃ ĐỒNG BỘ: Chỉ tạo hiệu ứng nổ tại đây khi đạn trúng các con quái trong mảng chặn
-                TaoHieuUngVaCham();
-
-                // Thu đạn về kho Pooling lập tức vì bị chặn lại rồi
+                // Đã chuyển hàm TaoHieuUngVaCham() lên đầu nên ở đây không cần gọi lại nữa
                 ThanhCongTraDan();
             }
             else
             {
-                // Nếu chạm quái thường (không nằm trong mảng): Chỉ trừ máu rồi cho đạn bay xuyên tiếp, KHÔNG tạo hiệu ứng nổ
+                // Trường hợp bắn xuyên qua: Gây sát thương bình thường và viên đạn tiếp tục bay
                 Health_chaos mauQuai = collision.GetComponent<Health_chaos>() ?? collision.GetComponentInParent<Health_chaos>();
                 if (mauQuai != null) mauQuai.TakeDamage(satThuong);
             }

@@ -23,15 +23,16 @@ public class SniperSkill : MonoBehaviour
     private float dongHoHoiChieu = 0f;
     private bool isCooldown = false;
 
-    [Header("--- GIAO DIỆN UI ĐIỀU KHIỂN (MỚI) ---")]
-    [Tooltip("Kéo Button kích hoạt kỹ năng này vào đây")]
+    [Header("--- GIAO DIỆN UI ĐIỀU KHIỂN (NÂNG CẤP) ---")]
+    [Tooltip("Không cần kéo tay nữa, nút bấm này sẽ được gán tự động từ Spawner khi vào trận!")]
     [SerializeField] private Button nutBamSkillSniper;
     [Tooltip("Gắn thành phần CanvasGroup của nút bấm (hoặc của bảng skill) để làm mờ")]
     [SerializeField] private CanvasGroup canvasGroupNutBam;
     [Tooltip("Kéo TextMeshPro hiển thị số đạn / thời gian hồi vào đây")]
     [SerializeField] private TextMeshProUGUI textHienThiTrangThai;
     [SerializeField] private GameObject HieuUng;
-    [Header("--- Aniamtion ---")]
+
+    [Header("--- Animation ---")]
     private Animator animator;
 
     [Header("--- ÂM THANH ---")]
@@ -66,6 +67,27 @@ public class SniperSkill : MonoBehaviour
         }
     }
 
+    // 🌟 HÀM NÂNG CẤP CHÍNH: Cho phép Spawner truyền nút bấm tự chọn vào để liên kết khi vào trận
+    public void GanNutBamSkillTuDong(Button nutTuSpawner)
+    {
+        if (nutTuSpawner == null) return;
+
+        // Gán tham chiếu nút bấm vào biến để script quản lý
+        nutBamSkillSniper = nutTuSpawner;
+
+        // Thử tìm CanvasGroup và TextMeshPro trực tiếp trên nút bấm được truyền vào (nếu có)
+        if (canvasGroupNutBam == null) canvasGroupNutBam = nutBamSkillSniper.GetComponent<CanvasGroup>();
+        if (textHienThiTrangThai == null) textHienThiTrangThai = nutBamSkillSniper.GetComponentInChildren<TextMeshProUGUI>();
+
+        // 🛠️ THUẬT TOÁN KẾT NỐI SỰ KIỆN: Xóa bỏ các lệnh cũ để tránh trùng lặp, sau đó gán hàm kích hoạt chiêu
+        nutBamSkillSniper.onClick.RemoveAllListeners();
+        nutBamSkillSniper.onClick.AddListener(ActivateSkill);
+
+        // Làm mới lại trạng thái hiển thị của nút vừa được gán
+        CapNhatGiaoDienUI();
+        Debug.Log($"<color=cyan><b>[SniperSkill]</b> Đã liên kết thành công nút bấm {nutBamSkillSniper.name} với kỹ năng Sniper!</color>");
+    }
+
     public void ActivateSkill()
     {
         // Chặn kích hoạt nếu đang hồi chiêu hoặc đang bật sẵn rồi
@@ -91,8 +113,8 @@ public class SniperSkill : MonoBehaviour
         mousePos.z = 0;
 
         // Tạo hiệu ứng nổ và phát âm thanh
-        animator.SetTrigger("shoot_sniper");
-        HieuUng.SetActive(true);
+        if (animator != null) animator.SetTrigger("shoot_sniper");
+        if (HieuUng != null) HieuUng.SetActive(true);
         if (explosionPrefab != null) Instantiate(explosionPrefab, mousePos, Quaternion.identity);
         if (Amthanh != null && Shooot != null) Amthanh.PlayOneShot(Shooot);
 
@@ -111,7 +133,6 @@ public class SniperSkill : MonoBehaviour
         currentShots--;
         CapNhatTextTrangThai();
         Debug.Log("Đã bắn! Còn lại: " + currentShots);
-        HieuUng.SetActive(true);
 
         if (currentShots <= 0)
         {

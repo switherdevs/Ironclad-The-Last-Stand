@@ -4,6 +4,11 @@ public class DanNV1 : MonoBehaviour
 {
     public khodanan cauHinhDan; // Kéo file ScriptableObject khodanan vào đây trên Prefab
     public int satThuong = 10;
+
+    [Header("--- HIỆU ỨNG VA CHẠM ---")]
+    [Tooltip("Prefab hiệu ứng sẽ được tạo ra tại vị trí viên đạn va chạm")]
+    public GameObject prefabHieuUngNo;
+
     private float demThoiGian;
     private bool daKichHoat = false;
     private TrailRenderer Line;
@@ -57,10 +62,28 @@ public class DanNV1 : MonoBehaviour
     {
         if (collision.CompareTag("Enemy"))
         {
+            // 🌟 NÂNG CẤP: Tạo hiệu ứng nổ ngay khi chạm Collider của Enemy
+            TaoHieuUngVaCham();
+
             // Xử lý trừ máu quái tại đây (Ví dụ: collision.GetComponent<BaseEnemy>().TakeDamage(satThuong);)
+            Health_chaos mauQuai = collision.GetComponent<Health_chaos>();
+            if (mauQuai == null) mauQuai = collision.GetComponentInParent<Health_chaos>();
+            if (mauQuai != null)
+            {
+                mauQuai.TakeDamage(satThuong);
+            }
 
             // Lập tức thu đạn về kho Pooling
             AnVienDanVeKho();
+        }
+    }
+
+    // Hàm tạo hiệu ứng tại vị trí va chạm độc lập
+    void TaoHieuUngVaCham()
+    {
+        if (prefabHieuUngNo != null)
+        {
+            Instantiate(prefabHieuUngNo, transform.position, transform.rotation);
         }
     }
 

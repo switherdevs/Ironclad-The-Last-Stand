@@ -1,13 +1,18 @@
 using UnityEngine;
+using UnityEngine.UI; // Bắt buộc phải có để làm việc với linh kiện Button
 
 public class HeroSpawner : MonoBehaviour
 {
-    [Header("--- Vị Trí Xuất Hiện ---")]
-    [Tooltip("Kéo Transform vị trí nơi bạn muốn con tướng xuất hiện khi vào game.")]
+    [Header("--- VỊ TRÍ SPAWN TƯỚNG (UI) ---")]
+    [Tooltip("Kéo RectTransform hoặc Transform nơi bạn muốn con tướng xuất hiện làm con của nó.")]
     public Transform viTriDatTuong;
 
+    [Header("--- UI CÓ SẴN TRÊN MÀN HÌNH ---")]
+    [Tooltip("Kéo chiếc Button Skill có sẵn trên Canvas của Scene vào đây để hệ thống tự động gán chức năng.")]
+    public Button nutBamSkillCoSan;
+
     [Header("--- Danh Sách Dự Phòng (Nếu chơi ngay không qua Menu) ---")]
-    [Tooltip("Mảng chứa tất cả các Prefab tướng theo đúng thứ tự ID (Phòng trường hợp người chơi vào thẳng cảnh game không qua Menu chọn).")]
+    [Tooltip("Mảng chứa tất cả các Prefab tướng theo đúng thứ tự ID (Phòng trường hợp bạn bật thẳng cảnh game để test).")]
     public GameObject[] danhSachPrefabTuong;
 
     private SaveSystem quanLySave;
@@ -20,18 +25,13 @@ public class HeroSpawner : MonoBehaviour
 
     private void SinhTuongVaoTran()
     {
-        // Kiểm tra vị trí đặt tướng, nếu null thì lấy vị trí của chính Spawner này làm mặc định
-        Vector3 viTriSpawn = transform.position;
-        Quaternion huongSpawn = Quaternion.identity;
+        // 🌟 ĐÃ KHÔI PHỤC VÀ ĐỒNG BỘ CHUẨN UI: Xác định đối tượng cha (Parent) cho con tướng
+        // Nếu bạn quên kéo 'viTriDatTuong' trên Inspector, nó sẽ tự lấy chính Object chứa Script này làm cha.
+        Transform chaCuaUI = (viTriDatTuong != null) ? viTriDatTuong : transform;
 
-        if (viTriDatTuong != null)
+        if (viTriDatTuong == null)
         {
-            viTriSpawn = viTriDatTuong.position;
-            huongSpawn = viTriDatTuong.rotation;
-        }
-        else
-        {
-            Debug.LogWarning("[HeroSpawner] Biến 'viTriDatTuong' bị null! Tướng sẽ được sinh ra tại vị trí của Spawner.");
+            Debug.LogWarning("[HeroSpawner] Biến 'viTriDatTuong' bị null! Tướng sẽ được gắn trực tiếp làm con của Spawner này.");
         }
 
         GameObject prefabCanSinh = null;
@@ -42,7 +42,7 @@ public class HeroSpawner : MonoBehaviour
             prefabCanSinh = HeroSelection.tuongDuocChonHienTai.prefabTuongTrongTran;
         }
 
-        // CÁCH 2: Nếu RAM trống (Do bạn bật thẳng Scene Game để test bằng Unity), tiến hành đọc file Save
+        // CÁCH 2: Nếu RAM trống (Do bạn test nhanh trong Unity Editor), tiến hành đọc file Save
         if (prefabCanSinh == null && quanLySave != null)
         {
             int idTuongDaSave = quanLySave.DocTuongDaChon();
@@ -52,15 +52,50 @@ public class HeroSpawner : MonoBehaviour
             }
         }
 
-        // THỰC THI: Tiến hành sinh tướng ra màn chơi sau khi đã bắt hết các điều kiện an toàn
+        // THỰC THI: Sinh bản thể tướng làm UI con và liên kết vào nút bấm có sẵn
         if (prefabCanSinh != null)
         {
-            GameObject tuongTrongTran = Instantiate(prefabCanSinh, viTriSpawn, huongSpawn);
-            Debug.Log($"<color=green><b>[HeroSpawner]</b> Đã sinh tướng {tuongTrongTran.name} thành công vào trận đấu!</color>");
+            // 🌟 ĐÃ SỬA LẠI: Sinh con tướng ra làm CON của vị trí quy định, ép không méo tỉ lệ (false)
+            GameObject tuongTrongTran = Instantiate(prefabCanSinh, chaCuaUI, false);
+
+            // Đảm bảo con tướng UI nằm ngay trung tâm ô chứa quy định
+            tuongTrongTran.transform.localPosition = Vector3.zero;
+
+            // =================================================================
+            // TRUNG TÂM LIÊN KẾT NÚT BẤM CÓ SẴN (Nhận diện tướng ngẫu nhiên)
+            // =================================================================
+
+            // Bảo đảm an toàn: Kiểm tra xem bạn đã kéo chiếc nút bấm có sẵn vào ô biến chưa
+            if (nutBamSkillCoSan != null)
+            {
+                // 👉 KIỂM TRA 1: Thử xem con tướng vừa gọi ra có chứa script 'SniperSkill' hay không?
+                SniperSkill scriptSniper = tuongTrongTran.GetComponent<SniperSkill>();
+                if (scriptSniper != null)
+                {
+                    // Truyền chiếc nút bấm có sẵn ngoài màn hình vào để Sniper chiếm quyền điều khiển
+                    scriptSniper.GanNutBamSkillTuDong(nutBamSkillCoSan);
+                    Debug.Log($"<color=green><b>[HeroSpawner]</b> Đã nhận diện Sniper! Đã gán nút bấm có sẵn chạy chiêu bắn tỉa.</color>");
+                    return; // Hoàn thành việc kết nối, thoát khỏi hàm
+                }
+
+                // 👉 KIỂM TRA 2: Sau này bạn làm thêm các hệ tướng khác (Pháp sư, Chiến binh...), chỉ cần viết tiếp ở đây:
+                /*
+                MageSkill scriptMage = tuongTrongTran.GetComponent<MageSkill>();
+                if (scriptMage != null)
+                {
+                    scriptMage.GanNutBamSkillMage(nutBamSkillCoSan);
+                    return;
+                }
+                */
+            }
+            else
+            {
+                Debug.LogWarning("[HeroSpawner] Bạn chưa kéo chiếc Button có sẵn trên Canvas vào ô 'nutBamSkillCoSan' của Spawner!");
+            }
         }
         else
         {
-            Debug.LogError("[HeroSpawner] Không thể sinh tướng! Prefab tướng bị null (Chưa chọn tướng hoặc danh sách dự phòng trống).");
+            Debug.LogError("[HeroSpawner] Không thể sinh tướng! Prefab bị null (Chưa chọn tướng hoặc danh sách dự phòng trống).");
         }
     }
 }
