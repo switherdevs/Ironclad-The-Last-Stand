@@ -25,7 +25,7 @@ public class HeroSpawner : MonoBehaviour
 
     private void SinhTuongVaoTran()
     {
-        // 🌟 ĐÃ KHÔI PHỤC VÀ ĐỒNG BỘ CHUẨN UI: Xác định đối tượng cha (Parent) cho con tướng
+        // 1. Xác định đối tượng cha (Parent) cho con tướng UI
         // Nếu bạn quên kéo 'viTriDatTuong' trên Inspector, nó sẽ tự lấy chính Object chứa Script này làm cha.
         Transform chaCuaUI = (viTriDatTuong != null) ? viTriDatTuong : transform;
 
@@ -52,33 +52,43 @@ public class HeroSpawner : MonoBehaviour
             }
         }
 
-        // THỰC THI: Sinh bản thể tướng làm UI con và liên kết vào nút bấm có sẵn
+        // THỰC THI: Sinh bản thể tướng làm UI con và bắt đầu liên kết chức năng vào nút bấm có sẵn
         if (prefabCanSinh != null)
         {
-            // 🌟 ĐÃ SỬA LẠI: Sinh con tướng ra làm CON của vị trí quy định, ép không méo tỉ lệ (false)
+            // Sinh con tướng ra làm CON của vị trí quy định, đối số "false" giúp không bị méo tỷ lệ UI
             GameObject tuongTrongTran = Instantiate(prefabCanSinh, chaCuaUI, false);
 
-            // Đảm bảo con tướng UI nằm ngay trung tâm ô chứa quy định
+            // Đảm bảo con tướng UI nằm ngay trung tâm ô chứa quy định (Tọa độ 0,0,0)
             tuongTrongTran.transform.localPosition = Vector3.zero;
 
             // =================================================================
             // TRUNG TÂM LIÊN KẾT NÚT BẤM CÓ SẴN (Nhận diện tướng ngẫu nhiên)
             // =================================================================
 
-            // Bảo đảm an toàn: Kiểm tra xem bạn đã kéo chiếc nút bấm có sẵn vào ô biến chưa
+            // Bảo đảm an toàn: Kiểm tra xem bạn đã kéo chiếc nút bấm có sẵn ngoài màn hình vào ô biến chưa
             if (nutBamSkillCoSan != null)
             {
-                // 👉 KIỂM TRA 1: Thử xem con tướng vừa gọi ra có chứa script 'SniperSkill' hay không?
+                // 👉 KIỂM TRA 1: Thử quét xem con tướng vừa gọi ra có chứa script 'SniperSkill' hay không?
                 SniperSkill scriptSniper = tuongTrongTran.GetComponent<SniperSkill>();
                 if (scriptSniper != null)
                 {
-                    // Truyền chiếc nút bấm có sẵn ngoài màn hình vào để Sniper chiếm quyền điều khiển
+                    // Truyền chiếc nút bấm ngoài màn hình vào để Sniper chiếm quyền điều khiển
                     scriptSniper.GanNutBamSkillTuDong(nutBamSkillCoSan);
                     Debug.Log($"<color=green><b>[HeroSpawner]</b> Đã nhận diện Sniper! Đã gán nút bấm có sẵn chạy chiêu bắn tỉa.</color>");
-                    return; // Hoàn thành việc kết nối, thoát khỏi hàm
+                    return; // Hoàn thành việc kết nối, thoát khỏi hàm hoàn toàn
                 }
 
-                // 👉 KIỂM TRA 2: Sau này bạn làm thêm các hệ tướng khác (Pháp sư, Chiến binh...), chỉ cần viết tiếp ở đây:
+                // 👉 KIỂM TRA 2 (MỚI CẬP NHẬT): Thử quét xem con tướng vừa gọi ra có chứa script 'CaptainSkill' hay không?
+                CaptainSkill scriptCaptain = tuongTrongTran.GetComponent<CaptainSkill>();
+                if (scriptCaptain != null)
+                {
+                    // Truyền chiếc nút bấm ngoài màn hình vào để Captain chiếm quyền điều khiển và quản lý Cooldown
+                    scriptCaptain.GanNutBamSkillTuDong(nutBamSkillCoSan);
+                    Debug.Log($"<color=green><b>[HeroSpawner]</b> Đã nhận diện Captain! Đã gán nút bấm chạy chiêu không kích.</color>");
+                    return; // Hoàn thành việc kết nối, thoát khỏi hàm hoàn toàn
+                }
+
+                // 👉 KIỂM TRA 3: Sau này nếu bạn làm thêm các tướng khác (Pháp sư, Sát thủ...), chỉ việc viết tiếp ở dưới này:
                 /*
                 MageSkill scriptMage = tuongTrongTran.GetComponent<MageSkill>();
                 if (scriptMage != null)
