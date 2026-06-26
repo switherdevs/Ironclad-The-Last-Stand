@@ -2394,6 +2394,7 @@ MonoBehaviour:
   nutBamSkillCoSan: {fileID: 7799137549471625470}
   danhSachPrefabTuong:
   - {fileID: 6507180144502448836, guid: 7bb190ddf826ac443ae065281a4416da, type: 3}
+  - {fileID: 488575835210645450, guid: 1a6225b17a0c8df48aa0389661349794, type: 3}
 --- !u!1 &2394682051645712584
 GameObject:
   m_ObjectHideFlags: 0

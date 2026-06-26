@@ -10,22 +10,28 @@ public class CaptainSkill : MonoBehaviour
     private float dongHoHoiChieu = 0f;
     private bool isCooldown = false;
 
-    [Header("--- UI KẾT NỐI (TỰ ĐỘNG GÁN) ---")]
+    [Header("--- GIAO DIỆN UI ĐIỀU KHIỂN ---")]
+    [Tooltip("Kéo trực tiếp cấu kiện TextMeshPro hiển thị thời gian hồi chiêu của Captain vào đây (Nếu nó nằm ngoài Button).")]
+    [SerializeField] private TextMeshProUGUI textHienThiTuChon;
+
+    // Các biến tham chiếu nội bộ nhận từ Spawner
     private Button nutBamSkillCaptain;
     private CanvasGroup canvasGroupNutBam;
     private TextMeshProUGUI textHienThiTrangThai;
 
     // Tham chiếu tới bộ điều khiển bom dưới Map (Sẽ tự tìm khi vào trận)
     private MapAirStrikeController boDieuKhienBomDuoiMap;
-
+    private Animator Animations;
     private void Start()
     {
-        // Tự động đi tìm bộ cấu hình bom của Map hiện tại
+        // Tự động đi tìm bộ cấu hình b
+        // om của Map hiện tại
         boDieuKhienBomDuoiMap = Object.FindFirstObjectByType<MapAirStrikeController>();
         if (boDieuKhienBomDuoiMap == null)
         {
             Debug.LogError("[CaptainSkill] Không tìm thấy MapAirStrikeController nào trên Map này!");
         }
+        Animations = GetComponent<Animator>();
     }
 
     private void Update()
@@ -43,7 +49,18 @@ public class CaptainSkill : MonoBehaviour
 
         nutBamSkillCaptain = nutTuSpawner;
         canvasGroupNutBam = nutBamSkillCaptain.GetComponent<CanvasGroup>();
-        textHienThiTrangThai = nutBamSkillCaptain.GetComponentInChildren<TextMeshProUGUI>();
+
+        // 🌟 THUẬT TOÁN KIỂM TRA ĐA NĂNG:
+        // Nếu bạn đã kéo tay Text vào ô 'textHienThiTuChon', sử dụng nó. 
+        // Nếu ô đó trống (null), script sẽ tự lùng sục tìm TextMeshPro con bên trong Button.
+        if (textHienThiTuChon != null)
+        {
+            textHienThiTrangThai = textHienThiTuChon;
+        }
+        else
+        {
+            textHienThiTrangThai = nutBamSkillCaptain.GetComponentInChildren<TextMeshProUGUI>();
+        }
 
         nutBamSkillCaptain.onClick.RemoveAllListeners();
         nutBamSkillCaptain.onClick.AddListener(ActivateSkill);
@@ -56,7 +73,7 @@ public class CaptainSkill : MonoBehaviour
         if (isCooldown) return;
         if (boDieuKhienBomDuoiMap == null) return;
 
-        // 🌟 RA LỆNH: Gọi Map kích hoạt chuỗi máy bay và thả bom theo thứ tự
+        // RA LỆNH: Gọi Map kích hoạt chuỗi máy bay và thả bom theo thứ tự
         boDieuKhienBomDuoiMap.KichHoatKhongKich();
 
         // Bắt đầu hồi chiêu bản thân
