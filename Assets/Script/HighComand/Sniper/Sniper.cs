@@ -29,7 +29,7 @@ public class SniperSkill : MonoBehaviour
     [Tooltip("Gắn thành phần CanvasGroup của nút bấm (hoặc của bảng skill) để làm mờ")]
     [SerializeField] private CanvasGroup canvasGroupNutBam;
     [Tooltip("Kéo TextMeshPro hiển thị số đạn / thời gian hồi vào đây")]
-    [SerializeField] private TextMeshProUGUI textHienThiTrangThai;
+    [SerializeField] public TextMeshProUGUI textHienThiTrangThai;
     [SerializeField] private GameObject HieuUng;
 
     [Header("--- Animation ---")]

@@ -17,7 +17,7 @@ public class CaptainSkill : MonoBehaviour
     // Các biến tham chiếu nội bộ nhận từ Spawner
     private Button nutBamSkillCaptain;
     private CanvasGroup canvasGroupNutBam;
-    private TextMeshProUGUI textHienThiTrangThai;
+    public TextMeshProUGUI textHienThiTrangThai;
 
     // Tham chiếu tới bộ điều khiển bom dưới Map (Sẽ tự tìm khi vào trận)
     private MapAirStrikeController boDieuKhienBomDuoiMap;

@@ -41,10 +41,12 @@ public class LoadScene : MonoBehaviour
     [SerializeField] private Button nutChonMap3_Continue;
 
     [Header("--- HỆ THỐNG CHỌN TƯỚNG ---")]
-    [Tooltip("Bảng chứa các nút bấm để người chơi click chọn Tướng")]
+    [Tooltip("Bảng chứa các nút bấm hoặc khu vực Collider để người chơi chọn Tướng")]
     [SerializeField] private GameObject bangChonTuongUI;
-    [Tooltip("Thời gian (giây) bảng tướng hiển thị hoạt ảnh trước khi tự tắt để hiện bảng Map")]
-    [SerializeField] private float thoiGianActiveBangTuong = 3.0f;
+
+    // 🌟 ĐÃ ĐỔI TÊN BIẾN CHO ĐÚNG Ý NGHĨA MỚI:
+    [Tooltip("Thời gian chờ (giây) sau khi bảng Map hiện lên rồi mới kích hoạt bảng chọn Tướng.")]
+    [SerializeField] private float thoiGianChoDeHienBangTuong = 1.0f;
 
     [Header("Tự quy định thời gian chờ (giây)")]
     [SerializeField] public float thoiGianChoAnMenu = 1.5f;
@@ -113,7 +115,7 @@ public class LoadScene : MonoBehaviour
         }
     }
 
-    // ================= LOGIC ĐIỀU KHIỂN BẢNG SETTING (MỚI NÂNG CẤP) =================
+    // ================= LOGIC ĐIỀU KHIỂN BẢNG SETTING =================
     public void MoBangSetting()
     {
         if (Amthanh != null && Click != null) Amthanh.PlayOneShot(Click);
@@ -167,27 +169,33 @@ public class LoadScene : MonoBehaviour
         }
     }
 
+    // 🌟 ĐÃ SỬA: Quy trình luồng thời gian Start Game mới
     private System.Collections.IEnumerator LuongMoBangMapStart()
     {
+        // 1. Tắt Menu chính
         mainMenuAnimator.Play(animAnMenu);
         yield return new WaitForSeconds(thoiGianChoAnMenu);
         mainMenuUI.SetActive(false);
 
-        // ⭐ NÂNG CẤP: Hiện bảng chọn tướng trước
+        // 2. Hiện bảng chọn Map Start Game lên trước
+        bangMapStartGameUI.SetActive(true);
+        bangMapStartAnimator.Play(animHienBangMap);
+
+        // 3. Đóng băng một lát (Thời gian trì hoãn do bạn chỉnh) rồi mới kích hoạt bảng tướng đè lên
+        yield return new WaitForSeconds(thoiGianChoDeHienBangTuong);
         if (bangChonTuongUI != null)
         {
             bangChonTuongUI.SetActive(true);
-            yield return new WaitForSeconds(thoiGianActiveBangTuong); // Chờ người chơi thao tác bấm chọn tướng
-            bangChonTuongUI.SetActive(false);
         }
-
-        bangMapStartGameUI.SetActive(true);
-        bangMapStartAnimator.Play(animHienBangMap);
     }
 
     public void DongBangMapStartGame()
     {
         if (Amthanh != null && Click != null) Amthanh.PlayOneShot(Click);
+
+        // Chống lỗi: Nếu người chơi ấn thoát ra Menu, tắt luôn bảng tướng đi kèm
+        if (bangChonTuongUI != null) bangChonTuongUI.SetActive(false);
+
         StartCoroutine(LuongDongBangMapStart());
     }
 
@@ -220,22 +228,24 @@ public class LoadScene : MonoBehaviour
         }
     }
 
+    // 🌟 ĐÃ SỬA: Quy trình luồng thời gian Continue mới
     private System.Collections.IEnumerator LuongMoBangMapContinue()
     {
+        // 1. Tắt Menu chính
         mainMenuAnimator.Play(animAnMenu);
         yield return new WaitForSeconds(thoiGianChoAnMenu);
         mainMenuUI.SetActive(false);
 
-        // ⭐ NÂNG CẤP: Hiện bảng chọn tướng trước khi vào bảng Continue Map
+        // 2. Hiện bảng chọn Map Continue lên trước
+        bangMapContinueUI.SetActive(true);
+        bangMapContinueAnimator.Play(animHienBangMap);
+
+        // 3. Đóng băng một lát rồi mới kích hoạt bảng tướng đè lên
+        yield return new WaitForSeconds(thoiGianChoDeHienBangTuong);
         if (bangChonTuongUI != null)
         {
             bangChonTuongUI.SetActive(true);
-            yield return new WaitForSeconds(thoiGianActiveBangTuong);
-            bangChonTuongUI.SetActive(false);
         }
-
-        bangMapContinueUI.SetActive(true);
-        bangMapContinueAnimator.Play(animHienBangMap);
     }
 
     public void HanhDongChonTuongButton(int idTuong)
@@ -252,6 +262,10 @@ public class LoadScene : MonoBehaviour
     public void DongBangMapContinue()
     {
         if (Amthanh != null && Click != null) Amthanh.PlayOneShot(Click);
+
+        // Chống lỗi: Tắt kèm bảng tướng nếu thoát ra Menu
+        if (bangChonTuongUI != null) bangChonTuongUI.SetActive(false);
+
         StartCoroutine(LuongDongBangMapContinue());
     }
 

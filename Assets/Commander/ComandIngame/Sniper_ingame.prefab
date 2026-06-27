@@ -398,7 +398,7 @@ GameObject:
   - component: {fileID: 2408562765150104970}
   - component: {fileID: 3606945403566351062}
   m_Layer: 0
-  m_Name: Sniper
+  m_Name: Sniper_ingame
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -414,7 +414,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -15.8, y: -8, z: 10.3252}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.25, y: 1.25, z: 1.25}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 2967016232828014080}
@@ -703,6 +703,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -8653719598885068355, guid: 9aa8cee6f927094438a9d5b5f0218de4, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5267115755942286435}
+    - targetCorrespondingSourceObject: {fileID: -3907132521543439239, guid: 9aa8cee6f927094438a9d5b5f0218de4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 9144717220169392914}
   m_SourcePrefab: {fileID: 4843985084834002234, guid: 9aa8cee6f927094438a9d5b5f0218de4, type: 3}
 --- !u!4 &2967016232828014080 stripped
 Transform:
@@ -747,4 +750,21 @@ SortingGroup:
   m_SortingLayerID: -1492018015
   m_SortingLayer: 4
   m_SortingOrder: 150
+  m_SortAtRoot: 0
+--- !u!1 &8630075751713676199 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -3907132521543439239, guid: 9aa8cee6f927094438a9d5b5f0218de4, type: 3}
+  m_PrefabInstance: {fileID: 4468454288592336862}
+  m_PrefabAsset: {fileID: 0}
+--- !u!210 &9144717220169392914
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8630075751713676199}
+  m_Enabled: 1
+  m_SortingLayerID: -1492018015
+  m_SortingLayer: 4
+  m_SortingOrder: 165
   m_SortAtRoot: 0
