@@ -4,16 +4,15 @@ using System.Collections;
 public class MapAirStrikeController : MonoBehaviour
 {
     [Header("--- CẤU HÌNH VÙNG THẢ BOM HÌNH VUÔNG ---")]
-    [Tooltip("Kéo BoxCollider2D quy định vùng thả bom vào đây.")]
+    [Tooltip("Kéo BoxCollider2D quy định vùng thả bom vào đây (Nên nằm chung trong một Prefab).")]
     public BoxCollider2D vungThaBomBoxCollider;
 
-    [Header("--- CẤU HÌNH MÁY BAY ---")]
-    [Tooltip("Kéo Object chiếc máy bay ngoài Hierarchy vào đây.")]
+    [Header("--- CẤU HÌNH MÁY BAY NẰM TRONG PREFAB ---")]
+    [Tooltip("🌟 QUAN TRỌNG: Kéo Object TRỐNG TRUNG GIAN (Cha của máy bay chứa Animation) vào đây.")]
     public GameObject ojectMayBay;
-    [Tooltip("Thời gian CHỜ trước khi máy bay xuất hiện kể từ lúc bấm Skill (giây). Chỉnh số này LỚN = máy bay ra Trễ, NHỎ = máy bay ra Sớm.")]
-    public float thoiGianMayBayXuatHienSomTre = 0.5f;
-    [Tooltip("Thời gian máy bay bay trên bầu trời trước khi tự ẩn đi (giây).")]
-    public float thoiGianMayBayBienMat = 3.0f;
+
+    [Tooltip("Kéo một Transform (Ví dụ: một GameObject trống đặt tên là Diem_Neo) nằm trong Prefab vào đây để làm mốc xuất phát cố định.")]
+    public Transform viTriXuatPhatCuaShip;
 
     [Header("--- CẤU HÌNH LƯỢNG BOM VÀ THỜI GIAN ---")]
     [Tooltip("Số lượng quả bom xả xuống trong một lượt.")]
@@ -21,13 +20,15 @@ public class MapAirStrikeController : MonoBehaviour
     [Tooltip("Thời gian cách nhau giữa mỗi quả bom (giây). Tạo hiệu ứng rải từ trái qua phải.")]
     public float delayGiuaCacQuaBom = 0.15f;
 
-    [Header("--- CẤU HÌNH BOM RƠI THẬT ---")]
+    [Header("--- CẤU HÌNH BOM RƠI THẬT & RANDOM ---")]
     [Tooltip("Kéo Prefab quả bom vào đây.")]
     public GameObject prefabQuaBomThat;
-    [Tooltip("Độ cao xuất phát của quả bom.")]
+    [Tooltip("Độ cao xuất phát của quả bom tính từ điểm đích.")]
     public float doCaoBomRoi = 10f;
     [Tooltip("Tốc độ lao xuống của quả bom.")]
     public float tocDoBomRoi = 20f;
+    [Tooltip("Độ lệch ngẫu nhiên tối đa trục X của ĐIỂM XUẤT PHÁT bom trên trời.")]
+    public float offsetNgauNhienX_DiemBatDau = 1.0f;
 
     [Header("--- VÙNG GÂY SÁT THƯƠNG KHI CHẠM ĐẤT ---")]
     [Tooltip("Kéo Prefab Vùng nổ (chứa Collider gây sát thương quái) vào đây.")]
@@ -37,14 +38,10 @@ public class MapAirStrikeController : MonoBehaviour
 
     private void Start()
     {
-        // 🌟 THUẬT TOÁN KHỞI ĐẦU: Đảm bảo vừa vào game là máy bay phải bị ẩn hoàn toàn (Set Active = false)
+        // 🌟 Đảm bảo vừa vào game là cụm máy bay phải bị ẩn hoàn toàn
         if (ojectMayBay != null)
         {
             ojectMayBay.SetActive(false);
-        }
-        else
-        {
-            Debug.LogWarning("[MapAirStrike] Bạn chưa kéo Object máy bay vào ô ojectMayBay!");
         }
     }
 
@@ -59,21 +56,28 @@ public class MapAirStrikeController : MonoBehaviour
         StartCoroutine(ChuoiRaiThamBomRoutine());
     }
 
-    // 🌟 THUẬT TOÁN COROUTINE CẢI TIẾN: Điều khiển nhịp độ xuất hiện của máy bay và mưa bom
+    // 🌟 THUẬT TOÁN COROUTINE: Reset vị trí vật lý trước, rồi ép Animator cập nhật lại
     IEnumerator ChuoiRaiThamBomRoutine()
     {
-        // 1. 🌟 NÂNG CẤP MỚI: Chờ một khoảng thời gian chỉnh trước khi cho Máy bay xuất hiện
-        yield return new WaitForSeconds(thoiGianMayBayXuatHienSomTre);
-
-        if (ojectMayBay != null)
+        // 1. 🎯 RESET VỊ TRÍ CỤM CHA TRUNG GIAN BẰNG BIẾN TRANSFORM
+        if (ojectMayBay != null && viTriXuatPhatCuaShip != null)
         {
-            ojectMayBay.SetActive(true); // Chỉ bật lên khi đã hết thời gian chờ
+            ojectMayBay.transform.position = viTriXuatPhatCuaShip.position;
+            ojectMayBay.transform.rotation = viTriXuatPhatCuaShip.rotation;
+
+            // Bật cụm máy bay lên
+            ojectMayBay.SetActive(true);
+
+            // 🎯 LỆNH THÔNG MINH BỔ SUNG: Ép tất cả Animator con (nếu có) phải reset về trạng thái đầu tiên
+            Animator animatorCuaMayBay = ojectMayBay.GetComponentInChildren<Animator>();
+            if (animatorCuaMayBay != null)
+            {
+                animatorCuaMayBay.Rebind(); // Reset hoàn toàn dòng thời gian Animation về giây thứ 0
+                animatorCuaMayBay.Update(0f); // Ép cập nhật ngay lập tức để tránh bị giật hình
+            }
         }
 
-        // Tự động kích hoạt luồng tắt máy bay sau đó mà không làm nghẽn tiến trình thả bom dưới đất
-        StartCoroutine(TuDongAnMayBaySauKhiBayXong());
-
-        // 2. TÍNH TOÁN RANH GIỚI VÙNG HÌNH VUÔNG
+        // 2. TÍNH TOÁN RANH GIỚI VÙNG HÌNH VUÔNG CỦA BOM
         Bounds ranhGioiVung = vungThaBomBoxCollider.bounds;
         float canhTrai = ranhGioiVung.min.x;
         float canhPhai = ranhGioiVung.max.x;
@@ -88,23 +92,20 @@ public class MapAirStrikeController : MonoBehaviour
         {
             if (prefabQuaBomThat == null) break;
 
-            // Tính toán vị trí X tịnh tiến dần từ trái qua phải
-            float toaDoX = canhTrai + (i * buocNhayX) + Random.Range(-0.2f, 0.2f);
-            toaDoX = Mathf.Clamp(toaDoX, canhTrai, canhPhai);
+            float toaDoX_DichDen = canhTrai + (i * buocNhayX) + Random.Range(-0.2f, 0.2f);
+            toaDoX_DichDen = Mathf.Clamp(toaDoX_DichDen, canhTrai, canhPhai);
 
-            // Chọn ngẫu nhiên một cao độ Y nằm trong vùng hình vuông
             float toaDoY_DichDen = Random.Range(canhDuoi, canhTren);
 
-            Vector3 toaDoDichXuongDat = new Vector3(toaDoX, toaDoY_DichDen, 0f);
-            Vector3 viTriBomTrenTroi = new Vector3(toaDoX, toaDoY_DichDen + doCaoBomRoi, 0f);
+            Vector3 toaDoDichXuongDat = new Vector3(toaDoX_DichDen, toaDoY_DichDen, 0f);
 
-            // Tạo góc xoay ngẫu nhiên sinh động cho quả bom
+            float toaDoX_XuatPhatTrenTroi = toaDoX_DichDen + Random.Range(-offsetNgauNhienX_DiemBatDau, offsetNgauNhienX_DiemBatDau);
+            Vector3 viTriBomTrenTroi = new Vector3(toaDoX_XuatPhatTrenTroi, toaDoY_DichDen + doCaoBomRoi, 0f);
+
             Quaternion gocXoayNgauNhien = Quaternion.Euler(0f, 0f, Random.Range(0f, 360f));
 
-            // Sinh quả bom
             GameObject bomInstance = Instantiate(prefabQuaBomThat, viTriBomTrenTroi, gocXoayNgauNhien);
 
-            // Đồng bộ lớp hiển thị đè lên Map
             SpriteRenderer sRendererBom = bomInstance.GetComponent<SpriteRenderer>();
             if (sRendererBom != null)
             {
@@ -127,12 +128,8 @@ public class MapAirStrikeController : MonoBehaviour
 
             yield return new WaitForSeconds(delayGiuaCacQuaBom);
         }
-    }
 
-    // 🌟 HÀM PHỤ ĐỘC LẬP: Giúp máy bay tự tắt sau khi hoàn thành nhiệm vụ mà không ảnh hưởng vòng lặp bom
-    IEnumerator TuDongAnMayBaySauKhiBayXong()
-    {
-        yield return new WaitForSeconds(thoiGianMayBayBienMat);
+        // 4. TẮT CỤM MÁY BAY SAU KHI THẢ HẾT LOẠT BOM
         if (ojectMayBay != null)
         {
             ojectMayBay.SetActive(false);

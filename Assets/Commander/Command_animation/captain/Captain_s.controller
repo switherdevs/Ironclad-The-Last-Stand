@@ -9,7 +9,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 1
-    m_ConditionEvent: Skill-cap
+    m_ConditionEvent: At
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -6903447783732267769}
@@ -112,7 +112,7 @@ AnimatorStateMachine:
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: -8442034196972898811}
-    m_Position: {x: 310, y: -10, z: 0}
+    m_Position: {x: 310, y: 0, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -6903447783732267769}
     m_Position: {x: 310, y: 120, z: 0}
@@ -135,7 +135,7 @@ AnimatorController:
   m_Name: Captain_s
   serializedVersion: 5
   m_AnimatorParameters:
-  - m_Name: Skill-cap
+  - m_Name: At
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0

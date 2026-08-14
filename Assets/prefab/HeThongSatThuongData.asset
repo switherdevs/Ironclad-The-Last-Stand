@@ -187,3 +187,15 @@ MonoBehaviour:
     - 1
     mangGiaTienMau: 
     mangGiaTienSatThuong: 
+  - tenChungLinh: Sentry
+    mauGoc: 0
+    satThuongGoc: 50
+    heSoBoTro: 1
+    capDoMau: 0
+    capDoSatThuong: 0
+    mangHeSoMau:
+    - 1
+    mangHeSoSatThuong:
+    - 1
+    mangGiaTienMau: 
+    mangGiaTienSatThuong: 

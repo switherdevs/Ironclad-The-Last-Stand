@@ -13,7 +13,7 @@ public class HeThongSatThuongData : ScriptableObject
         [Header("--- THÔNG SỐ GỐC ---")]
         public int mauGoc;
         public int satThuongGoc;
-        public float heSoBoTro; // Hệ số bổ trợ gốc của bạn
+        public float heSoBoTro;
 
         [Header("--- CẤP ĐỘ HIỆN TẠI ---")]
         public int capDoMau;
@@ -31,37 +31,38 @@ public class HeThongSatThuongData : ScriptableObject
     [Header("--- DANH SÁCH DỮ LIỆU TẤT CẢ CHỦNG LÍNH ---")]
     public List<ChiSoSatThuongLinh> danhSachSatThuong = new List<ChiSoSatThuongLinh>();
 
-    // ================= HÀM LẤY SÁT THƯƠNG THỰC TẾ (ĐÃ SỬA LỖI MAX LEVEL) =================
-    public int LaySatThuongTuChung(string tenChung)
+    // 🎯 BIẾN TĨNH TOÀN CỤC: Quản lý hệ số buff của Chaplain (Mặc định bằng 1f tức là không buff)
+    public static float heSoBuffChaplain = 1.0f;
+
+    // ================= HÀM LẤY SÁT THƯƠNG TỔNG LỰC TRONG TRẬN =================
+    public int LaySatThuongTuChung(string testChung)
     {
         for (int i = 0; i < danhSachSatThuong.Count; i++)
         {
             var chung = danhSachSatThuong[i];
-            if (tenChung.Contains(chung.tenChungLinh))
+            if (testChung.Contains(chung.tenChungLinh))
             {
                 float heSoNangCap = 1f;
 
                 if (chung.mangHeSoSatThuong != null && chung.mangHeSoSatThuong.Count > 0)
                 {
-                    // Nếu cấp độ hiện tại nằm trong phạm vi mảng, lấy bình thường
                     if (chung.capDoSatThuong < chung.mangHeSoSatThuong.Count)
                     {
                         heSoNangCap = chung.mangHeSoSatThuong[chung.capDoSatThuong];
                     }
-                    // CHỐT CHẶN: Nếu cấp độ bằng hoặc vượt quá độ dài mảng (Max Level), ép lấy phần tử cuối cùng
                     else
                     {
                         heSoNangCap = chung.mangHeSoSatThuong[chung.mangHeSoSatThuong.Count - 1];
                     }
                 }
 
-                return Mathf.RoundToInt(chung.satThuongGoc * chung.heSoBoTro * heSoNangCap);
+                // 🎯 CÔNG THỨC TỔNG: Tính toán sát thương gốc, nâng cấp, và nhân thêm hệ số Buff từ Chaplain tại đây
+                return Mathf.RoundToInt(chung.satThuongGoc * chung.heSoBoTro * heSoNangCap * heSoBuffChaplain);
             }
         }
-        return 5; // Giá trị trả về mặc định nếu không tìm thấy chủng lính
+        return 5;
     }
 
-    // ================= HÀM LẤY MÁU THỰC TẾ (ĐÃ SỬA LỖI MAX LEVEL) =================
     public int LayMauTuChung(string tenChung)
     {
         string tenChungLower = tenChung.ToLower();
@@ -74,12 +75,10 @@ public class HeThongSatThuongData : ScriptableObject
 
                 if (chung.mangHeSoMau != null && chung.mangHeSoMau.Count > 0)
                 {
-                    // Nếu cấp độ hiện tại nằm trong phạm vi mảng, lấy bình thường
                     if (chung.capDoMau < chung.mangHeSoMau.Count)
                     {
                         heSoNangCap = chung.mangHeSoMau[chung.capDoMau];
                     }
-                    // CHỐT CHẶN: Nếu cấp độ bằng hoặc vượt quá độ dài mảng (Max Level), ép lấy phần tử cuối cùng
                     else
                     {
                         heSoNangCap = chung.mangHeSoMau[chung.mangHeSoMau.Count - 1];
@@ -89,10 +88,9 @@ public class HeThongSatThuongData : ScriptableObject
                 return Mathf.RoundToInt(chung.mauGoc * heSoNangCap);
             }
         }
-        return 20; // Giá trị trả về mặc định nếu không tìm thấy chủng lính
+        return 20;
     }
 
-    // ================= HÀM RESET CHỈ SỐ VỀ MẶC ĐỊNH (KHI KHÔNG CÓ FILE SAVE) =================
     public void ResetToanBoChiSoVeMocGoc()
     {
         for (int i = 0; i < danhSachSatThuong.Count; i++)

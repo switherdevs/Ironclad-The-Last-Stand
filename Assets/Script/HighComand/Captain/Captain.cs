@@ -31,7 +31,7 @@ public class CaptainSkill : MonoBehaviour
         {
             Debug.LogError("[CaptainSkill] Không tìm thấy MapAirStrikeController nào trên Map này!");
         }
-        Animations = GetComponent<Animator>();
+        Animations = GetComponentInChildren<Animator>();
     }
 
     private void Update()
@@ -70,6 +70,7 @@ public class CaptainSkill : MonoBehaviour
 
     public void ActivateSkill()
     {
+        Animations.SetTrigger("At");
         if (isCooldown) return;
         if (boDieuKhienBomDuoiMap == null) return;
 

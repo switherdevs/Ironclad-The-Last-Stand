@@ -1,5 +1,69 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1811914941475757767
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1322404413570633277}
+  m_Layer: 0
+  m_Name: vitri_trunggian
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1322404413570633277
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1811914941475757767}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 4137161050381356438}
+  m_Father: {fileID: 4745801608115170937}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &7038486758214631682
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4745801608115170937}
+  m_Layer: 0
+  m_Name: vi_triShip
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4745801608115170937
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7038486758214631682}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -63, y: 17, z: 0}
+  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1322404413570633277}
+  m_Father: {fileID: 1399642272464433062}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7119097106391808501
 GameObject:
   m_ObjectHideFlags: 0
@@ -30,7 +94,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 4745801608115170937}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3204904535512133338
@@ -46,13 +111,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   vungThaBomBoxCollider: {fileID: 3064878187378357588}
+  ojectMayBay: {fileID: 1811914941475757767}
+  viTriXuatPhatCuaShip: {fileID: 4745801608115170937}
   soLuongBomMuonTha: 100
-  delayGiuaCacQuaBom: 0.15
+  delayGiuaCacQuaBom: 0.05
   prefabQuaBomThat: {fileID: 7597873696713506917, guid: 36971af29542b7f40b41c3ae7652b99b, type: 3}
-  doCaoBomRoi: 10
-  tocDoBomRoi: 10
+  doCaoBomRoi: 30
+  tocDoBomRoi: 75
+  offsetNgauNhienX_DiemBatDau: 5
   prefabVungNoSattHuong: {fileID: 5106636569325296314, guid: 90a753724366a83459a83dc95d91736c, type: 3}
-  thoiGianTonTaiCuaO: 2
+  thoiGianTonTaiCuaO: 0.5
 --- !u!61 &3064878187378357588
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -99,3 +167,65 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 100, y: 50}
   m_EdgeRadius: 0
+--- !u!1001 &8163678297820621462
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1322404413570633277}
+    m_Modifications:
+    - target: {fileID: 4680449428079064512, guid: a48724ef2b0099d41bef301241b9e554, type: 3}
+      propertyPath: m_Name
+      value: Ship_air
+      objectReference: {fileID: 0}
+    - target: {fileID: 5197453204261562112, guid: a48724ef2b0099d41bef301241b9e554, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5197453204261562112, guid: a48724ef2b0099d41bef301241b9e554, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5197453204261562112, guid: a48724ef2b0099d41bef301241b9e554, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5197453204261562112, guid: a48724ef2b0099d41bef301241b9e554, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5197453204261562112, guid: a48724ef2b0099d41bef301241b9e554, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5197453204261562112, guid: a48724ef2b0099d41bef301241b9e554, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5197453204261562112, guid: a48724ef2b0099d41bef301241b9e554, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5197453204261562112, guid: a48724ef2b0099d41bef301241b9e554, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5197453204261562112, guid: a48724ef2b0099d41bef301241b9e554, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5197453204261562112, guid: a48724ef2b0099d41bef301241b9e554, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: a48724ef2b0099d41bef301241b9e554, type: 3}
+--- !u!4 &4137161050381356438 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5197453204261562112, guid: a48724ef2b0099d41bef301241b9e554, type: 3}
+  m_PrefabInstance: {fileID: 8163678297820621462}
+  m_PrefabAsset: {fileID: 0}

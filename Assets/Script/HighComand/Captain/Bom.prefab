@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 7597873696713506917}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 98.91974, y: -14.462204, z: 5.6927023}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -100,3 +100,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d48c9fdb098f80d4f840ff68f13e1a5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  offsetNgauNhienY: 1.5
+  noTheoThoiGian: 1
+  thoiGianTuDongNo: 0.25
+  noTheoCaoDoY: 1
+  caoDoYSePhatNo: -18
